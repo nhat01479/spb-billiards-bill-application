@@ -51,7 +51,7 @@
         <div class="row" style=" background-color: #FFF;">
             <div class="col-lg-7" style="padding: 0px;">
                 <div class="" style="height:calc(100vh - 362px); overflow: auto; padding: 10px;">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="tbOrderDetail">
                         <thead>
                         <tr>
                             <th class="col-4">Tên SP</th>
@@ -63,7 +63,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="text-center">
+                        <tr class="text-center" id="tr_${order.id}">
                             <td class="text-start">Suki Gould</td>
 <!--                            <td>Lon</td>-->
                             <td>
@@ -147,7 +147,7 @@
                     </div>
                 </div>
                 <div class="col-12" style="padding-right: 5px; padding-left: 5px; padding-top: 5px; max-height:91px; ">
-                    <div class="row">
+                    <div class="row" id="">
                         <div class="col-3" style="padding: 2px;">
                             <button class="btn btn-primary  w-100">Tất cả</button>
                         </div>
@@ -160,108 +160,65 @@
                         <div class="col-3" style="padding: 2px;">
                             <button class="btn btn-primary  w-100">Tất cả</button>
                         </div>
-
-
                     </div>
                 </div>
                 <div class="col-12">
-                    <div class="row" style="display: none;">
+                    <div class="row" id="row-content">
                         <div class="col-2" style="padding: 7px;">
-                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">a</button>
+                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>
                         </div>
                         <div class="col-2" style="padding: 7px;">
-                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">a</button>
+                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>
                         </div>
                         <div class="col-2" style="padding: 7px;">
-                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">a</button>
+                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>
                         </div>
                         <div class="col-2" style="padding: 7px;">
-                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">a</button>
+                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>
                         </div>
                         <div class="col-2" style="padding: 7px;">
-                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">a</button>
+                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>
                         </div>
                         <div class="col-2" style="padding: 7px;">
-                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">a</button>
+                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>
+                        </div>
+                        <div class="col-3" style="padding: 5px;cursor: pointer; padding: 10px;">
+                            <div style="position: relative;">
+                                <img src="https://taikhoan.aiapos.vn/public/templates/uploads/no_image.jpg"
+                                     style="width: 100%;">
+                                <span style="position: absolute; bottom: 0px; left: 0px;"
+                                      class="btn-primary ">10,000</span>
+                            </div>
+                            <p class="text-center">Bia huda</p>
+                        </div>
+                        <div class="col-3" style="padding: 5px;cursor: pointer; padding: 10px;">
+                            <div style="position: relative;">
+                                <img src="https://taikhoan.aiapos.vn/public/templates/uploads/no_image.jpg"
+                                     style="width: 100%;">
+                                <span style="position: absolute; bottom: 0px; left: 0px;"
+                                      class="btn-primary ">10,000</span>
+                            </div>
+                            <p class="text-center">Bia huda</p>
+                        </div>
+                        <div class="col-3" style="padding: 5px;cursor: pointer; padding: 10px;">
+                            <div style="position: relative;">
+                                <img src="https://taikhoan.aiapos.vn/public/templates/uploads/no_image.jpg"
+                                     style="width: 100%;">
+                                <span style="position: absolute; bottom: 0px; left: 0px;"
+                                      class="btn-primary ">10,000</span>
+                            </div>
+                            <p class="text-center">Bia huda</p>
+                        </div>
+                        <div class="col-3" style="padding: 5px;cursor: pointer; padding: 10px;">
+                            <div style="position: relative;">
+                                <img src="https://taikhoan.aiapos.vn/public/templates/uploads/no_image.jpg"
+                                     style="width: 100%;">
+                                <span style="position: absolute; bottom: 0px; left: 0px;"
+                                      class="btn-primary ">10,000</span>
+                            </div>
+                            <p class="text-center">Bia huda</p>
                         </div>
 
-                    </div>
-                    <div class="row">
-                        <div class="col-3" style="padding: 5px;cursor: pointer; padding: 10px;">
-                            <div style="position: relative;">
-                                <img src="https://taikhoan.aiapos.vn/public/templates/uploads/no_image.jpg"
-                                     style="width: 100%;">
-                                <span style="position: absolute; bottom: 0px; left: 0px;"
-                                      class="btn-primary ">10,000</span>
-                            </div>
-                            <p class="text-center">Bia huda</p>
-                        </div>
-                        <div class="col-3" style="padding: 5px;cursor: pointer; padding: 10px;">
-                            <div style="position: relative;">
-                                <img src="https://taikhoan.aiapos.vn/public/templates/uploads/no_image.jpg"
-                                     style="width: 100%;">
-                                <span style="position: absolute; bottom: 0px; left: 0px;"
-                                      class="btn-primary ">10,000</span>
-                            </div>
-                            <p class="text-center">Bia huda</p>
-                        </div>
-                        <div class="col-3" style="padding: 5px;cursor: pointer; padding: 10px;">
-                            <div style="position: relative;">
-                                <img src="https://taikhoan.aiapos.vn/public/templates/uploads/no_image.jpg"
-                                     style="width: 100%;">
-                                <span style="position: absolute; bottom: 0px; left: 0px;"
-                                      class="btn-primary ">10,000</span>
-                            </div>
-                            <p class="text-center">Bia huda</p>
-                        </div>
-                        <div class="col-3" style="padding: 5px;cursor: pointer; padding: 10px;">
-                            <div style="position: relative;">
-                                <img src="https://taikhoan.aiapos.vn/public/templates/uploads/no_image.jpg"
-                                     style="width: 100%;">
-                                <span style="position: absolute; bottom: 0px; left: 0px;"
-                                      class="btn-primary ">10,000</span>
-                            </div>
-                            <p class="text-center">Bia huda</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-3" style="padding: 5px;cursor: pointer; padding: 10px;">
-                            <div style="position: relative;">
-                                <img src="https://taikhoan.aiapos.vn/public/templates/uploads/no_image.jpg"
-                                     style="width: 100%;">
-                                <span style="position: absolute; bottom: 0px; left: 0px;"
-                                      class="btn-primary ">10,000</span>
-                            </div>
-                            <p class="text-center">Bia huda</p>
-                        </div>
-                        <div class="col-3" style="padding: 5px;cursor: pointer; padding: 10px;">
-                            <div style="position: relative;">
-                                <img src="https://taikhoan.aiapos.vn/public/templates/uploads/no_image.jpg"
-                                     style="width: 100%;">
-                                <span style="position: absolute; bottom: 0px; left: 0px;"
-                                      class="btn-primary ">10,000</span>
-                            </div>
-                            <p class="text-center">Bia huda</p>
-                        </div>
-                        <div class="col-3" style="padding: 5px;cursor: pointer; padding: 10px;">
-                            <div style="position: relative;">
-                                <img src="https://taikhoan.aiapos.vn/public/templates/uploads/no_image.jpg"
-                                     style="width: 100%;">
-                                <span style="position: absolute; bottom: 0px; left: 0px;"
-                                      class="btn-primary ">10,000</span>
-                            </div>
-                            <p class="text-center">Bia huda</p>
-                        </div>
-                        <div class="col-3" style="padding: 5px;cursor: pointer; padding: 10px;">
-                            <div style="position: relative;">
-                                <img src="https://taikhoan.aiapos.vn/public/templates/uploads/no_image.jpg"
-                                     style="width: 100%;">
-                                <span style="position: absolute; bottom: 0px; left: 0px;"
-                                      class="btn-primary ">10,000</span>
-                            </div>
-                            <p class="text-center">Bia huda</p>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -270,13 +227,27 @@
 </div>
 
 
+
 <script src="/assets/js/jquery-3.6.0.min.js"></script>
 <script src="/assets/sweetalert2/v11.7.12/sweetalert2.all.min.js"></script>
 <script src="/assets/js/jquery.validate.min.js"></script>
 <script src="/assets/js/jquery.number.js"></script>
 <script src="/assets/js/app.js"></script>
-<script>
 
+<script>
+    const page = {
+        url: {
+
+        },
+        elements: {},
+        loadData: {},
+        commands: {},
+        dialogs: {
+            elements: {},
+            commands: {}
+        },
+        initializeControlEvent: {}
+    }
 
 
 

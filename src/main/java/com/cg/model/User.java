@@ -31,19 +31,13 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
+    @OneToOne
+    @JoinColumn(name = "staff_id", referencedColumnName = "id", nullable = false)
+    private Staff staff;
+
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                '}';
-    }
 
 
 }

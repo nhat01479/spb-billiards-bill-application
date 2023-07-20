@@ -30,7 +30,7 @@ public class Order extends BaseEntity {
     private Desk desk;
 
     @Column(precision = 10, scale = 0, nullable = false)
-    private BigDecimal total;
+    private BigDecimal totalAmount;
 
-    private Boolean status;
+    private boolean status;
 }

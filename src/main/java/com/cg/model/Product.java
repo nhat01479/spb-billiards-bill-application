@@ -21,19 +21,27 @@ public class Product extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(nullable = false)
+    private String title;
 
-    private String description;
+    private String slug;
 
     @Column(precision = 10, scale = 0, nullable = false)
     private BigDecimal price;
+
+    private String unit;
+
+    @Lob
+    private String description;
+
+
 
     @ManyToOne
     @JoinColumn(name="category_id", referencedColumnName = "id", nullable = false)
     private Category category;
 
-    @Column(nullable = false)
-    private String image;
+    @OneToOne
+    @JoinColumn(name = "avatar_id", referencedColumnName = "id", nullable = false)
+    private ProductAvatar avatar;
 
 }

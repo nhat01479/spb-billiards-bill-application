@@ -32,5 +32,5 @@ public class Desk extends BaseEntity{
     private Type type;
 
     @Column(nullable = false)
-    private Boolean status;
+    private boolean status;
 }

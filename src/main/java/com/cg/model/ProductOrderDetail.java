@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "product_order_detail")
 @Accessors(chain = true)
-public class ProductOrderDetail extends BaseEntity{
+public class ProductOrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,5 +34,8 @@ public class ProductOrderDetail extends BaseEntity{
 
     @Column(nullable = false)
     private Long quantity;
+
+    @Column(nullable = false)
+    private BigDecimal amount;
 }
 

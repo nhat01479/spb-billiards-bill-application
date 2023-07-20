@@ -33,6 +33,12 @@ public class TimeOrderDetail extends BaseEntity {
     @Column(name = "start_at", nullable = false, updatable = false)
     private Date startAt;
 
-    @Column(name = "end_at", nullable = false, updatable = false)
+    @Column(name = "end_at", updatable = false)
     private Date endAt;
+
+    @Column(precision = 10, scale = 0, nullable = false)
+    private BigDecimal price;
+
+    @Column(nullable = false)
+    private BigDecimal amount;
 }

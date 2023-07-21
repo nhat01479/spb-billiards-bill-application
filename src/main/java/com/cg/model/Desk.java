@@ -1,5 +1,8 @@
 package com.cg.model;
 
+import com.cg.model.dto.desk.DeskCreResDTO;
+import com.cg.model.dto.desk.DeskDTO;
+import com.cg.model.dto.desk.DeskUpResDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,4 +36,35 @@ public class Desk extends BaseEntity{
 
     @Column(nullable = false)
     private boolean status;
+
+
+    public DeskDTO toDeskDTO() {
+        return new DeskDTO()
+                .setId(id)
+                .setName(name)
+                .setPriceTime(priceTime)
+                .setType(type)
+                .setStatus(status)
+                ;
+    }
+
+    public DeskCreResDTO todeskCreResDTO() {
+        return new DeskCreResDTO()
+                .setId(id)
+                .setName(name)
+                .setPriceTime(priceTime)
+                .setType(type)
+                .setStatus(status)
+                ;
+    }
+
+    public DeskUpResDTO todeskUpResDTO() {
+        return new DeskUpResDTO()
+                .setId(id)
+                .setName(name)
+                .setPriceTime(priceTime)
+                .setType(type)
+                .setStatus(status)
+                ;
+    }
 }

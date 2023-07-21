@@ -16,7 +16,7 @@ public class TypeServiceImpl implements ITypeService{
 
     @Override
     public List<Type> findAll() {
-        return null;
+        return typeRepository.findAll();
     }
 
     @Override

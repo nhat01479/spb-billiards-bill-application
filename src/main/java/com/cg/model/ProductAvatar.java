@@ -1,6 +1,7 @@
 package com.cg.model;
 
 
+import com.cg.model.dto.product.ProductAvatarDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,4 +37,14 @@ public class ProductAvatar {
 
     @Column(name = "cloud_id")
     private String cloudId;
+    public ProductAvatarDTO toProductAvatarDTO() {
+        return new ProductAvatarDTO()
+                .setId(id)
+                .setFileName(fileName)
+                .setFileFolder(fileFolder)
+                .setFileUrl(fileUrl)
+                .setFileType(fileType)
+                .setCloudId(cloudId)
+                ;
+    }
 }

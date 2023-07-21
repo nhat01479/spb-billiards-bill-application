@@ -164,24 +164,24 @@
                 </div>
                 <div class="col-12">
                     <div class="row" id="row-content">
-                        <div class="col-2" style="padding: 7px;">
-                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>
-                        </div>
-                        <div class="col-2" style="padding: 7px;">
-                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>
-                        </div>
-                        <div class="col-2" style="padding: 7px;">
-                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>
-                        </div>
-                        <div class="col-2" style="padding: 7px;">
-                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>
-                        </div>
-                        <div class="col-2" style="padding: 7px;">
-                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>
-                        </div>
-                        <div class="col-2" style="padding: 7px;">
-                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>
-                        </div>
+<!--                        <div class="col-2" style="padding: 7px;">-->
+<!--                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>-->
+<!--                        </div>-->
+<!--                        <div class="col-2" style="padding: 7px;">-->
+<!--                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>-->
+<!--                        </div>-->
+<!--                        <div class="col-2" style="padding: 7px;">-->
+<!--                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>-->
+<!--                        </div>-->
+<!--                        <div class="col-2" style="padding: 7px;">-->
+<!--                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>-->
+<!--                        </div>-->
+<!--                        <div class="col-2" style="padding: 7px;">-->
+<!--                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>-->
+<!--                        </div>-->
+<!--                        <div class="col-2" style="padding: 7px;">-->
+<!--                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>-->
+<!--                        </div>-->
                         <div class="col-3" style="padding: 5px;cursor: pointer; padding: 10px;">
                             <div style="position: relative;">
                                 <img src="https://taikhoan.aiapos.vn/public/templates/uploads/no_image.jpg"
@@ -248,7 +248,42 @@
         },
         initializeControlEvent: {}
     }
+    page.elements.rowContent = $('#row-content');
 
+    page.commands.renderProduct = (product) => {
+        const avatar = product.avatar;
+        return `<div class="col-3" style="padding: 5px;cursor: pointer; padding: 10px;">
+                    <div style="position: relative;">
+                        <img src="${avatar.fileUrl}"
+                             style="width: 100%;">
+                        <span style="position: absolute; bottom: 0px; left: 0px;"
+                              class="btn-primary ">${product.price}</span>
+                    </div>
+                    <p class="text-center">${product.title}</p>
+                </div>`;
+    }
+
+    page.commands.getAllProduct = () => {
+        page.elements.rowContent.empty();
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:28002/api/products'
+        })
+            .done((data) => {
+                data.forEach(item => {
+
+                    const str = page.commands.renderProduct(item);
+                    page.elements.rowContent.append(str);
+                });
+            })
+            .fail((error) => {
+                console.log(error);
+            })
+    }
+    //
+    $(() => {
+        page.commands.getAllProduct()
+    })
 
 
 

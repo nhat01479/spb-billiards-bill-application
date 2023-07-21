@@ -1,5 +1,6 @@
 package com.cg.model;
 
+import com.cg.model.dto.product.ProductDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,5 +44,16 @@ public class Product extends BaseEntity{
     @OneToOne
     @JoinColumn(name = "avatar_id", referencedColumnName = "id", nullable = false)
     private ProductAvatar avatar;
+    public ProductDTO toProductDTO(){
+        return new ProductDTO()
+                .setId(id)
+                .setTitle(title)
+                .setPrice(price)
+                .setUnit(unit)
+                .setDescription(description)
+                .setCategory(category.toCategoryDTO())
+                .setAvatar(avatar.toProductAvatarDTO())
+                ;
+    }
 
 }

@@ -11,8 +11,9 @@ public class HomeController {
 //    public String showHomePage(){
 //        return "index";
 //    }
-    @GetMapping("/dashboard")
+    @GetMapping("/admin")
     public String showDashboard(){
-        return "dashboard";
+        return "/admin/dashboard";
     }
+
 }

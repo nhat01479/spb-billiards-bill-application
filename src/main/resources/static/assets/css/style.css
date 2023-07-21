@@ -23,8 +23,8 @@ header {
 }
 .content table thead tr th{
     text-align: center;
-    background-color: green;
-    color: #fff;
+    /*background-color: green;*/
+    /*color: #fff;*/
 }
 
 footer {

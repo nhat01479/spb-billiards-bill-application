@@ -1,5 +1,6 @@
 package com.cg.model;
 
+import com.cg.model.dto.category.CategoryDTO;
 import com.cg.model.enums.ECategory;
 import com.cg.model.enums.ERole;
 import lombok.AllArgsConstructor;
@@ -29,4 +30,10 @@ public class Category {
 
     @OneToMany(targetEntity = Product.class, fetch = FetchType.EAGER)
     private List<Product> products;
+    public CategoryDTO toCategoryDTO() {
+        return new CategoryDTO()
+                .setId(id)
+                .setCode(code)
+                ;
+    }
 }

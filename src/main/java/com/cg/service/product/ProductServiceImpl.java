@@ -4,7 +4,9 @@ import com.cg.exception.DataInputException;
 import com.cg.model.Category;
 import com.cg.model.Product;
 import com.cg.model.ProductAvatar;
-import com.cg.model.dto.ProductCreReqDTO;
+import com.cg.model.dto.product.ProductCreReqDTO;
+import com.cg.model.dto.product.ProductDTO;
+import com.cg.model.dto.product.ProductUpReqDTO;
 import com.cg.repository.ProductAvatarRepository;
 import com.cg.repository.ProductRepository;
 import com.cg.service.category.ICategoryService;
@@ -49,13 +51,19 @@ public class ProductServiceImpl implements IProductService {
         return productRepository.findAll();
     }
 
+
     @Override
-    public Optional<Product> findById(Long id) {
-        return Optional.empty();
+    public List<ProductDTO> findAllProductDTO() {
+        return productRepository.findAllProductDTO();
     }
 
     @Override
-    public void create(ProductCreReqDTO productCreReqDTO) {
+    public Optional<Product> findById(Long id) {
+        return productRepository.findById(id);
+    }
+
+    @Override
+    public ProductDTO create(ProductCreReqDTO productCreReqDTO) {
 
         Category category = categoryService.findById(productCreReqDTO.getCategoryId()).orElseThrow(() -> {
             throw new DataInputException("Danh mục sản phẩm không tồn tại");
@@ -73,11 +81,53 @@ public class ProductServiceImpl implements IProductService {
         Product product = productCreReqDTO.toProduct(slug, category, productAvatar);
         productRepository.save(product);
 
+        ProductDTO productDTO = product.toProductDTO();
+        return productDTO;
+    }
+
+    @Override
+    public ProductDTO update(ProductUpReqDTO productUpReqDTO, Product product) {
+
+        Category category = categoryService.findById(productUpReqDTO.getCategoryId()).orElseThrow(() -> {
+            throw new DataInputException("Danh mục sản phẩm không tồn tại");
+        });
+
+        String title = productUpReqDTO.getTitle();
+        String titleChar = appUtils.replaceNonEnglishChar(title);
+        String slug = appUtils.removeNonAlphanumeric(titleChar);
+
+        ProductAvatar productAvatar = new ProductAvatar();
+        productAvatarRepository.save(productAvatar);
+
+        uploadAndSaveProductImage(productUpReqDTO, productAvatar);
+
+        Product productUpdate = productUpReqDTO.toProduct(product, slug, category, productAvatar);
+        productRepository.save(productUpdate);
+
+        ProductDTO productDTO = productUpdate.toProductDTO();
+        return productDTO;
     }
 
     private void uploadAndSaveProductImage(ProductCreReqDTO productCreReqDTO, ProductAvatar productAvatar) {
         try {
             Map uploadResult = uploadService.uploadImage(productCreReqDTO.getAvatar(), uploadUtils.buildImageUploadParams(productAvatar));
+            String fileUrl = (String) uploadResult.get("secure_url");
+            String fileFormat = (String) uploadResult.get("format");
+
+            productAvatar.setFileName(productAvatar.getId() + "." + fileFormat);
+            productAvatar.setFileUrl(fileUrl);
+            productAvatar.setFileFolder(UploadUtils.IMAGE_UPLOAD_FOLDER);
+            productAvatar.setCloudId(productAvatar.getFileFolder() + "/" + productAvatar.getId());
+            productAvatarRepository.save(productAvatar);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new DataInputException("Upload hình ảnh thất bại");
+        }
+    }
+    private void uploadAndSaveProductImage(ProductUpReqDTO productUpReqDTO, ProductAvatar productAvatar) {
+        try {
+            Map uploadResult = uploadService.uploadImage(productUpReqDTO.getAvatar(), uploadUtils.buildImageUploadParams(productAvatar));
             String fileUrl = (String) uploadResult.get("secure_url");
             String fileFormat = (String) uploadResult.get("format");
 

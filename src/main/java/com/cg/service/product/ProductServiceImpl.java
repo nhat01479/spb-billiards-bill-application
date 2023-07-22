@@ -15,6 +15,9 @@ import com.cg.service.upload.IUploadService;
 import com.cg.ultis.AppUtils;
 import com.cg.ultis.UploadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -50,11 +53,40 @@ public class ProductServiceImpl implements IProductService {
     public List<Product> findAll() {
         return productRepository.findAll();
     }
+    public Boolean existsByTitle(String title) {
+        return productRepository.existsByTitle(title);
+    }
 
+    @Override
+    public Boolean existsByTitleAndIdNot(String title, Long id) {
+        return productRepository.existsByTitleAndIdNot(title, id);
+    }
 
     @Override
     public List<ProductDTO> findAllProductDTO() {
         return productRepository.findAllProductDTO();
+    }
+
+    @Override
+    public List<ProductDTO> findAllByDeletedFalse(Sort sort) {
+        return productRepository.findAllByDeletedFalse(sort);
+    }
+    public List<ProductDTO> findAllByDeletedFalseAndTitleLikeAndDescriptionLike(String title, String description) {
+        return productRepository.findAllByDeletedFalseAndTitleLikeAndDescriptionLike(title, description);
+
+    }
+
+    public Page<ProductDTO> findAllByDeletedFalse(Pageable pageable) {
+        return productRepository.findAllByDeletedFalse(pageable);
+    }
+    @Override
+    public List<ProductDTO> findAllProductDTOByCategoryId(Long categoryId) {
+        return productRepository.findAllProductDTOByCategoryId(categoryId);
+    }
+
+    @Override
+    public List<ProductDTO> findAllByDeletedFalseAndCategoryId(Long categoryId) {
+        return productRepository.findAllByDeletedFalseAndCategoryId(categoryId);
     }
 
     @Override

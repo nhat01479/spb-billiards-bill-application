@@ -62,6 +62,10 @@ public class DeskServiceImpl implements IDeskService {
         return deskRepository.findAllDeskDTOS();
     }
 
+    @Override
+    public List<DeskDTO> findAllByDeletedFalseAndTypeId(Long typeId) {
+        return deskRepository.findAllByDeletedFalseAndTypeId(typeId);
+    }
 
     public List<Desk> findAllByDeletedIs(Boolean boo) {
         return deskRepository.findAllByDeletedIs(boo);

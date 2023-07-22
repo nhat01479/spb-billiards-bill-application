@@ -12,6 +12,10 @@ import com.cg.service.category.ICategoryService;
 import com.cg.service.product.IProductService;
 import com.cg.ultis.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -32,12 +36,50 @@ public class ProductAPI {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<ProductDTO> productDTOS = productService.findAllProductDTO();
+//        List<ProductDTO> productDTOS = productService.findAllProductDTO();
+        List<ProductDTO> productDTOS = productService.findAllByDeletedFalse(Sort.by("price").descending());
+//        Pageable pageable = PageRequest.of(1, 5);
+//        Page<ProductDTO> productDTOS = productService.findAllByDeletedFalse(pageable);
+
+        return new ResponseEntity<>(productDTOS, HttpStatus.OK);
+    }
+    @GetMapping("/search")
+    public ResponseEntity<?> getAll(@RequestParam ("keySearch") String keySearch) {
+        System.out.println(keySearch);
+//        List<ProductDTO> productDTOS = productService.findAllProductDTO();
+        List<ProductDTO> productDTOS = productService.findAllByDeletedFalseAndTitleLikeAndDescriptionLike(keySearch, keySearch);
+//        Pageable pageable = PageRequest.of(1, 5);
+//        Page<ProductDTO> productDTOS = productService.findAllByDeletedFalse(pageable);
+
+        return new ResponseEntity<>(productDTOS, HttpStatus.OK);
+    }
+    @GetMapping("/sorted")
+    public ResponseEntity<?> getAllProductSorted(@RequestParam(value = "sort_by", defaultValue = "price") String sortBy,
+                                                 @RequestParam(value = "direction", defaultValue = "asc") String direction ) {
+        Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
+        List<ProductDTO> productDTOS = productService.findAllByDeletedFalse(sort);
+
+
+        return new ResponseEntity<>(productDTOS, HttpStatus.OK);
+    }
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<?> getAllProductByCategory(@PathVariable String categoryId) {
+//        List<ProductDTO> productDTOS = productService.findAllProductDTOByCategoryId(Long.valueOf(categoryId));
+        List<ProductDTO> productDTOS = productService.findAllByDeletedFalseAndCategoryId(Long.valueOf(categoryId));
 
         return new ResponseEntity<>(productDTOS, HttpStatus.OK);
     }
     @PostMapping
-    public ResponseEntity<?> addNew(@ModelAttribute ProductCreReqDTO productCreReqDTO) {
+    public ResponseEntity<?> addNew(@ModelAttribute ProductCreReqDTO productCreReqDTO, BindingResult bindingResult) {
+
+        new ProductCreReqDTO().validate(productCreReqDTO, bindingResult);
+        if (bindingResult.hasFieldErrors()) {
+            return appUtils.mapErrorToResponse(bindingResult);
+        }
+        String title = productCreReqDTO.getTitle();
+        if (productService.existsByTitle(title)) {
+            throw new DataInputException("Tên sản phẩm đã tồn tại");
+        }
 
         ProductDTO productDTO = productService.create(productCreReqDTO);
 
@@ -67,10 +109,10 @@ public class ProductAPI {
             return appUtils.mapErrorToResponse(bindingResult);
         }
 
-//        String title = productCreReqDTO.getTitle();
-//        if (true){
-//            throw new EmailExistsException("Email đã tồn tại");
-//        }
+        String title = productUpReqDTO.getTitle();
+        if (productService.existsByTitleAndIdNot(title, Long.valueOf(productId))){
+            throw new EmailExistsException("Tên sản phẩm đã tồn tại");
+        }
 
         ProductDTO productDTO = productService.update(productUpReqDTO, product);
 

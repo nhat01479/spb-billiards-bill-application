@@ -4,7 +4,7 @@ page.elements.tbProduct = $('#tbProduct tbody');
 // Create
 page.dialogs.elements.modalCreateProduct = $('#modalCreateProduct');
 page.dialogs.elements.formCreate = $('#formCreate')
-page.dialogs.elements.errorAreaCreate = $('#modalCreateProduct .error-area')
+page.dialogs.elements.errorAreaCreateProduct = $('#modalCreateProduct .error-area')
 
 page.dialogs.elements.productName = $('#productName')
 page.dialogs.elements.productPrice = $('#productPrice')
@@ -19,7 +19,7 @@ page.dialogs.elements.imagePreview = $('#image-preview');
 // Update
 page.dialogs.elements.modalUpdateProduct = $('#modalUpdateProduct')
 page.dialogs.elements.formUpdate = $('#formUpdate')
-page.dialogs.elements.errorAreaCreate = $('#modalUpdateProduct .error-area')
+page.dialogs.elements.errorAreaUpdate = $('#modalUpdateProduct .error-area')
 
 page.dialogs.elements.productNameUp = $('#productNameUp')
 page.dialogs.elements.productPriceUp = $('#productPriceUp')
@@ -32,11 +32,34 @@ page.dialogs.elements.btnUpdateProduct = $('#btnUpdateProduct');
 page.dialogs.elements.imagePreviewUp = $('#image-preview-up');
 page.dialogs.elements.btnChaneImg = $('#btnChaneImg');
 
-
+page.elements.sortByPrice = $('#sortByPrice');
+page.elements.keySearch = $('#keySearch');
 
 let productId = 0;
 let product = null;
-
+page.commands.renderPage = (page) => {
+    return `<div class="clearfix d-flex justify-content-center">
+            <div>
+                <ul class="pagination">
+                        <li class="page-item">
+                            <button class="page-link" >Total Page: ${page.totalPages} </button>
+                        </li>
+                        <li class="page-item">
+                            <button class="page-link" >Previous</button>
+                        </li>
+                            <li class="page-item active">
+                                <button class="page-link" >1</button>
+                            </li>
+                            <li class="page-item">
+                                <button class="page-link" >2</button>
+                            </li>
+                        <li class="page-item">
+                            <button class="page-link" >Next</button>
+                        </li>
+                </ul>
+            </div>
+        </div>`;
+}
 page.commands.renderProduct = (product) => {
     const avatar = product.avatar;
     return `<tr id="tr_${product.id}">
@@ -45,17 +68,17 @@ page.commands.renderProduct = (product) => {
                         <img src="${avatar.fileUrl}" style="width: 40%; aspect-ratio: 3/2; object-fit: contain;">
                     </td>
                     <td>${product.title}</td>
-                    <td class="pl-5">${product.price}</td>
+                    <td class="text-end pr-xl-5">${product.price}</td>
                     <td>${product.description}</td>
                     <td class="text-center">${product.category.code}</td>
                     <td>
                         <div class="d-flex justify-content-around">
-                            <button class="btn btn-warning btn-sm" data-id="${product.id}">
+                            <button class="btn btn-outline-warning btn-sm" data-id="${product.id}">
                                 <i class="fas fa-eye"></i></button>
-                            <button class="btn btn-secondary btn-sm edit" data-id="${product.id}">
+                            <button class="btn btn-outline-secondary btn-sm edit" data-id="${product.id}">
                                 <i class="fas fa-edit"></i></button>
-                            <button  class="btn btn-lighten-danger btn-sm delete" data-id="${product.id}">
-                                <i class="fas fa-trash-alt"></i></button>
+                            <button  class="btn btn-outline-danger btn-sm delete" data-id="${product.id}">
+                                <i class="fas fa-ban"></i></button>
                         </div>
                     </td>
                 </tr>`;
@@ -95,7 +118,46 @@ page.commands.getAllProduct = () => {
             data.forEach(item => {
 
                 const str = page.commands.renderProduct(item);
-                page.elements.tbProduct.append(str);
+                page.elements.tbProduct.prepend(str);
+            });
+        })
+        .fail((error) => {
+            console.log(error);
+        })
+}
+page.commands.getAllProductByKeySearch = (keySearch) => {
+    page.elements.tbProduct.empty();
+    $.ajax({
+        type: 'GET',
+        url: 'http://localhost:28002/api/products/search',
+        data: {
+            keySearch: keySearch
+        }
+    })
+        .done((data) => {
+            page.elements.tbProduct.empty();
+            data.forEach(item => {
+
+                const str = page.commands.renderProduct(item);
+                page.elements.tbProduct.prepend(str);
+            });
+        })
+        .fail((error) => {
+            console.log()
+            console.log(error);
+        })
+}
+page.commands.getAllProductSorted = (sortBy, direction) => {
+    page.elements.tbProduct.empty();
+    $.ajax({
+        type: 'GET',
+        url: 'http://localhost:28002/api/products/sorted?sort_by=' + sortBy + '&direction=' + direction
+    })
+        .done((data) => {
+            data.forEach(item => {
+
+                const str = page.commands.renderProduct(item);
+                page.elements.tbProduct.prepend(str);
             });
         })
         .fail((error) => {
@@ -123,15 +185,14 @@ page.commands.handleShowModalUpdateProduct = (productId) => {
         page.dialogs.elements.productDescriptionUp.val(product.description);
         page.dialogs.elements.imagePreviewUp.attr('src', product.avatar.fileUrl);
         page.commands.getAllCategory(page.dialogs.elements.productCategoryUp).then((data) => {
+
+
             const options = page.dialogs.elements.productCategoryUp.find('option');
             $.each((options), (index, item) => {
                 console.log(item.value);
                 console.log(product.category.id);
                 const a = (item.value === product.category.id);
-                console.log(a)
-                // if (item.value === product.category.id) {
-                //
-                // }
+
             })
         });
 
@@ -179,6 +240,17 @@ page.dialogs.commands.createProduct = () => {
             App.showSuccessAlert('Thêm sản phẩm thành công');
         })
         .fail((jqXHR) => {
+            const responseJSON = jqXHR.responseJSON;
+
+            page.dialogs.elements.errorAreaCreateProduct.empty();
+            let str = '';
+
+            $.each(responseJSON, (k, v) => {
+                str += `<label for="${k}">${v}</label>`
+            })
+
+            page.dialogs.elements.errorAreaCreateProduct.append(str).removeClass('hide').addClass('show');
+
             console.log(jqXHR);
         })
 }
@@ -215,17 +287,17 @@ page.dialogs.commands.updateProduct = () => {
             App.showSuccessAlert('Sửa sản phẩm thành công');
         })
         .fail((jqXHR) => {
-            // const responseJSON = jqXHR.responseJSON;
-            //
-            // page.dialogs.elements.errorAreaUpdate.empty();
-            // let str = '';
-            //
-            // $.each(responseJSON, (k, v) => {
-            //     str += `<label for="${k}Update">${v}</label>`
-            // })
-            //
-            // page.dialogs.elements.errorAreaUpdate.append(str).removeClass('hide').addClass('show');
-            //
+            const responseJSON = jqXHR.responseJSON;
+
+            page.dialogs.elements.errorAreaUpdate.empty();
+            let str = '';
+
+            $.each(responseJSON, (k, v) => {
+                str += `<label for="${k}">${v}</label>`
+            })
+
+            page.dialogs.elements.errorAreaUpdate.append(str).removeClass('hide').addClass('show');
+
             console.log(jqXHR);
         })
 }
@@ -275,11 +347,13 @@ page.initializeControlEvent = () => {
 
 
     page.dialogs.elements.btnCreateProduct.on('click', () => {
-        page.dialogs.commands.createProduct()
+        page.dialogs.elements.formCreate.trigger("submit");
+        // page.dialogs.commands.createProduct()
     })
 
     page.dialogs.elements.btnUpdateProduct.on('click', () => {
-        page.dialogs.commands.updateProduct();
+        page.dialogs.elements.formUpdate.trigger("submit");
+        // page.dialogs.commands.updateProduct();
     })
 
     // page.elements.uploadArea.on('click', () => {
@@ -297,14 +371,33 @@ page.initializeControlEvent = () => {
         page.dialogs.elements.imagePreview.attr('src', avatar)
     })
 
+    page.elements.keySearch.on('change', function () {
+        const keySearch = $(this).val();
+        page.commands.getAllProductByKeySearch(keySearch)
+    })
+
+    page.elements.sortByPrice.on('click', function () {
+         if ($(this).hasClass('asc')) {
+             $(this).addClass('desc').removeClass('asc');
+         } else {
+             if ($(this).hasClass('desc')) {
+                 $(this).addClass('asc').removeClass('desc');
+             }
+         }
+        const direction = $(this).hasClass('asc') ? 'asc' : 'desc';
+        const sortBy = 'price';
+        page.commands.getAllProductSorted(sortBy, direction);
+
+    })
+
 }
-
-
 
 
 
 page.loadData = () => {
     page.commands.getAllProduct()
+
+
 }
 
 
@@ -313,3 +406,5 @@ $(() => {
 
     page.initializeControlEvent();
 })
+
+

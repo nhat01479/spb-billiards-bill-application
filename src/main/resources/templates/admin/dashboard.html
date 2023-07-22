@@ -2,7 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Customer Management</title>
+    <link rel="icon" type="image/x-icon" href="/assets/image/billiard.png">
+
+    <title>Admin Dashboard</title>
     <!--    Ten thu muc/ ten file html :: ten fragment-->
     <!--    head-css-->
     <th:block th:replace="layout/head :: head-1"/>
@@ -27,23 +29,25 @@
             <div class="container-fluid">
                 <!-- start page title -->
                 <h1 class="text-center">List Product</h1>
+
                 <!-- end page title -->
 
                 <!--                Start row-->
-                <div class="row">
+                <div class="row" id="page-content">
+
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body table-responsive">
                                 <div class="d-flex justify-content-between align-self-center">
                                     <div>
-                                        <button class="btn btn-primary m-3" id="btnShowCreateModal">
+                                        <button class="btn btn-outline-primary m-3" id="btnShowCreateModal">
                                             <i class="fas fa-plus"></i> New Product
                                         </button>
                                     </div>
                                     <div class="m-3" style="height: 30px">
                                         <form  method="get">
-                                            <div class="container-search mt-1 d-flex">
-                                                <input type="text" name="keySearch" width="270px">
+                                            <div class="container-search d-flex">
+                                                <input type="text" id="keySearch" name="keySearch" width="270px">
                                                 <button type="button" class="btn btn-primary ml-(-65px)" id="searchbtn">
                                                     <i class="fas fa-search"></i></button>
                                             </div>
@@ -62,7 +66,7 @@
                                                     <th>ID</th>
                                                     <th>Hình ảnh</th>
                                                     <th>Tên sản phẩm</th>
-                                                    <th>Giá</th>
+                                                    <th >Giá <i id="sortByPrice" class="fas fa-sort asc"></i></th>
                                                     <th>Mô tả</th>
                                                     <th>Danh mục</th>
                                                     <th style="width: 80px;">Action</th>
@@ -75,6 +79,8 @@
 
                                                 </tbody>
                                             </table>
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -122,6 +128,6 @@
     }
 </script>
 <script src="/assets/js/nhat.js"></script>
-
+<script src="/assets/js/product-validation.js"></script>
 </body>
 </html>

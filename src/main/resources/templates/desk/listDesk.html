@@ -2,12 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
+
     <title>Desk</title>
-    <link rel="stylesheet" href="/assets/bootstrap/v5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/fontawesome/v5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="/assets/sweetalert2/v11.7.12/sweetalert2.min.css">
-    <link rel="stylesheet" href="/assets/css/style.css">
-    <script src="/assets/bootstrap/v5.3.0/js/bootstrap.bundle.min.js"></script>
+
     <!--    Ten thu muc/ ten file html :: ten fragment-->
     <!--    head-css-->
     <th:block th:replace="layout/head :: head-1"/>
@@ -39,27 +36,19 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body table-responsive">
-                                <div class="alert alert-success text-center" th:if="${success}">
-                                    <span th:text="${message}"></span>
-                                </div>
-                                <div class="alert alert-success text-center" th:if="${successEdit}">
-                                    <span th:text="${messageEdit}"></span>
-                                </div>
-
                                 <div class="d-flex justify-content-between align-self-center">
+
                                     <div>
-                                        <button class="btn btn-outline-success" id="btnShowCreateModal">
-                                            <i class="fas fa-plus"></i>
-                                            Add new desk
+                                        <button class="btn btn-outline-primary m-3" id="btnShowCreateModal">
+                                            <i class="fas fa-plus"></i> Add new desk
                                         </button>
                                     </div>
                                     <div class="m-3" style="height: 30px">
-                                        <form action="/customers/search" method="get">
+                                        <form  method="get">
                                             <div class="container-search mt-1 d-flex">
                                                 <input type="text" name="keySearch" width="270px">
-                                                <button type="submit" class="btn btn-primary ml-(-65px)" id="searchbtn">
-                                                    <i
-                                                            class="fas fa-search"></i></button>
+                                                <button type="button" class="btn btn-primary ml-(-65px)" id="searchbtn">
+                                                    <i class="fas fa-search"></i></button>
                                             </div>
                                         </form>
                                     </div>
@@ -122,7 +111,7 @@
     const page = {
         url: {
             getAllDesks: App.API_DESK,
-            getAllTypeDesks: App.API_TYPE,
+             getAllTypeDesks: App.API_TYPE,
             creatDesk: App.API_DESK,
             updateDesk: App.API_DESK,
             deleteDesk: App.API_DESK,
@@ -166,15 +155,15 @@
             <tr id="tr_${obj.id}">
                 <td class="text-center">${obj.id} </td>
                 <td>${obj.name} </td>
-                <td class="text-end">${obj.priceTime} </td>
+                <td class="text-center">${obj.priceTime} </td>
                 <td class="text-center">${obj.type.code} </td>
                 <td class="text-end">
-                    <button  class="btn btn-outline-primary edit" data-id="${obj.id}" >
+                    <button  class="btn btn-outline-primary btn-sm edit" data-id="${obj.id}" >
                             <i class="far fa-edit"></i>
                     </button>
                 </td>
                 <td>
-                    <button  class="btn btn-outline-danger delete" data-id="${obj.id}">
+                    <button  class="btn btn-outline-danger btn-sm delete" data-id="${obj.id}">
                             <i class="fas fa-ban" ></i>
                     </button>
                 </td>
@@ -185,7 +174,7 @@
     let deskId = 0;
 
     page.commands.getAllDesks = () => {
-
+        console.log(1)
         page.elements.tbDesk.empty();
 
         $.ajax({
@@ -216,8 +205,8 @@
                     page.dialogs.elements.typeCre.append(str);
                 });
             })
-            .fail((jqXHR, textStatus, errorThrown) => {
-                console.error('AJAX request failed:', errorThrown);
+            .fail((error) => {
+                console.log(error);
             });
     }
 
@@ -255,13 +244,8 @@
                 page.elements.tbDesk.prepend(str);
 
                 page.dialogs.elements.modalCreate.modal('hide');
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Tạo mới thành công',
-                    showConfirmButton: false,
-                    timer: 1000
-                })
+
+                App.showSuccessAlert('Tạo mới thành công');
             })
             .fail((jqXHR) => {
                 const responseJSON = jqXHR.responseJSON;

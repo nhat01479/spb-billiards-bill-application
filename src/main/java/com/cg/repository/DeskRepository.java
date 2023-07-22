@@ -29,4 +29,5 @@ public interface DeskRepository extends JpaRepository<Desk, Long> {
             "where des.deleted=false "
     )
     List<DeskDTO> findAllDeskDTOS();
+    List<DeskDTO> findAllByDeletedFalseAndTypeId(Long typeId);
 }

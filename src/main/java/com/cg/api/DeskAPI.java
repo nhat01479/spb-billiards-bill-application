@@ -37,6 +37,13 @@ public class DeskAPI {
 
         return new ResponseEntity<>(deskDTOS, HttpStatus.OK);
     }
+    @GetMapping("/types/{typeId}")
+    public ResponseEntity<?> getAllDesksByTypeId(@PathVariable String typeId) {
+
+        List<DeskDTO> deskDTOS = deskService.findAllByDeletedFalseAndTypeId(Long.valueOf(typeId));
+
+        return new ResponseEntity<>(deskDTOS, HttpStatus.OK);
+    }
 
     @GetMapping("/{deskId}")
     public ResponseEntity<?> getById(@PathVariable Long deskId) {

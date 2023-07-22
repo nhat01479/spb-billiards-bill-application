@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/assets/image/billiard.png">
+
     <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"-->
+<!--          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"-->
+<!--            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"-->
+<!--            crossorigin="anonymous"></script>-->
     <link rel="stylesheet" href="/assets/bootstrap/v5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/fontawesome/v5.15.4/css/all.min.css">
     <link rel="stylesheet" href="/assets/sweetalert2/v11.7.12/sweetalert2.min.css">
@@ -24,20 +26,20 @@
         <div class="container-fluid">
             <div class="row w-100 m-0">
                 <div class="d-flex  col-lg-6 ">
-                    <div class="col-4">
+                    <div class="col-6">
                         <input class="form-control" placeholder="Tìm kiếm sản phẩm">
                     </div>
-                    <button class="btn btn-outline-light" style="margin-left: 5px">
-                        <i class="fa-solid fa-pool-8-ball"></i>
-                        <span>Tên bànnnnnnnnnnnnn</span>
-                    </button>
+                    <div class="btn btn-outline-light col-3" style="margin-left: 5px">
+                        <img src="/assets/image/billiard_tb.png" alt="" style="width: 25%; aspect-ratio: 3/2; object-fit: contain;">
+                        <span id="tbName">Tên bànnnnnn</span>
+                    </div>
                 </div>
                 <div class="d-flex col-lg-6 justify-content-end">
                     <button class="btn btn-outline-light" style="margin-right: 5px">
                         <i class="fas fa-user"></i>
                         <span>Tên nhân viên</span>
                     </button>
-                    <button class="btn btn-outline-light" >
+                    <button class="btn btn-outline-light">
                         <i class="fas fa-arrow-alt-circle-right"></i>
                         Logout
                     </button>
@@ -54,28 +56,51 @@
                     <table class="table table-bordered" id="tbOrderDetail">
                         <thead>
                         <tr>
+                            <th class="col-1">#</th>
                             <th class="col-4">Tên SP</th>
-<!--                            <th class="col">ĐVT</th>-->
                             <th class="col-1" style="width: 120px;">SL</th>
-                            <th class="col-3">Đơn giá</th>
-                            <th class="col-3">Thành tiền</th>
+                            <th class="col-1" style="width: 120px;">ĐVT</th>
+                            <th class="col-2">Đơn giá (VNĐ)</th>
+                            <th class="col-2">Thành tiền</th>
                             <th class="col-1">Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="text-center" id="tr_${order.id}">
-                            <td class="text-start">Suki Gould</td>
-<!--                            <td>Lon</td>-->
+                        <tr class="text-center" id="tr_${time.id}">
+                            <td class="text-start">1</td>
+                            <td class="text-start">Bàn 1 (Thời gian) </td>
                             <td>
                                 <div class="a" style="display: flex;">
-                                    <input class="form-control" type="number" value="1" min="1" max="100" id="quantity">
+                                    <input class="form-control" type="number" value="1" min="1" max="100" name="timeQuantity">
                                 </div>
                             </td>
+                            <td>Phút</td>
                             <td>
-                                <input class="form-control" name="" id="price" value="10000" readonly>
+                                <input class="form-control" name="timePrice" value="10000" readonly>
                             </td>
-                            <td >
-                                <input class="form-control" id="total" readonly>
+                            <td>
+                                <input class="form-control" name="timeTotalAmout" readonly>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="text-center" id="tr_${order.id}">
+                            <td class="text-start">1</td>
+                            <td class="text-start">Suki Gould</td>
+                            <td>
+                                <div class="a" style="display: flex;">
+                                    <input class="form-control" type="number" value="1" min="1" max="100" name="quantity">
+                                </div>
+                            </td>
+                            <td>Lon</td>
+                            <td>
+                                <input class="form-control" name="price" value="10000" readonly>
+                            </td>
+                            <td>
+                                <input class="form-control" name="amount" readonly>
                             </td>
                             <td>
                                 <button class="btn btn-danger">
@@ -107,7 +132,7 @@
                                 <div class="col-6 text-end">20,0000</div>
                             </div>
                             <div class="row" style="padding: 5px;">
-                                <div class="col-6 ">Khác đưa</div>
+                                <div class="col-6 ">Khách đưa</div>
                                 <div class="col-6 text-end"><input class="form-control"></div>
                             </div>
                             <div class="row" style="padding: 5px;">
@@ -128,7 +153,9 @@
                         </div>
 
                         <div class="col-3" style="padding: 0px 1px; ">
-                            <button class="btn   w-100" style="min-height: 80px;background-color: #DD191D; color: white">Thanh toán</button>
+                            <button class="btn   w-100"
+                                    style="min-height: 80px;background-color: #DD191D; color: white">Thanh toán
+                            </button>
                         </div>
 
                     </div>
@@ -139,85 +166,29 @@
                 <div class="col-12" style="padding-left: 5px;padding-right: 5px;">
                     <div class="row">
                         <div class="col-6" style="padding: 2px;">
-                            <button class="btn w-100" style="min-height: 50px;background-color: #607D8B; color: white">Bàn</button>
+                            <button id="btnShowDesk" class="btn w-100"
+                                    style="min-height: 50px;background-color: #607D8B; color: white">Bàn
+                            </button>
                         </div>
                         <div class="col-6" style="padding: 2px;">
-                            <button class="btn   w-100" style="min-height: 50px;background-color: #607D8B; color: white">Thực đơn</button>
+                            <button id="btnShowProduct" class="btn   w-100"
+                                    style="min-height: 50px;background-color: #607D8B; color: white">Thực đơn
+                            </button>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-12" style="padding-right: 5px; padding-left: 5px; padding-top: 5px; max-height:91px; ">
-                    <div class="row" id="">
-                        <div class="col-3" style="padding: 2px;">
-                            <button class="btn btn-primary  w-100">Tất cả</button>
-                        </div>
-                        <div class="col-3" style="padding: 2px;">
-                            <button class="btn btn-primary  w-100">Tất cả</button>
-                        </div>
-                        <div class="col-3" style="padding: 2px;">
-                            <button class="btn btn-primary  w-100">Tất cả</button>
-                        </div>
-                        <div class="col-3" style="padding: 2px;">
-                            <button class="btn btn-primary  w-100">Tất cả</button>
-                        </div>
+                    <div class="row" id="filterField">
+                        <!--                        <div class="col-3" style="padding: 2px;">-->
+                        <!--                            <button id="btnShowAll" class="btn btn-primary  w-100">Tất cả</button>-->
+                        <!--                        </div>-->
+
                     </div>
                 </div>
+
                 <div class="col-12">
                     <div class="row" id="row-content">
-<!--                        <div class="col-2" style="padding: 7px;">-->
-<!--                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>-->
-<!--                        </div>-->
-<!--                        <div class="col-2" style="padding: 7px;">-->
-<!--                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>-->
-<!--                        </div>-->
-<!--                        <div class="col-2" style="padding: 7px;">-->
-<!--                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>-->
-<!--                        </div>-->
-<!--                        <div class="col-2" style="padding: 7px;">-->
-<!--                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>-->
-<!--                        </div>-->
-<!--                        <div class="col-2" style="padding: 7px;">-->
-<!--                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>-->
-<!--                        </div>-->
-<!--                        <div class="col-2" style="padding: 7px;">-->
-<!--                            <button class="btn   w-100" style="min-height: 80px;background-color: #0B87C9;">Bàn</button>-->
-<!--                        </div>-->
-                        <div class="col-3" style="padding: 5px;cursor: pointer; padding: 10px;">
-                            <div style="position: relative;">
-                                <img src="https://taikhoan.aiapos.vn/public/templates/uploads/no_image.jpg"
-                                     style="width: 100%;">
-                                <span style="position: absolute; bottom: 0px; left: 0px;"
-                                      class="btn-primary ">10,000</span>
-                            </div>
-                            <p class="text-center">Bia huda</p>
-                        </div>
-                        <div class="col-3" style="padding: 5px;cursor: pointer; padding: 10px;">
-                            <div style="position: relative;">
-                                <img src="https://taikhoan.aiapos.vn/public/templates/uploads/no_image.jpg"
-                                     style="width: 100%;">
-                                <span style="position: absolute; bottom: 0px; left: 0px;"
-                                      class="btn-primary ">10,000</span>
-                            </div>
-                            <p class="text-center">Bia huda</p>
-                        </div>
-                        <div class="col-3" style="padding: 5px;cursor: pointer; padding: 10px;">
-                            <div style="position: relative;">
-                                <img src="https://taikhoan.aiapos.vn/public/templates/uploads/no_image.jpg"
-                                     style="width: 100%;">
-                                <span style="position: absolute; bottom: 0px; left: 0px;"
-                                      class="btn-primary ">10,000</span>
-                            </div>
-                            <p class="text-center">Bia huda</p>
-                        </div>
-                        <div class="col-3" style="padding: 5px;cursor: pointer; padding: 10px;">
-                            <div style="position: relative;">
-                                <img src="https://taikhoan.aiapos.vn/public/templates/uploads/no_image.jpg"
-                                     style="width: 100%;">
-                                <span style="position: absolute; bottom: 0px; left: 0px;"
-                                      class="btn-primary ">10,000</span>
-                            </div>
-                            <p class="text-center">Bia huda</p>
-                        </div>
 
                     </div>
                 </div>
@@ -225,7 +196,6 @@
         </div>
     </div>
 </div>
-
 
 
 <script src="/assets/js/jquery-3.6.0.min.js"></script>
@@ -236,9 +206,7 @@
 
 <script>
     const page = {
-        url: {
-
-        },
+        url: {},
         elements: {},
         loadData: {},
         commands: {},
@@ -249,18 +217,90 @@
         initializeControlEvent: {}
     }
     page.elements.rowContent = $('#row-content');
+    page.elements.btnShowDesk = $('#btnShowDesk');
+    page.elements.btnShowProduct = $('#btnShowProduct');
+    page.elements.filterField = $('#filterField');
+
+    page.commands.renderFilter = (item) => {
+        return `<div class="col-3" style="padding: 2px;">
+                    <button id="btnShow${item.name}" class="btn btn-primary  w-100">${item.name}</button>
+                </div>`;
+    }
 
     page.commands.renderProduct = (product) => {
         const avatar = product.avatar;
-        return `<div class="col-3" style="padding: 5px;cursor: pointer; padding: 10px;">
+        return `<div data-id="${product.id}" class="col-3 product" style="cursor: pointer; padding: 10px;">
                     <div style="position: relative;">
                         <img src="${avatar.fileUrl}"
                              style="width: 100%;">
-                        <span style="position: absolute; bottom: 0px; left: 0px;"
-                              class="btn-primary ">${product.price}</span>
+                        <span style="position: absolute; bottom: 0; left: 0;"
+                              class="btn btn-primary btn-sm ">${product.price}</span>
                     </div>
                     <p class="text-center">${product.title}</p>
                 </div>`;
+    }
+    page.commands.renderDesk = (desk) => {
+        let tbColor = (desk.status === false ? '#0B87C9' : '#DD191D');
+        return `<div data-id="${desk.id}" class="col-2 desk" style="padding: 7px;">
+                    <button class="btn   w-100" style="min-height: 80px;background-color: ${tbColor};">
+                    ${desk.name}
+                    </button>
+                </div>`;
+    }
+    page.commands.renderFilterProduct = (typeOrCategory) => {
+        // ${(typeOrCategory.code === 'FOOD' ? 'Đồ ăn' : 'Thức uống')}
+        return `<div class="col-3" style="padding: 2px;">
+                    <button id="show_${typeOrCategory.name}" data-id="${typeOrCategory.id}"
+                            class="btn btn-primary w-100 filterProduct">
+                        ${typeOrCategory.code}
+                    </button>
+                </div>`
+    }
+    page.commands.renderFilterDesk = (typeOrCategory) => {
+        return `<div class="col-3" style="padding: 2px;">
+                    <button id="show_${typeOrCategory.name}" data-id="${typeOrCategory.id}"
+                            class="btn btn-primary w-100 filterDesk">
+                        ${typeOrCategory.code}
+                    </button>
+                </div>`
+    }
+
+    page.commands.getAllCategoryBtn = (data) => {
+        page.elements.filterField.empty();
+        page.elements.filterField.append(
+            `<div class="col-3" style="padding: 2px;">
+                    <button id="showAllProduct" class="btn btn-primary w-100">Tất cả</button>
+                </div>`
+        )
+        $.each((data), (index, item) => {
+            const str = page.commands.renderFilterProduct(item);
+            page.elements.filterField.append(str);
+        })
+    }
+    page.commands.getAllTypeBtn = (data) => {
+        page.elements.filterField.empty();
+        page.elements.filterField.append(
+            `<div class="col-3" style="padding: 2px;">
+                    <button id="showAllDesk" class="btn btn-primary w-100">Tất cả</button>
+                </div>`
+        )
+        $.each((data), (index, item) => {
+            const str = page.commands.renderFilterDesk(item);
+            page.elements.filterField.append(str);
+        })
+    }
+
+    page.commands.getAllCategory = () => {
+        return $.ajax({
+            type: 'GET',
+            url: "http://localhost:28002/api/products/get-all-category",
+        })
+    }
+    page.commands.getAllType = () => {
+        return $.ajax({
+            type: 'GET',
+            url: 'http://localhost:28002/api/types'
+        })
     }
 
     page.commands.getAllProduct = () => {
@@ -280,36 +320,128 @@
                 console.log(error);
             })
     }
-    //
+    page.commands.getProductByCategory = (categoryId) => {
+        page.elements.rowContent.empty();
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:28002/api/products/category/' + categoryId
+        })
+            .done((data) => {
+                page.elements.rowContent.empty();
+                data.forEach(item => {
+                    const str = page.commands.renderProduct(item);
+                    page.elements.rowContent.append(str);
+                });
+            })
+            .fail((error) => {
+                console.log(error);
+            })
+    }
+    page.commands.getProductById = (id) => {
+        return $.ajax({
+            type: 'GET',
+            url: 'http://localhost:28002/api/products/' + id,
+        })
+    }
+    page.commands.getDeskByType = (typeId) => {
+        page.elements.rowContent.empty();
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:28002/api/desks/types/' + typeId
+        })
+            .done((data) => {
+                page.elements.rowContent.empty();
+                data.forEach(item => {
+                    const str = page.commands.renderDesk(item);
+                    page.elements.rowContent.append(str);
+                });
+            })
+            .fail((error) => {
+                console.log(error);
+            })
+    }
+    page.commands.getAllDesk = () => {
+        page.elements.rowContent.empty();
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:28002/api/desks'
+        })
+            .done((data) => {
+                data.forEach(item => {
+
+                    const str = page.commands.renderDesk(item);
+                    page.elements.rowContent.append(str);
+                });
+            })
+            .fail((error) => {
+                console.log(error);
+            })
+    }
+    page.commands.getDeskById = (deskId) => {
+     return $.ajax({
+                type: 'GET',
+                url: 'http://localhost:28002/api/desks/' + deskId
+            })
+    }
+
+    /*********************************************************************************/
+
+    page.initializeControlEvent = () => {
+        page.elements.filterField.on('click', '.filterProduct', function () {
+            const id = $(this).data('id');
+            page.commands.getProductByCategory(id);
+        })
+        page.elements.filterField.on('click', '.filterDesk', function () {
+            const id = $(this).data('id');
+            page.commands.getDeskByType(id);
+        })
+        page.elements.filterField.on('click', '#showAllProduct', function () {
+            const id = $(this).data('id');
+            page.commands.getAllProduct();
+        })
+        page.elements.filterField.on('click', '#showAllDesk', function () {
+            const id = $(this).data('id');
+            page.commands.getAllDesk();
+        })
+        page.elements.rowContent.on('click', '.product', function () {
+            const productId = $(this).data('id');
+            page.commands.getProductById(productId).then((data) => {
+                alert('Bạn muốn thêm ' + data.title + ' vào Order?');
+
+            })
+        })
+        page.elements.rowContent.on('click', '.desk', function () {
+            const deskId = $(this).data('id');
+            alert('Bạn muốn đưa bàn này vào sử dụng?');
+            page.commands.getDeskById(deskId).then((data) => {
+                $('#tbName').text(data.name)
+            })
+        })
+
+        page.elements.btnShowDesk.on('click', () => {
+            page.commands.getAllType().then((data) => {
+                page.commands.getAllTypeBtn(data)
+            })
+            page.commands.getAllDesk()
+        })
+
+        page.elements.btnShowProduct.on('click', () => {
+            page.commands.getAllCategory().then((data) => {
+                page.commands.getAllCategoryBtn(data)
+            })
+            page.commands.getAllProduct()
+        })
+    }
+
     $(() => {
-        page.commands.getAllProduct()
+
+        page.initializeControlEvent()
+
+        page.commands.getAllType().then((data) => {
+            page.commands.getAllTypeBtn(data)
+        })
+        page.commands.getAllDesk()
     })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     const quantity = $('#quantity');

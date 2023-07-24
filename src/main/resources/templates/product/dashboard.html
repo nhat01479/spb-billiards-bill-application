@@ -45,11 +45,13 @@
                                         </button>
                                     </div>
                                     <div class="m-3" style="height: 30px">
-                                        <form  method="get">
+                                        <form  method="get" id="formSearch">
                                             <div class="container-search d-flex">
-                                                <input type="text" id="keySearch" name="keySearch" width="270px">
-                                                <button type="button" class="btn btn-primary ml-(-65px)" id="searchbtn">
-                                                    <i class="fas fa-search"></i></button>
+                                                <div class="d-flex " style="border: 1px solid lightgrey; border-radius: 5px">
+                                                    <input type="text" id="keySearch" name="keySearch" style="border: none" width="300px" class="form-control">
+                                                    <button type="button" class="btn btn-outline-success" style="border: none" id="searchbtn">
+                                                        <i class="fas fa-search"></i></button>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
@@ -79,6 +81,21 @@
 
                                                 </tbody>
                                             </table>
+                                            <div>
+                                                <ul class="pagination">
+                                                    <li class="page-item">
+                                                        <a class="page-link" id="prevBtn">Previous</a>
+                                                    </li>
+                                                    <li class="page-item"><a class="page-link" href="#">Page</a></li>
+
+                                                    <!--                            <li class="page-item active"><a class="page-link" href="#">Page</a></li> -->
+
+                                                    <li class="page-item"><a class="page-link" >Page</a></li>
+                                                    <li class="page-item">
+                                                        <a class="page-link" id="nextBtn">Next</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
 
 
                                         </div>
@@ -104,8 +121,8 @@
     <!--    footer-javaScript-->
 </div>
 
-<th:block th:replace="admin/product/modalCreateProduct"/>
-<th:block th:replace="admin/product/modalUpdateProduct"/>
+<th:block th:replace="product/modalCreateProduct"/>
+<th:block th:replace="product/modalUpdateProduct"/>
 
 
 

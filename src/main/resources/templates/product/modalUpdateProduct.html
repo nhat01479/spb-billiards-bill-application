@@ -1,56 +1,61 @@
-<th:block th:fragment="modalCreate">
-    <div class="modal fade" id="modalCreateProduct" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<th:block th:fragment="modalUpdate">
+    <div class="modal fade" id="modalUpdateProduct" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
          aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5">Modal create Product</h1>
+                    <h1 class="modal-title fs-5">Modal Update Product</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="error-area hide"></div>
-                    <form method="post" id="formCreate">
+                    <form method="post" id="formUpdate">
                         <div class="d-flex justify-content-around">
                             <div class="row mb-3 col-lg-6">
                                 <div class="col-lg-12">
                                     <label class="fw-bold">Tên sản phẩm</label>
-                                    <input type="text" class="form-control" id="productName" name="productName">
+                                    <input type="text" class="form-control" id="productNameUp" name="productNameUp">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="fw-bold">Giá (VNĐ)</label>
-                                    <input type="text" class="form-control" id="productPrice" name="productPrice">
+                                    <input type="text" class="form-control" id="productPriceUp" name="productPriceUp">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="fw-bold">Đơn vị tính</label>
-                                    <input type="text" class="form-control" id="productUnit" name="productUnit">
+                                    <input type="text" class="form-control" id="productUnitUp" name="productUnitUp">
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="fw-bold">Danh mục</label>
-                                    <select class="form-select" id="productCategory" name="productCategory">
+                                    <select class="form-select" id="productCategoryUp" name="productCategoryUp">
                                     </select>
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="fw-bold">Mô tả</label>
-                                    <input type="text" class="form-control" id="productDescription" name="productDescription">
+                                    <input type="text" class="form-control" id="productDescriptionUp" name="productDescriptionUp">
                                 </div>
                             </div>
-                            <div class="row mb-3 col-lg-6 container">
-                                <section >
-                                        <div class="mt-lg-5 mb-3" >
-                                            <img src="/assets/image/upload.jpg" id="image-preview" style="height: 100%; width: 100%; object-fit: cover;">
+                            <div class="row mb-3 col-lg-6">
+                                <section>
+                                    <div class="mt-lg-5 mb-3">
+                                        <div class="image-preview">
+                                            <!--                                            <canvas id="canvas"></canvas>-->
+                                            <img src="" id="image-preview-up" style="height: 100%; width: 100%; object-fit: cover;" >
                                         </div>
-
-                                    <input type="file" id="productImage" name="productImage" accept="image/*" class="form-control"  />
+                                        <button type="button" id="btnChaneImg" class="btn btn-primary btn-block">Change image</button>
+                                    </div>
+                                    <input type="file" id="productImageUp" accept="image/*" class="form-control" hidden/>
                                 </section>
+
+
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btnCreateProduct">
-                        <i class="fas fa-plus"></i>
-                        Create
+                    <button type="button" class="btn btn-primary" id="btnUpdateProduct">
+                        <i class="fas fa-save"></i>
+                        Save
                     </button>
                 </div>
             </div>

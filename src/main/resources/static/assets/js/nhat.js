@@ -15,6 +15,7 @@ page.dialogs.elements.productImage = $('#productImage')
 
 page.dialogs.elements.btnCreateProduct = $('#btnCreateProduct');
 page.dialogs.elements.imagePreview = $('#image-preview');
+page.dialogs.elements.btnChooseImg = $('#btnChooseImg');
 
 // Update
 page.dialogs.elements.modalUpdateProduct = $('#modalUpdateProduct')
@@ -125,6 +126,64 @@ page.commands.getAllProduct = () => {
             console.log(error);
         })
 }
+/*
+let currentPage = 0;
+page.commands.getAllProductPage = (pageable) => {
+    page.elements.tbProduct.empty();
+    $.ajax({
+        type: 'GET',
+        url: 'http://localhost:28002/api/products'
+    })
+        .done((data) => {
+            const content = data.content;
+            content.forEach(item => {
+
+                const str = page.commands.renderProduct(item);
+                page.elements.tbProduct.prepend(str);
+            });
+
+            const totalPages = data.totalPages;
+            updatePagination(currentPage, totalPages);
+        })
+        .fail((error) => {
+            console.log(error);
+        })
+
+}
+
+function updatePagination(currentPage, totalPages) {
+    // Cập nhật trạng thái nút "Previous"
+    if (currentPage === 0) {
+        $('#prevBtn').prop('disabled', true);
+    } else {
+        $('#prevBtn').prop('disabled', false);
+    }
+
+    // Cập nhật trạng thái nút "Next"
+    if (currentPage === totalPages - 1) {
+        $('#nextBtn').prop('disabled', true);
+    } else {
+        $('#nextBtn').prop('disabled', false);
+    }
+}
+
+// Xử lý sự kiện khi nhấp vào nút "Previous"
+$('#prevBtn').on('click', () => {
+    if (currentPage > 0) {
+        currentPage--;
+        page.commands.getAllProductPage(currentPage);
+    }
+});
+
+// Xử lý sự kiện khi nhấp vào nút "Next"
+$('#nextBtn').on('click', () => {
+    currentPage++;
+    page.commands.getAllProductPage(currentPage);
+});
+
+// Gọi lần đầu để lấy dữ liệu cho trang đầu tiên
+page.commands.getAllProductPage(currentPage)
+*/
 page.commands.getAllProductByKeySearch = (keySearch) => {
     page.elements.tbProduct.empty();
     $.ajax({
@@ -134,6 +193,7 @@ page.commands.getAllProductByKeySearch = (keySearch) => {
             keySearch: keySearch
         }
     })
+
         .done((data) => {
             page.elements.tbProduct.empty();
             data.forEach(item => {
@@ -179,23 +239,19 @@ page.commands.handleShowModalUpdateProduct = (productId) => {
         page.dialogs.elements.productPriceUp.val(product.price);
         page.dialogs.elements.productUnitUp.val(product.unit);
 
-        page.dialogs.elements.productCategoryUp.val(product.category.id);
-        page.dialogs.elements.productCategoryUp.text(product.category.code);
 
         page.dialogs.elements.productDescriptionUp.val(product.description);
         page.dialogs.elements.imagePreviewUp.attr('src', product.avatar.fileUrl);
         page.commands.getAllCategory(page.dialogs.elements.productCategoryUp).then((data) => {
-
-
-            const options = page.dialogs.elements.productCategoryUp.find('option');
+            const options = page.dialogs.elements.productCategoryUp.find("option");
             $.each((options), (index, item) => {
-                console.log(item.value);
-                console.log(product.category.id);
-                const a = (item.value === product.category.id);
 
+                if (+$(item).val() === product.category.id) {
+
+                    $(item).attr("selected", "selected")
+                }
             })
-        });
-
+        })
 
 
         page.dialogs.elements.modalUpdateProduct.modal("show");
@@ -356,24 +412,36 @@ page.initializeControlEvent = () => {
         // page.dialogs.commands.updateProduct();
     })
 
-    // page.elements.uploadArea.on('click', () => {
-    //     page.dialogs.elements.productImage.trigger('click');
-    // })
 
+    page.dialogs.elements.btnChooseImg.on('click', () => {
+        page.dialogs.elements.productImage.trigger('click');
+
+    });
+    page.dialogs.elements.productImage.on('change', () => {
+        // console.log(page.dialogs.elements.productImage[0].size())
+        const avatar = URL.createObjectURL(page.dialogs.elements.productImage[0].files[0]);
+        page.dialogs.elements.imagePreview.attr('src', avatar);
+        const file = page.dialogs.elements.productImage[0].files[0];
+        console.log(file)
+        if (file) {
+            $('#btnChooseImg').text("Change Image");
+        } else {
+            $('#btnChooseImg').text("Chọn ảnh để upload");
+        }
+    })
 
     page.dialogs.elements.btnChaneImg.on('click', () => {
         page.dialogs.elements.productImageUp.trigger('click');
     });
-
-    page.dialogs.elements.productImage.on('change', () => {
-        // console.log(page.dialogs.elements.productImage[0].size())
-        const avatar = URL.createObjectURL(page.dialogs.elements.productImage[0].files[0]);
-        page.dialogs.elements.imagePreview.attr('src', avatar)
+    page.dialogs.elements.productImageUp.on('change', () => {
+        const avatar = URL.createObjectURL(page.dialogs.elements.productImageUp[0].files[0]);
+        page.dialogs.elements.imagePreviewUp.attr('src', avatar)
     })
 
-    page.elements.keySearch.on('change', function () {
+    page.elements.keySearch.on('input', function () {
         const keySearch = $(this).val();
-        page.commands.getAllProductByKeySearch(keySearch)
+        // $('#formSearch').trigger("submit");
+        page.commands.getAllProductByKeySearch(keySearch);
     })
 
     page.elements.sortByPrice.on('click', function () {
@@ -396,7 +464,6 @@ page.initializeControlEvent = () => {
 
 page.loadData = () => {
     page.commands.getAllProduct()
-
 
 }
 

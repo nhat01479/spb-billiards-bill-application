@@ -36,9 +36,9 @@ public class ProductAPI {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-//        List<ProductDTO> productDTOS = productService.findAllProductDTO();
-        List<ProductDTO> productDTOS = productService.findAllByDeletedFalse(Sort.by("price").descending());
-//        Pageable pageable = PageRequest.of(1, 5);
+        List<ProductDTO> productDTOS = productService.findAllProductDTO();
+//        List<ProductDTO> productDTOS = productService.findAllByDeletedFalse(Sort.by("price").descending());
+//        Pageable pageable = PageRequest.of(0, 5);
 //        Page<ProductDTO> productDTOS = productService.findAllByDeletedFalse(pageable);
 
         return new ResponseEntity<>(productDTOS, HttpStatus.OK);
@@ -46,10 +46,10 @@ public class ProductAPI {
     @GetMapping("/search")
     public ResponseEntity<?> getAll(@RequestParam ("keySearch") String keySearch) {
         System.out.println(keySearch);
+        keySearch = "%" + keySearch + "%";
 //        List<ProductDTO> productDTOS = productService.findAllProductDTO();
         List<ProductDTO> productDTOS = productService.findAllByDeletedFalseAndTitleLikeAndDescriptionLike(keySearch, keySearch);
-//        Pageable pageable = PageRequest.of(1, 5);
-//        Page<ProductDTO> productDTOS = productService.findAllByDeletedFalse(pageable);
+
 
         return new ResponseEntity<>(productDTOS, HttpStatus.OK);
     }

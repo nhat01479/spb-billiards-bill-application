@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select new com.cg.model.dto.product.ProductDTO (" +
@@ -26,6 +27,15 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<ProductDTO> findAllProductDTO();
     List<ProductDTO> findAllByDeletedFalse(Sort sort);
     Page<ProductDTO> findAllByDeletedFalse(Pageable pageable);
+    @Query("select new com.cg.model.dto.product.ProductDTO (" +
+            "p.id, " +
+            "p.title, " +
+            "p.price, " +
+            "p.unit, " +
+            "p.description, " +
+            "p.category, " +
+            "p.avatar) " +
+            "from Product as p where (p.title like %:title%  or p.description like %:description% ) and p.deleted=false")
     List<ProductDTO> findAllByDeletedFalseAndTitleLikeAndDescriptionLike(String title, String description);
     @Query("select new com.cg.model.dto.product.ProductDTO (" +
             "p.id, " +

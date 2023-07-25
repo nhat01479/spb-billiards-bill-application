@@ -1,15 +1,14 @@
 package com.cg.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/staffs")
-public class StaffController {
+@RequestMapping("/users")
+public class UserController {
     @GetMapping
-    public String showStaffPage() {
-        return "staff/listStaff";
+    public String showUserPage() {
+        return "user/listUser";
     }
 }

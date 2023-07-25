@@ -1,0 +1,325 @@
+<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html lang="en">&ndash;&gt;-->
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta charset="UTF-8">&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta name="viewport" content="width=device-width, initial-scale=1.0">&ndash;&gt;-->
+<!--&lt;!&ndash;    <title>Login form</title>&ndash;&gt;-->
+<!--&lt;!&ndash;    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">&ndash;&gt;-->
+<!--&lt;!&ndash;    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>&ndash;&gt;-->
+<!--&lt;!&ndash;    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">&ndash;&gt;-->
+<!--&lt;!&ndash;    <link rel="stylesheet" href="https://devforum.info/DEMO/Register_Form_03/css/style.css">&ndash;&gt;-->
+
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="wrap" id="create">&ndash;&gt;-->
+<!--&lt;!&ndash;    &lt;!&ndash; tab style-1 &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="row" style="margin: -35px auto">&ndash;&gt;-->
+<!--&lt;!&ndash;        &lt;!&ndash;-320x50-&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="grid_12 columns">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="tab style-1">&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="error-area hide"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;                <ul>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li class="active">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <div class="form" id="frmCreate">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <input id="userName" name="userName" style="width: 352px" type="text" class="active textbox"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   value="User Name" onfocus="this.value = '';"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   onblur="if (this.value == '') {this.value = 'User Name';}">&ndash;&gt;-->
+
+<!--&lt;!&ndash;                            <input id="password" name="password" style="width: 352px" type="text" class="textbox"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   value="Password"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   onfocus="this.value = '';"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   onblur="if (this.value == '') {this.value = 'Password';}">&ndash;&gt;-->
+
+<!--&lt;!&ndash;                            <input id="fullNameCre" name="fullNameCre" style="width: 352px" type="text" class="textbox"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   value="Full Name"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   onfocus="this.value = '';"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   onblur="if (this.value == '') {this.value = 'Full Name';}">&ndash;&gt;-->
+
+<!--&lt;!&ndash;                            <input id="emailCre" name="emailCre" style="width: 352px" type="text" class="textbox"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   value="Email"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   onfocus="this.value = '';"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   onblur="if (this.value == '') {this.value = 'Email';}">&ndash;&gt;-->
+
+<!--&lt;!&ndash;                            <input id="phoneCre" name="phoneCre" style="width: 352px" type="text" class="textbox"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   value="Phone"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   onfocus="this.value = '';"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   onblur="if (this.value == '') {this.value = 'Phone';}">&ndash;&gt;-->
+
+<!--&lt;!&ndash;                            <input id="addressCre" name="addressCre" style="width: 352px" type="text" class="textbox"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   value="Address"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   onfocus="this.value = '';"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   onblur="if (this.value == '') {this.value = 'Address';}">&ndash;&gt;-->
+
+<!--&lt;!&ndash;                            <input id="btnSignUp" class="align-content-center" type="submit" value="Register">&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </li>&ndash;&gt;-->
+<!--&lt;!&ndash;                </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        &lt;!&ndash;-320x50-&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="https://devforum.info/DEMO/Register_Form_03/js/JFCore.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="https://m.servedby-buysellads.com/monetization.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;<script src="https://codefund.io/properties/441/funder.js"></script>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="/assets/js/jquery.validate.min.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="/assets/js/app.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="/assets/sweetalert2/v11.7.12/sweetalert2.all.min.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="/assets/js/jquery.number.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<script>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    const page = {&ndash;&gt;-->
+<!--&lt;!&ndash;        url: {&ndash;&gt;-->
+<!--&lt;!&ndash;            getAllStaffs: App.API_STAFF,&ndash;&gt;-->
+
+<!--&lt;!&ndash;        },&ndash;&gt;-->
+<!--&lt;!&ndash;        elements: {},&ndash;&gt;-->
+<!--&lt;!&ndash;        loadData: {},&ndash;&gt;-->
+<!--&lt;!&ndash;        commands: {},&ndash;&gt;-->
+<!--&lt;!&ndash;        dialogs: {&ndash;&gt;-->
+<!--&lt;!&ndash;            elements: {},&ndash;&gt;-->
+<!--&lt;!&ndash;            commands: {}&ndash;&gt;-->
+<!--&lt;!&ndash;        },&ndash;&gt;-->
+<!--&lt;!&ndash;        initializeControlEvent: {}&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+
+<!--&lt;!&ndash;    page.dialogs.elements.errorAreaCreate = $('#create .error-area')&ndash;&gt;-->
+<!--&lt;!&ndash;    page.dialogs.elements.frmCreate = $('#frmCreate');&ndash;&gt;-->
+
+<!--&lt;!&ndash;    page.dialogs.elements.userName = $('#userName');&ndash;&gt;-->
+<!--&lt;!&ndash;    page.dialogs.elements.password = $('#password');&ndash;&gt;-->
+
+<!--&lt;!&ndash;    page.dialogs.elements.btnSignUp = $('#btnSignUp');&ndash;&gt;-->
+
+<!--&lt;!&ndash;    page.dialogs.elements.fullName = $('#fullNameCre');&ndash;&gt;-->
+<!--&lt;!&ndash;    page.dialogs.elements.email = $('#emailCre');&ndash;&gt;-->
+<!--&lt;!&ndash;    page.dialogs.elements.phone = $('#phoneCre');&ndash;&gt;-->
+<!--&lt;!&ndash;    page.dialogs.elements.address = $('#addressCre');&ndash;&gt;-->
+
+<!--&lt;!&ndash;    page.dialogs.commands.create = () => {&ndash;&gt;-->
+<!--&lt;!&ndash;        const user = {&ndash;&gt;-->
+<!--&lt;!&ndash;            username: page.dialogs.elements.userName.val(),&ndash;&gt;-->
+<!--&lt;!&ndash;            password: page.dialogs.elements.password.val(),&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        const staff = {&ndash;&gt;-->
+<!--&lt;!&ndash;            fullName: page.dialogs.elements.fullName.val(),&ndash;&gt;-->
+<!--&lt;!&ndash;            email: page.dialogs.elements.email.val(),&ndash;&gt;-->
+<!--&lt;!&ndash;            phone: page.dialogs.elements.phone.val(),&ndash;&gt;-->
+<!--&lt;!&ndash;            address: page.dialogs.elements.address.val()&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        const combinedData = {&ndash;&gt;-->
+<!--&lt;!&ndash;            userRegisterReqDTO: user,&ndash;&gt;-->
+<!--&lt;!&ndash;            staffCreReqDTO: staff&ndash;&gt;-->
+<!--&lt;!&ndash;        };&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;        $.ajax({&ndash;&gt;-->
+<!--&lt;!&ndash;            headers: {&ndash;&gt;-->
+<!--&lt;!&ndash;                'accept': 'application/json',&ndash;&gt;-->
+<!--&lt;!&ndash;                'content-type': 'application/json'&ndash;&gt;-->
+<!--&lt;!&ndash;            },&ndash;&gt;-->
+<!--&lt;!&ndash;            type: 'POST',&ndash;&gt;-->
+<!--&lt;!&ndash;            url: 'http://localhost:28001/api/auth/register',&ndash;&gt;-->
+<!--&lt;!&ndash;            data: JSON.stringify(combinedData)&ndash;&gt;-->
+<!--&lt;!&ndash;        })&ndash;&gt;-->
+<!--&lt;!&ndash;            .done(() => {&ndash;&gt;-->
+<!--&lt;!&ndash;                Swal.fire({&ndash;&gt;-->
+<!--&lt;!&ndash;                    position: 'center',&ndash;&gt;-->
+<!--&lt;!&ndash;                    icon: 'success',&ndash;&gt;-->
+<!--&lt;!&ndash;                    title: 'Đăng ký thành công, mời quay lại để đăng nhập!',&ndash;&gt;-->
+<!--&lt;!&ndash;                    showConfirmButton: false,&ndash;&gt;-->
+<!--&lt;!&ndash;                    timer: 1000&ndash;&gt;-->
+<!--&lt;!&ndash;                })&ndash;&gt;-->
+<!--&lt;!&ndash;            })&ndash;&gt;-->
+<!--&lt;!&ndash;            .fail((jqXHR) => {&ndash;&gt;-->
+<!--&lt;!&ndash;                const responseJSON = jqXHR.responseJSON;&ndash;&gt;-->
+
+<!--&lt;!&ndash;                page.dialogs.elements.errorAreaCreate.empty();&ndash;&gt;-->
+<!--&lt;!&ndash;                let str = '';&ndash;&gt;-->
+
+<!--&lt;!&ndash;                $.each(responseJSON, (k, v) => {&ndash;&gt;-->
+<!--&lt;!&ndash;                    str += `<label for="${k}Cre">${v}</label>`&ndash;&gt;-->
+<!--&lt;!&ndash;                })&ndash;&gt;-->
+
+<!--&lt;!&ndash;                page.dialogs.elements.errorAreaCreate.append(str).removeClass('hide').addClass('show');&ndash;&gt;-->
+
+<!--&lt;!&ndash;                console.log(jqXHR);&ndash;&gt;-->
+<!--&lt;!&ndash;            })&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;    page.initializeControlEvent = () => {&ndash;&gt;-->
+
+<!--&lt;!&ndash;        page.dialogs.elements.btnSignUp.on('click', () => {&ndash;&gt;-->
+<!--&lt;!&ndash;            page.dialogs.elements.frmCreate.trigger("submit");&ndash;&gt;-->
+<!--&lt;!&ndash;        })&ndash;&gt;-->
+
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;    page.dialogs.elements.frmCreate.validate({&ndash;&gt;-->
+<!--&lt;!&ndash;        rules: {&ndash;&gt;-->
+<!--&lt;!&ndash;            username: {&ndash;&gt;-->
+<!--&lt;!&ndash;                required: true,&ndash;&gt;-->
+<!--&lt;!&ndash;            },&ndash;&gt;-->
+<!--&lt;!&ndash;            password: {&ndash;&gt;-->
+<!--&lt;!&ndash;                required: true,&ndash;&gt;-->
+<!--&lt;!&ndash;            },&ndash;&gt;-->
+<!--&lt;!&ndash;            fullNameCre: {&ndash;&gt;-->
+<!--&lt;!&ndash;                required: true,&ndash;&gt;-->
+<!--&lt;!&ndash;                maxlength: 20,&ndash;&gt;-->
+<!--&lt;!&ndash;                minlength: 5&ndash;&gt;-->
+<!--&lt;!&ndash;            },&ndash;&gt;-->
+<!--&lt;!&ndash;            emailCre: {&ndash;&gt;-->
+<!--&lt;!&ndash;                required: true,&ndash;&gt;-->
+<!--&lt;!&ndash;            },&ndash;&gt;-->
+<!--&lt;!&ndash;            phoneCre: {&ndash;&gt;-->
+<!--&lt;!&ndash;                required: true,&ndash;&gt;-->
+<!--&lt;!&ndash;            },&ndash;&gt;-->
+<!--&lt;!&ndash;            addressCre: {&ndash;&gt;-->
+<!--&lt;!&ndash;                required: true,&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+<!--&lt;!&ndash;        },&ndash;&gt;-->
+<!--&lt;!&ndash;        messages: {&ndash;&gt;-->
+<!--&lt;!&ndash;            username: {&ndash;&gt;-->
+<!--&lt;!&ndash;                required: 'User name là bắt buộc'&ndash;&gt;-->
+<!--&lt;!&ndash;            },&ndash;&gt;-->
+<!--&lt;!&ndash;            password: {&ndash;&gt;-->
+<!--&lt;!&ndash;                required: 'Password là bắt buộc'&ndash;&gt;-->
+<!--&lt;!&ndash;            },&ndash;&gt;-->
+<!--&lt;!&ndash;            fullNameCre: {&ndash;&gt;-->
+<!--&lt;!&ndash;                required: 'Tên nhân viên là bắt buộc',&ndash;&gt;-->
+<!--&lt;!&ndash;                maxlength: 'Tên tối đa ${0} ký tự',&ndash;&gt;-->
+<!--&lt;!&ndash;                minlength: 'Tên tối thiểu ${0} ký tự'&ndash;&gt;-->
+<!--&lt;!&ndash;            },&ndash;&gt;-->
+<!--&lt;!&ndash;            emailCre: {&ndash;&gt;-->
+<!--&lt;!&ndash;                required: 'Email nhân viên là bắt buộc'&ndash;&gt;-->
+<!--&lt;!&ndash;            },&ndash;&gt;-->
+<!--&lt;!&ndash;            phoneCre: {&ndash;&gt;-->
+<!--&lt;!&ndash;                required: 'Số điện thoại là bắt buộc'&ndash;&gt;-->
+<!--&lt;!&ndash;            },&ndash;&gt;-->
+<!--&lt;!&ndash;            addressCre: {&ndash;&gt;-->
+<!--&lt;!&ndash;                required: 'Địa chỉ là bắt buộc'&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+<!--&lt;!&ndash;        },&ndash;&gt;-->
+<!--&lt;!&ndash;        errorLabelContainer: "#create .error-area",&ndash;&gt;-->
+<!--&lt;!&ndash;        errorPlacement: function (error, element) {&ndash;&gt;-->
+<!--&lt;!&ndash;            error.appendTo("#create .error-area");&ndash;&gt;-->
+<!--&lt;!&ndash;        },&ndash;&gt;-->
+<!--&lt;!&ndash;        showErrors: function (errorMap, errorList) {&ndash;&gt;-->
+<!--&lt;!&ndash;            if (this.numberOfInvalids() > 0) {&ndash;&gt;-->
+<!--&lt;!&ndash;                page.dialogs.elements.errorAreaCreate.removeClass("hide").addClass("show");&ndash;&gt;-->
+<!--&lt;!&ndash;            } else {&ndash;&gt;-->
+<!--&lt;!&ndash;                page.dialogs.elements.errorAreaCreate.removeClass("show").addClass("hide").empty();&ndash;&gt;-->
+<!--&lt;!&ndash;                $("#frmCreate input.error").removeClass("error");&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+<!--&lt;!&ndash;            this.defaultShowErrors();&ndash;&gt;-->
+<!--&lt;!&ndash;        },&ndash;&gt;-->
+<!--&lt;!&ndash;        submitHandler: function () {&ndash;&gt;-->
+<!--&lt;!&ndash;            page.dialogs.commands.create();&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;    })&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;    $(() => {&ndash;&gt;-->
+
+<!--&lt;!&ndash;        page.initializeControlEvent();&ndash;&gt;-->
+
+<!--&lt;!&ndash;    })&ndash;&gt;-->
+
+<!--&lt;!&ndash;</script>&ndash;&gt;-->
+
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+
+<!--&lt;!&ndash;</html>&ndash;&gt;-->
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Register form</title>-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />-->
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">-->
+<!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>-->
+<!--&lt;!&ndash;    <link rel="stylesheet" href="/assets/css/register.css">&ndash;&gt;-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>-->
+
+<!--</head>-->
+
+<!--<body>-->
+<!--<div>-->
+<!--    <div id="login-box">-->
+<!--        <div class="left">-->
+<!--            <h1>SIGN UP</h1>-->
+<!--            <input type="text"  id="userName" name="username" placeholder="Username"/>-->
+<!--            <input type="text" id="email" name="email" placeholder="E-mail" />-->
+<!--            <input type="password" id="password" name="password" placeholder="Password" />-->
+<!--            <input type="password" id="rePassword" name="password2" placeholder="Retype password" />-->
+
+<!--            <input type="button" id="btnSignUp" name="signup_submit" value="Sign me up" />-->
+<!--            <a href="login">Come back login</a>-->
+<!--        </div>-->
+
+<!--        <div class="right">-->
+<!--            <span class="loginwith">Sign in with<br />social network</span>-->
+
+<!--            <button class="social-signin facebook"><i class="fab fa-facebook"></i> Log in with facebook</button>-->
+<!--            <button class="social-signin twitter"><i class="fab fa-twitter"></i> Log in with Twitter</button>-->
+<!--            <button class="social-signin google"><i class="fab fa-google-plus-g"></i> Log in with Google+</button>-->
+<!--        </div>-->
+<!--        <div class="or">OR</div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script>-->
+
+<!--    const userName = $('#userName');-->
+<!--    const password = $('#password');-->
+<!--    const rePassword = $('#rePassword');-->
+<!--    const btnSignUp = $('#btnSignUp');-->
+
+<!--    btnSignUp.on('click', () => {-->
+<!--        const obj = {-->
+<!--            username: userName.val(),-->
+<!--            password: password.val(),-->
+<!--        }-->
+
+<!--        $.ajax({-->
+<!--            headers: {-->
+<!--                'accept': 'application/json',-->
+<!--                'content-type': 'application/json'-->
+<!--            },-->
+<!--            type: 'POST',-->
+<!--            url: 'http://localhost:28002/api/auth/register',-->
+<!--            data: JSON.stringify(obj)-->
+<!--        })-->
+<!--            .done(() => {-->
+<!--                Swal.fire({-->
+<!--                    position: 'center',-->
+<!--                    icon: 'success',-->
+<!--                    title: 'Đăng ký thành công',-->
+<!--                    showConfirmButton: false,-->
+<!--                    timer: 1000-->
+<!--                })-->
+<!--            })-->
+<!--            .fail((jqXHR) => {-->
+<!--                console.log(jqXHR);-->
+<!--            })-->
+<!--    })-->
+
+<!--</script>-->
+
+<!--</body>-->
+
+<!--</html>-->

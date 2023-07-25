@@ -7,13 +7,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/products")
 public class HomeController {
-//    @GetMapping
+
+    //    @GetMapping
 //    public String showHomePage(){
 //        return "index";
 //    }
     @GetMapping
-    public String showDashboard(){
+    public String showDashboard() {
         return "/product/dashboard";
     }
 
+
+    @GetMapping("/login")
+    public String showLoginPage() {
+        return "login";
+    }
+
 }
+

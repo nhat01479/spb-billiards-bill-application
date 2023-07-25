@@ -418,7 +418,6 @@ page.initializeControlEvent = () => {
 
     });
     page.dialogs.elements.productImage.on('change', () => {
-        // console.log(page.dialogs.elements.productImage[0].size())
         const avatar = URL.createObjectURL(page.dialogs.elements.productImage[0].files[0]);
         page.dialogs.elements.imagePreview.attr('src', avatar);
         const file = page.dialogs.elements.productImage[0].files[0];

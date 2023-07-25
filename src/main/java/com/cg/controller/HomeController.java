@@ -12,7 +12,8 @@ public class HomeController {
 //    public String showHomePage(){
 //        return "index";
 //    }
-    @GetMapping
+
+    @GetMapping("/products")
     public String showDashboard() {
         return "/product/dashboard";
     }

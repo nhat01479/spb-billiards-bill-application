@@ -60,7 +60,7 @@ public class DeskUpReqDTO implements Validator {
             } else {
                 BigDecimal priceTime = BigDecimal.valueOf(Long.parseLong(priceTimeStr));
 
-                if (priceTime.compareTo(BigDecimal.valueOf(20000L)) <= 0) {
+                if (priceTime.compareTo(BigDecimal.valueOf(20000L)) < 0) {
                     errors.rejectValue("priceTime", "priceTime.min", "Số tiền nhập thấp nhất là 20.000 VND");
                 } else {
                     if (priceTime.compareTo(BigDecimal.valueOf(500000L)) > 0) {

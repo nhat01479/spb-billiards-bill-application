@@ -89,7 +89,7 @@ public class DeskAPI {
 
         if (deskOptional.isEmpty()) {
             Map<String, String> data = new HashMap<>();
-            data.put("message", "Mã bàn hàng không tồn tại");
+            data.put("message", "Mã bàn không tồn tại");
             return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
         }
 

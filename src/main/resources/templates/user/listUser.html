@@ -31,7 +31,7 @@
             <!--    page content-->
             <div class="container-fluid">
                 <!-- start page title -->
-                <h1 class="text-center">List staff</h1>
+                <h1 class="text-center">List user</h1>
                 <!-- end page title -->
 
                 <!--                Start row-->
@@ -50,7 +50,7 @@
                                     <div>
                                         <button class="btn btn-outline-success" id="btnShowCreateModal">
                                             <i class="fas fa-plus"></i>
-                                            Add new staff
+                                            Add new user
                                         </button>
                                     </div>
                                     <div class="m-3" style="height: 30px">
@@ -78,11 +78,13 @@
                                                     <th>Email</th>
                                                     <th>Phone</th>
                                                     <th>Address</th>
+                                                    <th>User Name</th>
+                                                    <th>Password</th>
                                                     <th colspan="2">Action</th>
                                                 </tr>
                                                 </thead>
 
-                                                <tbody id="tbStaff">
+                                                <tbody id="tbUser">
 
                                                 </tbody>
                                             </table>
@@ -109,11 +111,11 @@
     <!--    footer-javaScript-->
 </div>
 
-<th:block th:replace="staff/modalCreate"/>
-<th:block th:replace="staff/modalUpdate"/>
+<th:block th:replace="user/modalCreate"/>
+<th:block th:replace="user/modalUpdate"/>
 
-
-<script src="/assets/js/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!--<script src="/assets/js/jquery-3.6.0.min.js"></script>-->
 <script src="/assets/js/jquery.validate.min.js"></script>
 <script src="/assets/js/app.js"></script>
 <script src="/assets/sweetalert2/v11.7.12/sweetalert2.all.min.js"></script>
@@ -122,11 +124,11 @@
 <script>
     const page = {
         url: {
-            getAllStaffs: App.API_STAFF,
-            creatStaff: App.API_STAFF,
-            updateStaff: App.API_STAFF,
-            deleteStaff: App.API_STAFF,
-            getStaffById: App.API_STAFF,
+            getAllUsers: App.API_USER,
+            creatUser: App.API_USER,
+            updateUser: App.API_USER,
+            deleteUser: App.API_USER,
+            getUserById: App.API_USER,
 
         },
         elements: {},
@@ -139,12 +141,14 @@
         initializeControlEvent: {}
     }
 
-    page.elements.tbStaff = $('#tbStaff');
+    page.elements.tbUser = $('#tbUser');
 
 
     page.elements.btnShowCreateModal = $('#btnShowCreateModal');
     page.dialogs.elements.modalCreate = $('#modalCreate');
     page.dialogs.elements.frmCreate = $('#frmCreate');
+    page.dialogs.elements.userNameCre = $('#userNameCre');
+    page.dialogs.elements.passwordCre = $('#passwordCre');
     page.dialogs.elements.fullnameCre = $('#fullnameCre');
     page.dialogs.elements.emailCre = $('#emailCre');
     page.dialogs.elements.phoneCre = $('#phoneCre');
@@ -155,21 +159,26 @@
 
     page.dialogs.elements.modalUpdate = $('#modalUpdate');
     page.dialogs.elements.frmUpdate = $('#frmUpdate');
-    page.dialogs.elements.nameUp = $('#nameUp');
-    page.dialogs.elements.priceTimeUp = $('#priceTimeUp');
-    page.dialogs.elements.typeUp = $('#typeUp');
+    page.dialogs.elements.userNameUp = $('#userNameUp');
+    page.dialogs.elements.passwordUp = $('#passwordUp');
+    page.dialogs.elements.fullnameUp = $('#fullnameUp');
+    page.dialogs.elements.emailUp = $('#emailUp');
+    page.dialogs.elements.phoneUp = $('#phoneUp');
+    page.dialogs.elements.addressUp = $('#addressUp');
     page.dialogs.elements.btnUpdate = $('#btnUpdate');
     page.dialogs.elements.errorAreaUpdate = $('#modalUpdate .error-area')
 
 
-    page.commands.renderStaff = (obj) => {
+    page.commands.renderUser = (obj) => {
         return `
             <tr id="tr_${obj.id}">
                 <td class="text-center">${obj.id} </td>
-                <td>${obj.fullname} </td>
+                <td>${obj.fullName} </td>
                 <td>${obj.email} </td>
                 <td class="text-center">${obj.phone} </td>
                 <td>${obj.address} </td>
+                <td>${obj.username} </td>
+                <td>${obj.password} </td>
                 <td class="text-end">
                     <button  class="btn btn-outline-primary edit" data-id="${obj.id}" >
                             <i class="far fa-edit"></i>
@@ -183,21 +192,21 @@
             </tr>`;
     }
 
-    let staff = null;
-    let staffId = 0;
+    let user = null;
+    let userId = 0;
 
-    page.commands.getAllStaffs = () => {
+    page.commands.getAllUsers = () => {
 
-        page.elements.tbStaff.empty();
+        page.elements.tbUser.empty();
 
         $.ajax({
             type: 'GET',
-            url: page.url.getAllStaffs
+            url: page.url.getAllUsers
         })
             .done((data) => {
                 data.forEach(item => {
-                    const str = page.commands.renderStaff(item);
-                    page.elements.tbStaff.prepend(str);
+                    const str = page.commands.renderUser(item);
+                    page.elements.tbUser.prepend(str);
                 });
             })
             .fail((error) => {
@@ -206,26 +215,23 @@
     }
 
 
-    page.commands.getStaffById = (id) => {
+    page.commands.getUserById = (id) => {
         return $.ajax({
             type: 'GET',
-            url: page.url.getStaffById + '/' + id,
+            url: page.url.getUserById + '/' + id,
         });
     }
 
 
     page.dialogs.commands.create = () => {
-        const fullName = page.dialogs.elements.fullnameCre.val();
-        const email = page.dialogs.elements.emailCre.val();
-        const phone = page.dialogs.elements.phoneCre.val();
-        const address = page.dialogs.elements.addressCre.val();
-
-        staff = {
-            fullName: fullName,
-            email: email,
-            phone: phone,
-            address: address
-        }
+        const user = {
+            username: page.dialogs.elements.userNameCre.val(),
+            password: page.dialogs.elements.passwordCre.val(),
+            fullName: page.dialogs.elements.fullnameCre.val(),
+            email: page.dialogs.elements.emailCre.val(),
+            phone: page.dialogs.elements.phoneCre.val(),
+            address: page.dialogs.elements.addressCre.val(),
+        };
 
         $.ajax({
             headers: {
@@ -233,12 +239,12 @@
                 'content-type': 'application/json'
             },
             type: 'POST',
-            url: page.url.creatStaff,
-            data: JSON.stringify(staff)
+            url: page.url.creatUser,
+            data: JSON.stringify(user)
         })
             .done((data) => {
-                const str = page.commands.renderStaff(data);
-                page.elements.tbStaff.prepend(str);
+                const str = page.commands.renderUser(data);
+                page.elements.tbUser.prepend(str);
 
                 page.dialogs.elements.modalCreate.modal('hide');
                 Swal.fire({
@@ -247,7 +253,7 @@
                     title: 'Tạo mới thành công',
                     showConfirmButton: false,
                     timer: 1000
-                })
+                });
             })
             .fail((jqXHR) => {
                 const responseJSON = jqXHR.responseJSON;
@@ -256,23 +262,26 @@
                 let str = '';
 
                 $.each(responseJSON, (k, v) => {
-                    str += `<label for="${k}Cre">${v}</label>`
-                })
+                    str += `<label for="${k}Cre">${v}</label>`;
+                });
 
-                page.dialogs.elements.errorAreaCreate.append(str).removeClass('hide').addClass('show');
+                page.dialogs.elements.errorAreaCreate.html(str).removeClass('hide').addClass('show');
 
                 console.log(jqXHR);
-            })
-    }
+            });
+    };
 
 
-    page.commands.handleAddEventShowModalUpdate = (staffId) => {
-        page.commands.getStaffById(staffId).then((data) => {
-            let staff = data;
-            page.dialogs.elements.fullnameCre.val(staff.fullName);
-            page.dialogs.elements.emailCre.val(staff.email);
-            page.dialogs.elements.phoneCre.val(staff.phone);
-            page.dialogs.elements.addressCre.val(staff.address);
+
+    page.commands.handleAddEventShowModalUpdate = (userId) => {
+        page.commands.getUserById(userId).then((data) => {
+            let user = data;
+            page.dialogs.elements.userNameUp.val(user.username);
+            page.dialogs.elements.passwordUp.val(user.password);
+            page.dialogs.elements.fullnameUp.val(user.fullName);
+            page.dialogs.elements.emailUp.val(user.email);
+            page.dialogs.elements.phoneUp.val(user.phone);
+            page.dialogs.elements.addressUp.val(user.address);
 
             page.dialogs.elements.modalUpdate.modal('show');
 
@@ -284,12 +293,16 @@
 
 
     page.dialogs.commands.update = () => {
+        const username = page.dialogs.elements.userNameUp.val();
+        const password = page.dialogs.elements.passwordUp.val();
         const fullName = page.dialogs.elements.fullnameUp.val();
         const email = page.dialogs.elements.emailUp.val();
         const phone = page.dialogs.elements.phoneUp.val();
         const address = page.dialogs.elements.addressUp.val();
 
-        staff = {
+        user = {
+            username: username,
+            password: password,
             fullName: fullName,
             email: email,
             phone: phone,
@@ -302,12 +315,12 @@
                 'content-type': 'application/json'
             },
             type: 'PATCH',
-            url: page.url.updateStaff + '/' + staffId,
-            data: JSON.stringify(staff)
+            url: page.url.updateUser + '/' + userId,
+            data: JSON.stringify(user)
         })
             .done((data) => {
-                const str = page.commands.renderStaff(data);
-                const currentRow = $('#tr_' + staffId);
+                const str = page.commands.renderUser(data);
+                const currentRow = $('#tr_' + userId);
                 currentRow.replaceWith(str);
 
                 page.dialogs.elements.modalUpdate.modal('hide');
@@ -337,7 +350,7 @@
     }
 
 
-    page.commands.handleAddEventShowModalDelete = (staffId) => {
+    page.commands.handleAddEventShowModalDelete = (userId) => {
         App.showDeleteConfirmDialog().then((data) => {
             if (data.isConfirmed) {
                 $.ajax({
@@ -346,11 +359,11 @@
                         'content-type': 'application/json'
                     },
                     type: 'DELETE',
-                    url: page.url.getAllStaffs + '/' + staffId
+                    url: page.url.getAllUsers + '/' + userId
                 })
                     .done(() => {
 
-                        $(`#tr_${staffId}`).remove();
+                        $(`#tr_${userId}`).remove();
 
                         Swal.fire({
                             position: 'center',
@@ -387,9 +400,9 @@
         });
 
 
-        page.elements.tbStaff.on('click', '.edit', function () {
-            staffId = $(this).data('id');
-            page.commands.handleAddEventShowModalUpdate(staffId);
+        page.elements.tbUser.on('click', '.edit', function () {
+            userId = $(this).data('id');
+            page.commands.handleAddEventShowModalUpdate(userId);
         })
 
 
@@ -398,9 +411,9 @@
         })
 
 
-        page.elements.tbStaff.on('click', '.delete', function () {
-            staffId = $(this).data('id');
-            page.commands.handleAddEventShowModalDelete(staffId);
+        page.elements.tbUser.on('click', '.delete', function () {
+            userId = $(this).data('id');
+            page.commands.handleAddEventShowModalDelete(userId);
         })
 
     }
@@ -408,6 +421,14 @@
 
     page.dialogs.elements.frmCreate.validate({
         rules: {
+            userNameCre: {
+                required: true,
+                maxlength: 20,
+                minlength: 6
+            },
+            passwordCre: {
+                required: true
+            },
             fullnameCre: {
                 required: true,
                 maxlength: 20,
@@ -418,6 +439,14 @@
             }
         },
         messages: {
+            userNameCre: {
+                required: 'Tên đăng nhập là bắt buộc',
+                maxlength: 'Tên tối đa ${0} ký tự',
+                minlength: 'Tên tối thiểu ${0} ký tự'
+            },
+            passwordCre: {
+                required: 'Password là bắt buộc'
+            },
             fullnameCre: {
                 required: 'Tên nhân viên là bắt buộc',
                 maxlength: 'Tên tối đa ${0} ký tự',
@@ -448,6 +477,14 @@
 
     page.dialogs.elements.frmUpdate.validate({
         rules: {
+            userNameUp: {
+                required: true,
+                maxlength: 20,
+                minlength: 6
+            },
+            passwordUp: {
+                required: true
+            },
             fullnameUp: {
                 required: true,
                 maxlength: 20,
@@ -458,6 +495,14 @@
             }
         },
         messages: {
+            userNameUp: {
+                required: 'Tên đăng nhập là bắt buộc',
+                maxlength: 'Tên tối đa ${0} ký tự',
+                minlength: 'Tên tối thiểu ${0} ký tự'
+            },
+            passwordUp: {
+                required: 'Password là bắt buộc'
+            },
             fullnameUp: {
                 required: 'Tên bàn là bắt buộc',
                 maxlength: 'Tên tối đa ${0} ký tự',
@@ -487,7 +532,7 @@
 
 
     page.loadData = () => {
-        page.commands.getAllStaffs();
+        page.commands.getAllUsers();
     }
     $(() => {
         page.loadData();

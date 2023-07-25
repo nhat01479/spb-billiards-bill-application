@@ -4,14 +4,12 @@ class App {
     static API_SERVER = this.DOMAIN_SERVER + '/api';
 
     static API_PRODUCT = this.API_SERVER + '/customers';
-    static API_USER = this.API_SERVER;
     static API_DESK = "http://localhost:28002/api/desks";
     static API_TYPE = this.API_SERVER + '/types';
-    static API_STAFF = this.API_SERVER;
     static API_ORDER = this.API_SERVER;
     static API_PRODUCT_ORDER_ITEM = this.API_SERVER;
     static API_TIME_ORDER_ITEM = this.API_SERVER;
-    static API_STAFF = this.API_SERVER + '/staffs';
+    static API_USER = this.API_SERVER + '/users';
 
 
     static API_LOCATION_REGION = 'https://vapi.vnappmob.com/api/province'

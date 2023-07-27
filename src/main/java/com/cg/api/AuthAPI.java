@@ -5,6 +5,7 @@ import com.cg.exception.EmailExistsException;
 import com.cg.model.JwtResponse;
 import com.cg.model.Role;
 import com.cg.model.User;
+import com.cg.model.dto.user.UserRegisterReqDTO;
 import com.cg.service.jwt.JwtService;
 import com.cg.service.role.IRoleService;
 import com.cg.service.user.IUserService;
@@ -20,6 +21,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,6 +36,8 @@ public class AuthAPI {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private JwtService jwtService;
@@ -87,38 +91,39 @@ public class AuthAPI {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
+
+
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@Valid @RequestBody UserRegisterReqDTO userRegisterReqDTO, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors())
+            return appUtils.mapErrorToResponse(bindingResult);
+
+        Boolean existsByUsername = userService.existsByUsername(userRegisterReqDTO.getUsername());
+
+        if (existsByUsername) {
+            throw new EmailExistsException("Account already exists");
+        }
+
+
+        try {
+            Long roleId = (Long) 2L;
+            Role role = roleService.findById(roleId).get();
+            User user = userRegisterReqDTO.toUser(role);
+            user.setId(null);
+            user.setUsername(userRegisterReqDTO.getUsername());
+            user.setPassword(userRegisterReqDTO.getPassword());
+            user.setFullName("Nhật");
+            user.setEmail("nhat@gmail.com");
+            user.setPhone("123123");
+            user.setAddress("28 NTP");
+            user.setRole(role);
+            userService.save(user);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+
+        } catch (DataIntegrityViolationException e) {
+            throw new DataInputException("Account information is not valid, please check the information again");
+        }
+    }
 }
-
-
-//    @PostMapping("/register")
-//    public ResponseEntity<?> register(@Valid @RequestBody UserRegisterReqDTO userRegisterReqDTO, BindingResult bindingResult) {
-//
-//        if (bindingResult.hasErrors())
-//            return appUtils.mapErrorToResponse(bindingResult);
-//
-//        Boolean existsByUsername = userService.existsByUsername(userRegisterReqDTO.getUsername());
-//
-//        if (existsByUsername) {
-//            throw new EmailExistsException("Account already exists");
-//        }
-//
-//
-//        try {
-//            Role role = roleService.findById(2L).get();
-//            User user=userRegisterReqDTO.toUser(role);
-//            user.setId(null);
-//            user.setUsername(userRegisterReqDTO.getUsername());
-//            user.setPassword(userRegisterReqDTO.getPassword());
-//            user.setFullName("nguyen");
-//            user.setEmail("nguyen@gmail.com");
-//            user.setPhone("0763726763");
-//            user.setAddress("28 NTP");
-//            user.setRole(role);
-//            userService.save(user);
-//            return new ResponseEntity<>(HttpStatus.CREATED);
-//
-//        } catch (DataIntegrityViolationException e) {
-//            throw new DataInputException("Account information is not valid, please check the information again");
-//        }
-//    }
-//}

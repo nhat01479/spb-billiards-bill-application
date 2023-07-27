@@ -25,6 +25,6 @@ public class Type {
     @Column(length = 20)
     private EType name;
 
-    @OneToMany(targetEntity = Desk.class, fetch = FetchType.EAGER)
-    private List<Desk> desks;
+//    @OneToMany(targetEntity = Desk.class, fetch = FetchType.EAGER)
+//    private List<Desk> desks;
 }

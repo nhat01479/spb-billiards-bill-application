@@ -18,6 +18,7 @@ public class DeskUpResDTO {
     private long id;
     private String name;
     private BigDecimal priceTime;
+    private String unit = "Giờ";
     private Type type;
     private boolean status;
 }

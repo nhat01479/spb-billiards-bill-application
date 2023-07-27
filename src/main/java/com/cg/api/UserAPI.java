@@ -56,7 +56,7 @@ public class UserAPI {
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody UserCreReqDTO userCreReqDTO, BindingResult bindingResult) {
-        new UserCreReqDTO().validate(userCreReqDTO, bindingResult);
+//        new UserCreReqDTO().validate(userCreReqDTO, bindingResult);
 
         if (bindingResult.hasFieldErrors()) {
             return appUtils.mapErrorToResponse(bindingResult);
@@ -134,7 +134,7 @@ public class UserAPI {
             User user = userOptional.get();
             user.setDeleted(true);
             userService.save(user);
-            List<User> users = userService.findAllByDeletedIs(false);
+            List<User> users = userService.findAllByDeletedIs(Boolean.FALSE);
 
             return new ResponseEntity<>(users, HttpStatus.OK);
         } catch (Exception e) {

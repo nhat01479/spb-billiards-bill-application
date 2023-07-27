@@ -22,6 +22,7 @@ public interface DeskRepository extends JpaRepository<Desk, Long> {
             "des.id, " +
             "des.name, " +
             "des.priceTime," +
+            "des.unit," +
             "des.type," +
             "des.status " +
             ") " +

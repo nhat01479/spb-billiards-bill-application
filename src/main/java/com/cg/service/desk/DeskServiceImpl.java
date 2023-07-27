@@ -72,7 +72,7 @@ public class DeskServiceImpl implements IDeskService {
     }
     @Override
     public DeskCreResDTO create(DeskCreReqDTO deskCreReqDTO) {
-        long typeId = deskCreReqDTO.getTypeId();
+        Long typeId = (Long) deskCreReqDTO.getTypeId();
         Optional<Type> type = typeService.findById(typeId);
         Desk desk = deskCreReqDTO.toDesk(type.get());
         desk.setStatus(false);
@@ -89,7 +89,7 @@ public class DeskServiceImpl implements IDeskService {
 
     @Override
     public DeskUpResDTO update(long deskId, DeskUpReqDTO deskUpReqDTO) {
-        Desk desk = deskUpReqDTO.toDesk(deskId,typeService.findById(deskUpReqDTO.getTypeId()).get());
+        Desk desk = deskUpReqDTO.toDesk(Long.valueOf(deskId),typeService.findById(deskUpReqDTO.getTypeId()).get());
 
         desk.setName(deskUpReqDTO.getName());
         desk.setPriceTime(BigDecimal.valueOf(Long.parseLong(deskUpReqDTO.getPriceTime())));

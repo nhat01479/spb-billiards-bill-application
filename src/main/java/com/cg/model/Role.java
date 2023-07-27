@@ -25,7 +25,7 @@ public class Role {
     @Column(length = 20)
     private ERole name;
 
-    @OneToMany(targetEntity = User.class, fetch = FetchType.EAGER)
-    private List<User> users;
+//    @OneToMany(targetEntity = User.class, fetch = FetchType.EAGER)
+//    private List<User> users;
 
 }

@@ -132,7 +132,7 @@ public class DeskAPI {
             Desk desk = deskOptional.get();
             desk.setDeleted(true);
             deskService.save(desk);
-            List<Desk> desks = deskService.findAllByDeletedIs(false);
+            List<Desk> desks = deskService.findAllByDeletedIs(Boolean.valueOf(false));
 
             return new ResponseEntity<>(desks, HttpStatus.OK);
         } catch (Exception e) {

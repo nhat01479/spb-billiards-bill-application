@@ -62,7 +62,7 @@ public class UserUpReqDTO implements Validator {
         if (username == null || username.trim().length() == 0) {
             errors.rejectValue("username", "username.length", "Tên đăng nhập không được để trống");
         } else {
-            if (!username.matches("^[a-z0-9]*$\n")) {
+            if (!username.matches("^[a-z0-9]+$")) {
                 errors.rejectValue("username", "username.number", "Tên đăng nhập bằng chữ thường và số, không được chứa khoảng trắng, chữ viết hoa và ký tự đặc biệt");
             } else {
                 if (username.trim().length() < 6 || username.trim().length() > 20) {
@@ -73,14 +73,14 @@ public class UserUpReqDTO implements Validator {
         if (password == null || password.trim().length() == 0) {
             errors.rejectValue("password", "password.length", "Password không được để trống");
         } else {
-            if (!password.matches("^[a-zA-Z\\d]{8,}$\n")) {
+            if (!password.matches("^(?=.*\\S)[a-zA-Z0-9]{8,}$")) {
                 errors.rejectValue("password", "password.number", "Password bằng chữ và số, không được chứa khoảng trắng và ký tự đặc biệt, độ dài từ 8 ký tự trở lên");
             }
         }
         if (fullName == null || fullName.trim().length() == 0) {
             errors.rejectValue("fullName", "fullName.length", "Tên không được để trống");
         } else {
-            if (!fullName.matches("^[a-zA-Z]$\n")) {
+            if (!fullName.matches("([A-Z]+[a-z]*[ ]?)+$")) {
                 errors.rejectValue("fullName", "fullName.number", "Tên bắt đầu bằng chữ hoa, không được chứa số và ký tự đặc biệt");
             } else {
                 if (fullName.trim().length() < 5 || fullName.trim().length() > 20) {

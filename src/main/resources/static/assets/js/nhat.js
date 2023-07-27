@@ -243,14 +243,15 @@ page.commands.handleShowModalUpdateProduct = (productId) => {
         page.dialogs.elements.productDescriptionUp.val(product.description);
         page.dialogs.elements.imagePreviewUp.attr('src', product.avatar.fileUrl);
         page.commands.getAllCategory(page.dialogs.elements.productCategoryUp).then((data) => {
-            const options = page.dialogs.elements.productCategoryUp.find("option");
-            $.each((options), (index, item) => {
-
-                if (+$(item).val() === product.category.id) {
-
-                    $(item).attr("selected", "selected")
-                }
-            })
+            page.dialogs.elements.productCategoryUp.val(product.category.id)
+            // const options = page.dialogs.elements.productCategoryUp.find("option");
+            // $.each((options), (index, item) => {
+            //
+            //     if (+$(item).val() === product.category.id) {
+            //
+            //         $(item).attr("selected", "selected")
+            //     }
+            // })
         })
 
 

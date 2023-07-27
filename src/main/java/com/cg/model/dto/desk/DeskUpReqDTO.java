@@ -23,6 +23,7 @@ public class DeskUpReqDTO implements Validator {
     private TypeServiceImpl typeService;
     private String name;
     private String priceTime;
+    private String unit = "Giờ";
     private Long typeId;
     private boolean status;
 
@@ -32,6 +33,7 @@ public class DeskUpReqDTO implements Validator {
                 .setId(deskId)
                 .setName(name)
                 .setPriceTime(BigDecimal.valueOf(Long.parseLong(priceTime)))
+                .setUnit(unit)
                 .setType(type)
                 .setStatus(status);
     }

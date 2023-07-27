@@ -58,13 +58,13 @@ public class ProductUpReqDTO implements Validator{
         if (title == null || title.trim().length() == 0) {
             errors.rejectValue("title", "title.null", "Tên sản phẩm không được để trống");
         } else {
-            if (!title.matches("([A-Z]+[a-z]*[ ]?)+$")) {
-                errors.rejectValue("title", "title.number", "Tên bắt đầu bằng chữ hoa, không được chứa số và ký tự đặc biệt");
-            } else {
+//            if (!title.matches("([A-Z]+[a-z]*[ ]?)+$")) {
+//                errors.rejectValue("title", "title.number", "Tên bắt đầu bằng chữ hoa, không được chứa số và ký tự đặc biệt");
+//            } else {
                 if (title.trim().length() < 5 || title.trim().length() > 20) {
                     errors.rejectValue("title", "title.length", "Tên sản phẩm từ 5-20 ký tự");
                 }
-            }
+//            }
         }
 
         if (priceStr == null || priceStr.trim().length() == 0) {

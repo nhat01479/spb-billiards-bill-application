@@ -11,6 +11,7 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,6 +30,7 @@ public class Desk extends BaseEntity{
 
     @Column(nullable = false)
     private BigDecimal priceTime;
+    private String unit;
 
     @ManyToOne
     @JoinColumn(name="type_id", referencedColumnName = "id", nullable = false)
@@ -47,6 +49,7 @@ public class Desk extends BaseEntity{
                 .setStatus(status)
                 ;
     }
+
 
     public DeskCreResDTO todeskCreResDTO() {
         return new DeskCreResDTO()

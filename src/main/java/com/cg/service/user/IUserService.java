@@ -8,11 +8,13 @@ import com.cg.service.IGeneralService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IUserService extends IGeneralService<User, Long>, UserDetailsService {
     Boolean existsByUsername(String username);
 
     User getByUsername(String username);
+    Optional<User> findByUsername(String username);
 
     UserCreResDTO create(UserCreReqDTO userCreReqDTO);
 

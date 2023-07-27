@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/assets/sweetalert2/v11.7.12/sweetalert2.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
     <script src="/assets/bootstrap/v5.3.0/js/bootstrap.bundle.min.js"></script>
+
 </head>
 <a href="">
 
@@ -26,8 +27,8 @@
         <div class="container-fluid">
             <div class="row w-100 m-0">
                 <div class="d-flex  col-lg-6 ">
-                    <div class="col-6">
-                        <input class="form-control" placeholder="Tìm kiếm sản phẩm">
+                    <div class="col-6" style="position: relative">
+                        <input class="form-control" placeholder="Tìm kiếm sản phẩm" id="searchbox" autocomplete="off">
                     </div>
                     <div class="btn btn-outline-light col-3" style="margin-left: 5px">
                         <img src="/assets/image/billiard_tb.png" alt="" style="width: 25%; aspect-ratio: 3/2; object-fit: contain;">
@@ -35,25 +36,26 @@
                     </div>
                 </div>
                 <div class="d-flex col-lg-6 justify-content-end">
-                    <button class="btn btn-outline-light" style="margin-right: 5px">
+                    <a href="/products" class="btn btn-outline-light" style="margin-right: 5px">
                         <i class="fas fa-user"></i>
-                        <span>Tên nhân viên</span>
-                    </button>
-                    <button class="btn btn-outline-light">
+                        <span th:text="${user.fullName} + ' - ' + ${user.getRole().getCode()}"></span>
+                    </a>
+                    <a href="/logout" class="btn btn-outline-light">
                         <i class="fas fa-arrow-alt-circle-right"></i>
                         Logout
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
     </nav>
+
 </div>
 <div class="content" style="padding-top: 10px;background-color: #ddd;">
     <div class="container-fluid">
         <div class="row" style=" background-color: #FFF;">
             <div class="col-lg-7" style="padding: 0px;">
                 <div class="" style="height:calc(100vh - 362px); overflow: auto; padding: 10px;">
-                    <table class="table table-bordered" id="tbOrderDetail">
+                    <table class="table table-bordered" >
                         <thead>
                         <tr>
                             <th class="col-1">#</th>
@@ -65,49 +67,13 @@
                             <th class="col-1">Action</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr class="text-center" id="tr_${time.id}">
-                            <td class="text-start">1</td>
-                            <td class="text-start">Bàn 1 (Thời gian) </td>
-                            <td>
-                                <div class="a" style="display: flex;">
-                                    <input class="form-control" type="number" value="1" min="1" max="100" name="timeQuantity">
-                                </div>
-                            </td>
-                            <td>Phút</td>
-                            <td>
-                                <input class="form-control" name="timePrice" value="10000" readonly>
-                            </td>
-                            <td>
-                                <input class="form-control" name="timeTotalAmout" readonly>
-                            </td>
-                            <td>
-                                <button class="btn btn-danger">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr class="text-center" id="tr_${order.id}">
-                            <td class="text-start">1</td>
-                            <td class="text-start">Suki Gould</td>
-                            <td>
-                                <div class="a" style="display: flex;">
-                                    <input class="form-control" type="number" value="1" min="1" max="100" name="quantity">
-                                </div>
-                            </td>
-                            <td>Lon</td>
-                            <td>
-                                <input class="form-control" name="price" value="10000" readonly>
-                            </td>
-                            <td>
-                                <input class="form-control" name="amount" readonly>
-                            </td>
-                            <td>
-                                <button class="btn btn-danger">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </td>
-                        </tr>
+                        <tbody id="tbOrderDetail">
+                            <div id="tbTime">
+
+                            </div>
+                            <div id="tbProduct">
+
+                            </div>
 
 
                         </tbody>
@@ -205,6 +171,7 @@
 <script src="/assets/js/app.js"></script>
 
 <script>
+
     const page = {
         url: {},
         elements: {},
@@ -216,10 +183,19 @@
         },
         initializeControlEvent: {}
     }
+    let deskId = 0;
     page.elements.rowContent = $('#row-content');
     page.elements.btnShowDesk = $('#btnShowDesk');
     page.elements.btnShowProduct = $('#btnShowProduct');
     page.elements.filterField = $('#filterField');
+
+    page.elements.tbOrderDetail = $('#tbOrderDetail');
+    page.elements.tbTime = $('#tbTime');
+    page.elements.tbProduct= $('#tbProduct');
+
+    page.elements.btnAddToCart = $('.btnAddToCart');
+    page.elements.searchBox = $('#searchbox');
+    page.elements.searchResults = $('#searchResults');
 
     page.commands.renderFilter = (item) => {
         return `<div class="col-3" style="padding: 2px;">
@@ -229,9 +205,10 @@
 
     page.commands.renderProduct = (product) => {
         const avatar = product.avatar;
-        return `<div data-id="${product.id}" class="col-3 product">
+        return `<div data-id="${product.id}" class="col-3 product" class="btnAddToCart">
                     <div style="position: relative;">
                         <img src="${avatar.fileUrl}"
+
                              style="width: 100%;">
                         <span style="position: absolute; bottom: 0; left: 0;"
                               class="btn btn-primary btn-sm ">${product.price}</span>
@@ -241,10 +218,14 @@
     }
     page.commands.renderDesk = (desk) => {
         let tbColor = (desk.status === false ? '#0B87C9' : '#DD191D');
-        return `<div data-id="${desk.id}" class="col-2 desk" style="padding: 7px;">
-                    <button class="btn   w-100" style="min-height: 80px;background-color: ${tbColor};">
+        return `<div data-id="${desk.id}" class="col-2 desk" style="padding: 7px; position: relative;" >
+                    <span style="position: absolute; top: 0; left: 0; font-size: 10px; background-color: springgreen"
+                                                  class="btn btn-sm ">${desk.type.code}</span>
+                    <button class="btn   w-100" style="min-height: 80px; color: white; background-color: ${tbColor};">
                     ${desk.name}
                     </button>
+                    <span style="position: absolute; bottom: 0; left: 0; font-size: 12px"
+                              class="btn btn-warning btn-sm ">${desk.priceTime}/h</span>
                 </div>`;
     }
     page.commands.renderFilterProduct = (typeOrCategory) => {
@@ -290,6 +271,58 @@
         })
     }
 
+    page.commands.renderProductDetail = (productDetail) => {
+        const product = productDetail.product;
+        return `
+        <tr class="text-center" id="tr_${productDetail.id}">
+                            <td class="text-start">${productDetail.id}</td>
+                            <td class="text-start">${product.title}</td>
+                            <td>
+                                <div class="a" style="display: flex;">
+                                    <input class="form-sm-control text-sm-center productQuantity" type="number" value="${productDetail.quantity}" min="1" max="100" name="quantity" data-id="${productDetail.id}" >
+                                </div>
+                            </td>
+                            <td>${productDetail.unit}</td>
+                            <td>
+                                <input class="form-control" name="price" value="${productDetail.price}" readonly>
+                            </td>
+                            <td>
+                                <input class="form-control productQuantity" name="amount" value="${productDetail.amount}" id="amount_${productDetail.id}" data-id="${productDetail.id}" readonly>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>`;
+    }
+    page.commands.renderDeskDetail = (data) => {
+        const desk = data.desk;
+        const dateObj = new Date (data.startAt);
+        const startAt = dateObj.toLocaleTimeString();
+        return `
+                <tr class="text-center" id="tr_">
+                    <td class="text-start">1</td>
+                    <td class="text-start">${desk.name} - ${startAt} </td>
+                    <td>
+                        <div class="a" style="display: flex;">
+                            <input class="form-control" type="number" value="0" min="1"  name="timeQuantity">
+                        </div>
+                    </td>
+                    <td>${desk.unit}</td>
+                    <td>
+                        <input class="form-control" name="timePrice" value="${desk.priceTime}" readOnly>
+                    </td>
+                    <td>
+                        <input class="form-control" value="0" name="timeTotalAmout" readOnly>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>`;
+    }
     page.commands.getAllCategory = () => {
         return $.ajax({
             type: 'GET',
@@ -383,6 +416,88 @@
                 url: 'http://localhost:28002/api/desks/' + deskId
             })
     }
+    page.commands.addDeskToCart = (deskId) => {
+        const obj = {
+            deskId: deskId,
+        }
+        $.ajax({
+            headers: {
+                'accept': 'application/json',
+                'content-type': 'application/json'
+            },
+            type: 'POST',
+            url: 'http://localhost:28002/api/carts/add-desk-to-cart',
+            data: JSON.stringify(obj)
+        })
+            .done((data) => {
+                page.elements.tbOrderDetail.empty()
+                $.each((data), (index, item) => {
+                    const str = page.commands.renderDeskDetail(item)
+                    page.elements.tbOrderDetail.append(str)
+                })
+            })
+            .fail((error)=> {
+                console.log(error)
+            })
+    }
+    page.commands.showDeskTimeDetail = (deskId) => {
+        return $.ajax({
+            headers: {
+                'accept': 'application/json',
+                'content-type': 'application/json'
+            },
+            type: 'GET',
+            url: 'http://localhost:28002/api/carts/get-desk-cart-details/' + deskId,
+        })
+
+    }
+    page.commands.addProductToCart = (productId) => {
+        const obj = {
+            productId: productId,
+        }
+        $.ajax({
+            headers: {
+                'accept': 'application/json',
+                'content-type': 'application/json'
+            },
+            type: 'POST',
+            url: 'http://localhost:28002/api/carts/add-to-cart/' + deskId,
+            data: JSON.stringify(obj)
+        })
+            .done((data) => {
+                // page.elements.tbOrderDetail.empty()
+                const currentRow = $('#tr_' + data.id);
+                const str = page.commands.renderProductDetail(data)
+
+                if (currentRow.get(0)) {
+                    currentRow.replaceWith(str);
+                } else {
+                    page.elements.tbOrderDetail.append(str)
+                }
+
+            })
+            .fail((error)=> {
+                console.log(error)
+            })
+    }
+    page.commands.showAllProductDetail = (deskId) => {
+        return $.ajax({
+            headers: {
+                'accept': 'application/json',
+                'content-type': 'application/json'
+            },
+            type: 'GET',
+            url: 'http://localhost:28002/api/carts/' + deskId,
+        })
+            .done((data) => {
+                data.forEach((item) => {
+                    const str = page.commands.renderProductDetail(item)
+                    page.elements.tbOrderDetail.append(str)
+                })
+            })
+
+    }
+
 
     /*********************************************************************************/
 
@@ -404,18 +519,31 @@
             page.commands.getAllDesk();
         })
         page.elements.rowContent.on('click', '.product', function () {
-            const productId = $(this).data('id');
-            page.commands.getProductById(productId).then((data) => {
-                alert('Bạn muốn thêm ' + data.title + ' vào Order?');
 
-            })
+            const productId = +$(this).data('id');
+            page.commands.addProductToCart(productId);
         })
         page.elements.rowContent.on('click', '.desk', function () {
-            const deskId = $(this).data('id');
-            alert('Bạn muốn đưa bàn này vào sử dụng?');
+            deskId = $(this).data('id');
             page.commands.getDeskById(deskId).then((data) => {
-                $('#tbName').text(data.name)
-            })
+                const desk = data;
+                if (desk.status === false) {
+                    $('#tbName').text(data.name)
+                    page.commands.addDeskToCart(deskId)
+
+                } else {
+                        $('#tbName').text(data.name)
+                        page.commands.showDeskTimeDetail(deskId).then((data) => {
+                            page.elements.tbOrderDetail.empty()
+                            $.each((data), (index, item) => {
+                            const str = page.commands.renderDeskDetail(item)
+                            page.elements.tbOrderDetail.append(str)
+                            page.commands.showAllProductDetail(deskId);
+                        })
+                    });
+
+                }
+            });
         })
 
         page.elements.btnShowDesk.on('click', () => {
@@ -431,6 +559,56 @@
             })
             page.commands.getAllProduct()
         })
+
+        page.elements.tbOrderDetail.on('change', '.productQuantity', function ()  {
+
+            const productDetailId = $(this).data('id');
+            console.log(productDetailId);
+            const quantity = $(this).val();
+            console.log(quantity)
+            const obj = {
+                quantity: quantity,
+            }
+            $.ajax({
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/json',
+                },
+                type: 'PATCH',
+                url: 'http://localhost:28002/api/carts/update-product-detail/' + productDetailId,
+                data: JSON.stringify(obj)
+            })
+                .done((data) => {
+                    const currentRow = $('#tr_' + productDetailId);
+                    const str = page.commands.renderProductDetail(data);
+                    currentRow.replaceWith(str);
+                })
+        })
+
+        page.elements.searchBox.on('input', function ()  {
+            const keySearch = $(this).val();
+            console.log(keySearch)
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:28002/api/products/search',
+                data: {
+                    keySearch: keySearch
+                }
+            })
+                .done((data) => {
+                    if (data !== null) {
+                        page.elements.rowContent.empty();
+                        data.forEach((item) => {
+                            const product = item;
+                            const str = page.commands.renderProduct(item);
+                            page.elements.rowContent.append(str);
+                        })
+                    } else {
+                        page.elements.searchResults.empty();
+                    }
+                })
+        })
+
     }
 
     $(() => {
@@ -441,8 +619,8 @@
             page.commands.getAllTypeBtn(data)
         })
         page.commands.getAllDesk()
-    })
 
+    })
 
     const quantity = $('#quantity');
     const price = $('#price');

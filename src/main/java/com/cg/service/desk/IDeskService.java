@@ -20,7 +20,7 @@ public interface IDeskService extends IGeneralService<Desk, Long> {
 
     Boolean existsByNameAndIdNot(String name, Long id);
 
-    DeskUpResDTO update(long deskId, DeskUpReqDTO deskUpReqDTO);
+    DeskUpResDTO update(Desk desk, DeskUpReqDTO deskUpReqDTO);
 
 
 

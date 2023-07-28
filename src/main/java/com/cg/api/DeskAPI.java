@@ -112,8 +112,9 @@ public class DeskAPI {
             data.put("message", "Tên bàn đã tồn tại");
             return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
         }
+        Desk desk = deskOptional.get();
 
-        DeskUpResDTO deskUpResDTO = deskService.update(deskId, deskUpReqDTO);
+        DeskUpResDTO deskUpResDTO = deskService.update(desk, deskUpReqDTO);
 
         return new ResponseEntity<>(deskUpResDTO, HttpStatus.OK);
     }

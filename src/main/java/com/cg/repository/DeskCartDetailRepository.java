@@ -32,4 +32,5 @@ public interface DeskCartDetailRepository extends JpaRepository<DeskCartDetail, 
             "WHERE des.cart = :cart"
     )
     List<DeskCartDetailResDTO> getAllCartDetailItemResDTO(@Param("cart") Cart cart);
+
 }

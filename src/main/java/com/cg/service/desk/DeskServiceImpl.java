@@ -88,8 +88,7 @@ public class DeskServiceImpl implements IDeskService {
     }
 
     @Override
-    public DeskUpResDTO update(long deskId, DeskUpReqDTO deskUpReqDTO) {
-        Desk desk = deskUpReqDTO.toDesk(Long.valueOf(deskId),typeService.findById(deskUpReqDTO.getTypeId()).get());
+    public DeskUpResDTO update(Desk desk, DeskUpReqDTO deskUpReqDTO) {
 
         desk.setName(deskUpReqDTO.getName());
         desk.setPriceTime(BigDecimal.valueOf(Long.parseLong(deskUpReqDTO.getPriceTime())));

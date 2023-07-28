@@ -2,6 +2,8 @@ package com.cg.model;
 
 import com.cg.model.BaseEntity;
 import com.cg.model.User;
+import com.cg.model.dto.cart.CartResDTO;
+import com.cg.model.dto.desk.DeskDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,5 +41,13 @@ public class Cart extends BaseEntity {
         this.totalAmount = totalAmount;
         this.desk = desk;
         this.user = user;
+    }
+    public CartResDTO toCartResDTO() {
+        return new CartResDTO()
+                .setId(id)
+                .setTotalAmount(totalAmount)
+                .setDesk(desk)
+                .setUser(user)
+                ;
     }
 }

@@ -15,7 +15,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "time_order_detail")
+@Table(name = "desk_order_detail")
 @Accessors(chain = true)
 public class DeskOrderDetail extends BaseEntity {
     @Id

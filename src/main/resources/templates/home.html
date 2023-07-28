@@ -86,8 +86,8 @@
                         </div>
                         <div class="col-sm-6 ">
                             <div class="row" style="padding: 5px;">
-                                <div class="col-6 ">Tổng thành tiền</div>
-                                <div class="col-6 text-end">20,0000</div>
+                                <div class="col-6" >Tổng thành tiền</div>
+                                <div class="col-6 text-end" id="total">0</div>
                             </div>
                             <div class="row" style="padding: 5px;">
                                 <div class="col-6 ">Chiết khấu</div>
@@ -119,7 +119,7 @@
                         </div>
 
                         <div class="col-3" style="padding: 0px 1px; ">
-                            <button class="btn   w-100"
+                            <button class="btn w-100" id="btnCheckOut"
                                     style="min-height: 80px;background-color: #DD191D; color: white">Thanh toán
                             </button>
                         </div>
@@ -194,6 +194,7 @@
     page.elements.tbProduct= $('#tbProduct');
 
     page.elements.btnAddToCart = $('.btnAddToCart');
+    page.elements.btnCheckOut = $('#btnCheckOut');
     page.elements.searchBox = $('#searchbox');
     page.elements.searchResults = $('#searchResults');
 
@@ -298,30 +299,36 @@
     }
     page.commands.renderDeskDetail = (data) => {
         const desk = data.desk;
+
         const dateObj = new Date (data.startAt);
         const startAt = dateObj.toLocaleTimeString();
-        return `
-                <tr class="text-center" id="tr_">
-                    <td class="text-start">1</td>
-                    <td class="text-start">${desk.name} - ${startAt} </td>
+        const endAt = new Date (data.endAt).toLocaleTimeString();
+        const minutes = parseInt((new Date (data.endAt).getTime() - new Date (data.startAt).getTime())/ (1000 * 60));
+
+        let str = `
+                <tr class="text-center" id="trd_${data.id}">
+                    <td class="text-start">${data.id}</td>
+                    <td class="text-start">${desk.name} - ${startAt} - ${endAt} </td>
                     <td>
                         <div class="a" style="display: flex;">
-                            <input class="form-control" type="number" value="0" min="1"  name="timeQuantity">
+                            <input class="form-control" type="number" value="${minutes}" min="1"  name="timeQuantity">
                         </div>
                     </td>
-                    <td>${desk.unit}</td>
+                    <td>Phút</td>
                     <td>
                         <input class="form-control" name="timePrice" value="${desk.priceTime}" readOnly>
                     </td>
                     <td>
-                        <input class="form-control" value="0" name="timeTotalAmout" readOnly>
+                        <input class="form-control" value="${data.amount}" name="timeTotalAmout" readOnly>
                     </td>
                     <td>
                         <button class="btn btn-danger">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                     </td>
-                </tr>`;
+                </tr>`
+
+        return str;
     }
     page.commands.getAllCategory = () => {
         return $.ajax({
@@ -497,6 +504,39 @@
             })
 
     }
+    page.commands.updateDeskTimeDetail = () => {
+
+        console.log("CALL", 'http://localhost:28002/api/carts/update-desk-time-detail/' + deskId)
+        $.ajax({
+            headers: {
+                'accept': 'application/json',
+                'content-type': 'application/json',
+            },
+            type: 'GET',
+            url: 'http://localhost:28002/api/carts/update-desk-time-detail/' + deskId,
+        })
+            .done((data) => {
+                console.log(data)
+                const currentRow = $('#trd_' + data.id);
+                const str = page.commands.renderDeskDetail(data)
+
+                currentRow.replaceWith(str);
+                page.commands.updateCheckout();
+            })
+    }
+    page.commands.updateCheckout = () => {
+        $.ajax({
+            headers: {
+                'accept': 'application/json',
+                'content-type': 'application/json'
+            },
+            type: 'GET',
+            url: 'http://localhost:28002/api/carts/get-cart-by-desk/' + deskId,
+        })
+            .done((data) => {
+                $('#total').text(data.totalAmount)
+            })
+    }
 
 
     /*********************************************************************************/
@@ -522,6 +562,7 @@
 
             const productId = +$(this).data('id');
             page.commands.addProductToCart(productId);
+            page.commands.updateCheckout();
         })
         page.elements.rowContent.on('click', '.desk', function () {
             deskId = $(this).data('id');
@@ -539,6 +580,8 @@
                             const str = page.commands.renderDeskDetail(item)
                             page.elements.tbOrderDetail.append(str)
                             page.commands.showAllProductDetail(deskId);
+                            page.commands.updateDeskTimeDetail();
+                            page.commands.updateCheckout();
                         })
                     });
 
@@ -582,6 +625,7 @@
                     const currentRow = $('#tr_' + productDetailId);
                     const str = page.commands.renderProductDetail(data);
                     currentRow.replaceWith(str);
+                    page.commands.updateCheckout();
                 })
         })
 
@@ -609,6 +653,10 @@
                 })
         })
 
+        page.elements.btnCheckOut.on('click', function () {
+
+        })
+
     }
 
     $(() => {
@@ -619,6 +667,10 @@
             page.commands.getAllTypeBtn(data)
         })
         page.commands.getAllDesk()
+
+        setInterval(function() {
+            page.commands.updateDeskTimeDetail();
+        }, 60000);
 
     })
 

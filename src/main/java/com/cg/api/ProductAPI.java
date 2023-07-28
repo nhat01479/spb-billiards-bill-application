@@ -35,15 +35,29 @@ public class ProductAPI {
     @Autowired
     private AppUtils appUtils;
 
-    @GetMapping
-    public ResponseEntity<?> getAll() {
-        List<ProductDTO> productDTOS = productService.findAllProductDTO();
-//        List<ProductDTO> productDTOS = productService.findAllByDeletedFalse(Sort.by("price").descending());
-//        Pageable pageable = PageRequest.of(0, 5);
-//        Page<ProductDTO> productDTOS = productService.findAllByDeletedFalse(pageable);
+//    @GetMapping
+//    public ResponseEntity<?> getAll(@RequestParam ("kw") String kw, @RequestParam("page") int page,
+//                                    @RequestParam(value = "limit", defaultValue = "2") int limit,
+//                                    @RequestParam(value = "sort-by", defaultValue = "price") String sortBy,
+//                                    @RequestParam(value = "sort", defaultValue = "asc") String sort
+//                                    ) {
+//
+////        List<ProductDTO> productDTOS = productService.findAllProductDTO();
+////        List<ProductDTO> productDTOS = productService.findAllByDeletedFalse(Sort.by("price").descending());
+//        Pageable sortedBy =
+//                PageRequest.of(page-1, limit, Sort.by("price").descending().and(Sort.by("title").descending()));
+//
+////        Pageable pageable = PageRequest.of(page-1, limit);
+//        Page<ProductDTO> productDTOS = productService.findAllByDeletedFalse(sortedBy);
+//
+//        return new ResponseEntity<>(productDTOS, HttpStatus.OK);
+//    }
+@GetMapping
+public ResponseEntity<?> getAll() {
+    List<ProductDTO> productDTOS = productService.findAllProductDTO();
 
-        return new ResponseEntity<>(productDTOS, HttpStatus.OK);
-    }
+    return new ResponseEntity<>(productDTOS, HttpStatus.OK);
+}
     @GetMapping("/search")
     public ResponseEntity<?> getAll(@RequestParam ("keySearch") String keySearch) {
         System.out.println(keySearch);
@@ -99,7 +113,7 @@ public class ProductAPI {
     }
 
     @PatchMapping("/{productId}")
-    public ResponseEntity<?> update(@PathVariable String productId, @ModelAttribute ProductUpReqDTO productUpReqDTO, BindingResult bindingResult) {
+    public ResponseEntity<?> update(@PathVariable String productId, ProductUpReqDTO productUpReqDTO, BindingResult bindingResult) {
 
         Product product = productService.findById(Long.valueOf(productId)).orElseThrow(() ->
                 new DataInputException("Mã sản phẩm không tồn tại"));

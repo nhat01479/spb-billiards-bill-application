@@ -2,6 +2,7 @@ package com.cg.api;
 
 import com.cg.exception.DataInputException;
 import com.cg.model.*;
+import com.cg.model.dto.cart.CartResDTO;
 import com.cg.model.dto.cart.desk.DeskCartDetailReqDTO;
 import com.cg.model.dto.cart.desk.DeskCartDetailResDTO;
 import com.cg.model.dto.cart.product.ProductCartDetailReqDTO;
@@ -58,7 +59,18 @@ public class CartAPI {
 //
 //        return new ResponseEntity<>(cartDetailResDTOS, HttpStatus.OK);
 //    }
-    @GetMapping("/{deskId}")
+    @GetMapping("/get-cart-by-desk/{deskId}")
+    public ResponseEntity<?> getCart(@PathVariable ("deskId") String deskIdStr) {
+        Long deskId = Long.parseLong(deskIdStr);
+        Desk desk = deskService.findById(deskId).orElseThrow(()-> {
+            throw  new DataInputException("Desk không tồn tại");
+        });
+
+        CartResDTO cartResDTO = cartService.getCart(desk);
+
+        return new ResponseEntity<>(cartResDTO, HttpStatus.OK);
+    }
+        @GetMapping("/{deskId}")
     public ResponseEntity<?> getAllProductCartDetails(@PathVariable ("deskId") String deskIdStr) {
         Long deskId = Long.parseLong(deskIdStr);
         Desk desk = deskService.findById(deskId).get();
@@ -170,6 +182,19 @@ public class CartAPI {
         ProductCartDetailResDTO productCartDetailResDTO = productCartDetailService.getProductCartDetailItemResDTO(cart, productCartDetail.getProduct().getId());
 
         return new ResponseEntity<>(productCartDetailResDTO, HttpStatus.OK);
+    }
+    @GetMapping("/update-desk-time-detail/{deskId}")
+    public ResponseEntity<?> updateDeskTimeDetail(@PathVariable ("deskId") String deskId) {
+        Desk desk = deskService.findById(Long.valueOf(deskId)).orElseThrow(() -> {
+            throw new DataInputException("Bàn không tồn tại");
+        });
+        Cart cart = cartService.findByDesk(desk.getId(), true).orElseThrow(() -> {
+            throw new DataInputException("Cart không tồn tại");
+        });
+
+        List<DeskCartDetailResDTO> deskCartDetailResDTO = cartService.updateDeskCart(desk);
+
+        return new ResponseEntity<>(deskCartDetailResDTO.get(0), HttpStatus.OK);
     }
 
 }

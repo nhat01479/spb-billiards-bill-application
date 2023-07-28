@@ -2,12 +2,17 @@ package com.cg.service.cart;
 
 import com.cg.exception.DataInputException;
 import com.cg.model.*;
+import com.cg.model.dto.cart.CartResDTO;
 import com.cg.model.dto.cart.desk.DeskCartDetailReqDTO;
+import com.cg.model.dto.cart.desk.DeskCartDetailResDTO;
 import com.cg.model.dto.cart.product.ProductCartDetailReqDTO;
+import com.cg.model.dto.cart.product.ProductCartDetailResDTO;
 import com.cg.repository.CartRepository;
 import com.cg.repository.DeskCartDetailRepository;
 import com.cg.repository.ProductCartDetailRepository;
 import com.cg.service.desk.IDeskService;
+import com.cg.service.deskCartDetail.IDeskCartDetailService;
+import com.cg.service.productCartDetail.IProductCartDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
@@ -15,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Transactional
@@ -28,6 +34,10 @@ public class CartServiceIpml implements ICartService{
     private DeskCartDetailRepository deskCartDetailRepository;
     @Autowired
     private IDeskService deskService;
+    @Autowired
+    private IDeskCartDetailService deskCartDetailService;
+    @Autowired
+    private IProductCartDetailService productCartDetailService;
 
     @Override
     public List<Cart> findAll() {
@@ -208,6 +218,60 @@ public class CartServiceIpml implements ICartService{
 
         }
         return cart;
+    }
+
+    public CartResDTO getCart(Desk desk) {
+
+        Cart cart = findByDesk(desk.getId(), true).orElseThrow(()-> {
+            throw  new DataInputException("Cart không tồn tại");
+        });
+
+        List<ProductCartDetail> productCartDetail = productCartDetailService.findAllByCart(cart);
+        List<DeskCartDetail> deskCartDetail = deskCartDetailService.findAllByCart(cart);
+
+        BigDecimal totalAmount = BigDecimal.ZERO;
+
+        for (ProductCartDetail item: productCartDetail) {
+            BigDecimal itemAmount = item.getAmount();
+            totalAmount = totalAmount.add(itemAmount);
+        }
+        System.out.println(totalAmount);
+
+        for (DeskCartDetail item: deskCartDetail) {
+            Date endAt = new Date();
+            Long differenceInMillis = endAt.getTime() - item.getStartAt().getTime();
+            Long minutesDifference = TimeUnit.MILLISECONDS.toMinutes(differenceInMillis);
+
+            BigDecimal amount = item.getPriceTime().multiply(BigDecimal.valueOf(minutesDifference)).divide(BigDecimal.valueOf(60), 2, BigDecimal.ROUND_HALF_UP);
+            totalAmount = totalAmount.add(amount);
+            item.setEndAt(endAt);
+        }
+        System.out.println(totalAmount);
+
+        cart.setTotalAmount(totalAmount);
+        cartRepository.save(cart);
+
+        return cart.toCartResDTO();
+    }
+    public List<DeskCartDetailResDTO> updateDeskCart(Desk desk) {
+        Cart cart = findByDesk(desk.getId(), true).orElseThrow(()-> {
+            throw  new DataInputException("Cart không tồn tại");
+        });
+        List<DeskCartDetail> deskCartDetails = deskCartDetailService.findAllByCart(cart);
+        for (DeskCartDetail item: deskCartDetails) {
+            Date endAt = new Date();
+
+            Long differenceInMillis = endAt.getTime() - item.getStartAt().getTime();
+            Long minutesDifference = TimeUnit.MILLISECONDS.toMinutes(differenceInMillis);
+
+            BigDecimal amount = item.getPriceTime().multiply(BigDecimal.valueOf(minutesDifference)).divide(BigDecimal.valueOf(60), 2, BigDecimal.ROUND_HALF_UP);
+            item.setAmount(amount);
+            item.setEndAt(endAt);
+            deskCartDetailRepository.save(item);
+            System.out.println(item.getEndAt());
+        }
+        List<DeskCartDetailResDTO> deskCartDetailResDTOS = deskCartDetailRepository.getAllCartDetailItemResDTO(cart);
+        return deskCartDetailResDTOS;
     }
 
     @Override

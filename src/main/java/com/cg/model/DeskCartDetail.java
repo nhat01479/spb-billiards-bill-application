@@ -32,7 +32,7 @@ public class DeskCartDetail extends BaseEntity {
     @Column(name = "start_at", nullable = false, updatable = false)
     private Date startAt;
 
-    @Column(name = "end_at", updatable = false)
+    @Column(name = "end_at")
     private Date endAt;
 
     private String unit;

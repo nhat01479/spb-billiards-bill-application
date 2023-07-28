@@ -1,11 +1,18 @@
 package com.cg.service.productOrderDetail;
 
 import com.cg.model.ProductOrderDetail;
+import com.cg.repository.ProductOrderDetailRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-
+@Service
+@Transactional
 public class ProductOrderDetailServiceImpl implements IProductOrderDetailService{
+    @Autowired
+    private ProductOrderDetailRepository productOrderDetailRepository;
     @Override
     public List<ProductOrderDetail> findAll() {
         return null;
@@ -13,12 +20,12 @@ public class ProductOrderDetailServiceImpl implements IProductOrderDetailService
 
     @Override
     public Optional<ProductOrderDetail> findById(Long id) {
-        return Optional.empty();
+        return productOrderDetailRepository.findById(id);
     }
 
     @Override
     public ProductOrderDetail save(ProductOrderDetail productOrderDetail) {
-        return null;
+        return productOrderDetailRepository.save(productOrderDetail);
     }
 
     @Override

@@ -39,4 +39,17 @@ public class ProductCartDetail extends BaseEntity {
     @Column(precision = 10, scale = 0, nullable = false)
     private BigDecimal amount;
 
+    public ProductOrderDetail toProductOrderDetail (Order order) {
+        return new ProductOrderDetail()
+                .setId(null)
+                .setProduct(product)
+                .setTitle(title)
+                .setOrder(order)
+                .setUnit(unit)
+                .setPrice(price)
+                .setQuantity(quantity)
+                .setAmount(amount)
+                ;
+    }
+
 }

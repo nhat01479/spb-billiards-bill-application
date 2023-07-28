@@ -35,6 +35,8 @@ public class DeskOrderDetail extends BaseEntity {
 
     @Column(name = "end_at", updatable = false)
     private Date endAt;
+    private String unit;
+
 
     @Column(precision = 10, scale = 0, nullable = false)
     private BigDecimal priceTime;

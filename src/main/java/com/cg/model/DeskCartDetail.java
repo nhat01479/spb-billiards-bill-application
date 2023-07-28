@@ -35,12 +35,23 @@ public class DeskCartDetail extends BaseEntity {
     @Column(name = "end_at")
     private Date endAt;
 
-    private String unit;
+    private String unit="Giờ";
 
     @Column(precision = 10, scale = 0, nullable = false)
     private BigDecimal priceTime;
 
     @Column(nullable = false)
     private BigDecimal amount;
-
+    public DeskOrderDetail toDeskOrderDetail (Order order) {
+        return new DeskOrderDetail()
+                .setId(null)
+                .setDesk(desk)
+                .setOrder(order)
+                .setStartAt(startAt)
+                .setEndAt(endAt)
+                .setUnit(unit)
+                .setPriceTime(priceTime)
+                .setAmount(amount)
+                ;
+    }
 }

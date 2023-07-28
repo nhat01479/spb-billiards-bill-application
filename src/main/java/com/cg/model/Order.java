@@ -1,5 +1,6 @@
 package com.cg.model;
 
+import com.cg.model.dto.order.OrderResDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,4 +34,12 @@ public class Order extends BaseEntity {
     private BigDecimal totalAmount;
 
     private boolean status;
+    public OrderResDTO toOrderResDTO () {
+        return new OrderResDTO()
+                .setId(id)
+                .setUser(user)
+                .setDesk(desk)
+                .setTotalAmount(totalAmount)
+                ;
+    }
 }

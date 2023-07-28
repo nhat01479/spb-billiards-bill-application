@@ -654,7 +654,21 @@
         })
 
         page.elements.btnCheckOut.on('click', function () {
-
+            const obj = {
+                deskId: deskId
+            }
+            $.ajax({
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/json'
+                },
+                type: 'POST',
+                url: 'http://localhost:28002/api/orders',
+                data: JSON.stringify(obj)
+            })
+                .done((data) => {
+                    console.log(data)
+                })
         })
 
     }

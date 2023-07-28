@@ -50,4 +50,12 @@ public class Cart extends BaseEntity {
                 .setUser(user)
                 ;
     }
+    public Order toOrder() {
+        return new Order()
+                .setId(null)
+                .setUser(user)
+                .setDesk(desk)
+                .setTotalAmount(totalAmount)
+                ;
+    }
 }

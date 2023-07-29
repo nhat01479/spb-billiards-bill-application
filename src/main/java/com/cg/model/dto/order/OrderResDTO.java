@@ -9,15 +9,25 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
+import java.util.Date;
+
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Accessors(chain = true)
 public class OrderResDTO {
     private Long id;
     private BigDecimal totalAmount;
     private Desk desk;
     private User user;
+    private Date createdAt;
+
+    public OrderResDTO(Long id, BigDecimal totalAmount, Desk desk, User user, Date createdAt) {
+        this.id = id;
+        this.totalAmount = totalAmount;
+        this.desk = desk;
+        this.user = user;
+        this.createdAt = createdAt;
+    }
 }
 

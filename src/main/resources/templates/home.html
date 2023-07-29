@@ -54,7 +54,7 @@
     <div class="container-fluid">
         <div class="row" style=" background-color: #FFF;">
             <div class="col-lg-7" style="padding: 0px;">
-                <div class="" style="height:calc(100vh - 362px); overflow: auto; padding: 10px;">
+                <div class="" style="height:calc(100vh - 296px); overflow: auto; padding: 10px;">
                     <table class="table table-bordered" >
                         <thead>
                         <tr>
@@ -67,7 +67,7 @@
                             <th class="col-1">Action</th>
                         </tr>
                         </thead>
-                        <tbody id="tbOrderDetail">
+                        <tbody id="tbCartDetail">
                             <div id="tbTime">
 
                             </div>
@@ -89,21 +89,21 @@
                                 <div class="col-6" >Tổng thành tiền</div>
                                 <div class="col-6 text-end" id="total">0</div>
                             </div>
-                            <div class="row" style="padding: 5px;">
-                                <div class="col-6 ">Chiết khấu</div>
-                                <div class="col-6 text-end"><input class="form-control"></div>
-                            </div>
-                            <div class="row" style="padding: 5px;">
-                                <div class="col-6 ">Tổng cộng</div>
-                                <div class="col-6 text-end">20,0000</div>
-                            </div>
+<!--                            <div class="row" style="padding: 5px;">-->
+<!--                                <div class="col-6 ">Chiết khấu</div>-->
+<!--                                <div class="col-6 text-end"><input class="form-control"></div>-->
+<!--                            </div>-->
+<!--                            <div class="row" style="padding: 5px;">-->
+<!--                                <div class="col-6 ">Tổng cộng</div>-->
+<!--                                <div class="col-6 text-end">20,0000</div>-->
+<!--                            </div>-->
                             <div class="row" style="padding: 5px;">
                                 <div class="col-6 ">Khách đưa</div>
-                                <div class="col-6 text-end"><input class="form-control"></div>
+                                <div class="col-6 text-end"><input class="form-control text-end" id="cusPay"></div>
                             </div>
                             <div class="row" style="padding: 5px;">
-                                <div class="col-6 ">Tiền thừa</div>
-                                <div class="col-6 text-end">20,000</div>
+                                <div class="col-6">Tiền thừa</div>
+                                <div class="col-6 text-end" id="changeMoney">0</div>
                             </div>
                         </div>
                     </div>
@@ -189,7 +189,7 @@
     page.elements.btnShowProduct = $('#btnShowProduct');
     page.elements.filterField = $('#filterField');
 
-    page.elements.tbOrderDetail = $('#tbOrderDetail');
+    page.elements.tbCartDetail = $('#tbCartDetail');
     page.elements.tbTime = $('#tbTime');
     page.elements.tbProduct= $('#tbProduct');
 
@@ -219,7 +219,7 @@
     }
     page.commands.renderDesk = (desk) => {
         let tbColor = (desk.status === false ? '#0B87C9' : '#DD191D');
-        return `<div data-id="${desk.id}" class="col-2 desk" style="padding: 7px; position: relative;" >
+        return `<div id="desk_${desk.id}" data-id="${desk.id}" class="col-2 desk" style="padding: 7px; position: relative;" >
                     <span style="position: absolute; top: 0; left: 0; font-size: 10px; background-color: springgreen"
                                                   class="btn btn-sm ">${desk.type.code}</span>
                     <button class="btn   w-100" style="min-height: 80px; color: white; background-color: ${tbColor};">
@@ -308,7 +308,7 @@
         let str = `
                 <tr class="text-center" id="trd_${data.id}">
                     <td class="text-start">${data.id}</td>
-                    <td class="text-start">${desk.name} - ${startAt} - ${endAt} </td>
+                    <td class="text-start">${desk.name} - ${startAt} </td>
                     <td>
                         <div class="a" style="display: flex;">
                             <input class="form-control" type="number" value="${minutes}" min="1"  name="timeQuantity">
@@ -437,10 +437,20 @@
             data: JSON.stringify(obj)
         })
             .done((data) => {
-                page.elements.tbOrderDetail.empty()
+                page.elements.tbCartDetail.empty()
                 $.each((data), (index, item) => {
                     const str = page.commands.renderDeskDetail(item)
-                    page.elements.tbOrderDetail.append(str)
+                    page.elements.tbCartDetail.append(str)
+
+                    page.commands.getDeskById(deskId).then((data) => {
+                        const desk = data;
+                        const deskStr = page.commands.renderDesk (desk)
+                        const currentDesk = $('#desk_' + desk.id);
+                        currentDesk.replaceWith(deskStr);
+                    })
+
+
+
                 })
             })
             .fail((error)=> {
@@ -448,6 +458,7 @@
             })
     }
     page.commands.showDeskTimeDetail = (deskId) => {
+        console.log("showDeskTimeDetail", 'http://localhost:28002/api/carts/get-desk-cart-details/' + deskId)
         return $.ajax({
             headers: {
                 'accept': 'application/json',
@@ -455,6 +466,8 @@
             },
             type: 'GET',
             url: 'http://localhost:28002/api/carts/get-desk-cart-details/' + deskId,
+        }).fail(function(data){
+            console.log(data)
         })
 
     }
@@ -462,7 +475,8 @@
         const obj = {
             productId: productId,
         }
-        $.ajax({
+
+     return    $.ajax({
             headers: {
                 'accept': 'application/json',
                 'content-type': 'application/json'
@@ -472,16 +486,15 @@
             data: JSON.stringify(obj)
         })
             .done((data) => {
-                // page.elements.tbOrderDetail.empty()
+                // page.elements.tbCartDetail.empty()
                 const currentRow = $('#tr_' + data.id);
                 const str = page.commands.renderProductDetail(data)
 
                 if (currentRow.get(0)) {
                     currentRow.replaceWith(str);
                 } else {
-                    page.elements.tbOrderDetail.append(str)
+                    page.elements.tbCartDetail.append(str)
                 }
-
             })
             .fail((error)=> {
                 console.log(error)
@@ -499,7 +512,7 @@
             .done((data) => {
                 data.forEach((item) => {
                     const str = page.commands.renderProductDetail(item)
-                    page.elements.tbOrderDetail.append(str)
+                    page.elements.tbCartDetail.append(str)
                 })
             })
 
@@ -525,7 +538,8 @@
             })
     }
     page.commands.updateCheckout = () => {
-        $.ajax({
+
+            $.ajax({
             headers: {
                 'accept': 'application/json',
                 'content-type': 'application/json'
@@ -536,6 +550,7 @@
             .done((data) => {
                 $('#total').text(data.totalAmount)
             })
+
     }
 
 
@@ -561,32 +576,41 @@
         page.elements.rowContent.on('click', '.product', function () {
 
             const productId = +$(this).data('id');
-            page.commands.addProductToCart(productId);
-            page.commands.updateCheckout();
+
+            page.commands.addProductToCart(productId).then(() => {
+               page.commands.updateCheckout();
+            })
+
         })
         page.elements.rowContent.on('click', '.desk', function () {
             deskId = $(this).data('id');
-            page.commands.getDeskById(deskId).then((data) => {
-                const desk = data;
-                if (desk.status === false) {
-                    $('#tbName').text(data.name)
-                    page.commands.addDeskToCart(deskId)
-
-                } else {
-                        $('#tbName').text(data.name)
+                page.commands.getDeskById(deskId).then((data) => {
+                    const desk = data;
+                    $('#tbName').text(desk.name)
+                    if (desk.status === false) {
+                        const cf = confirm("Sử dụng bàn này?");
+                        if (cf) {
+                            page.commands.addDeskToCart(deskId)
+                        } else {
+                            return
+                        }
+                    } else {
                         page.commands.showDeskTimeDetail(deskId).then((data) => {
-                            page.elements.tbOrderDetail.empty()
+                            const deskTimeDetail = data;
+                            console.log("deskTimeDetail", deskTimeDetail)
+                            page.elements.tbCartDetail.empty()
                             $.each((data), (index, item) => {
-                            const str = page.commands.renderDeskDetail(item)
-                            page.elements.tbOrderDetail.append(str)
-                            page.commands.showAllProductDetail(deskId);
-                            page.commands.updateDeskTimeDetail();
-                            page.commands.updateCheckout();
-                        })
-                    });
+                                const str = page.commands.renderDeskDetail(item)
+                                page.elements.tbCartDetail.append(str)
+                                page.commands.showAllProductDetail(deskId);
+                                page.commands.updateDeskTimeDetail();
+                                page.commands.updateCheckout();
+                            })
+                        });
 
-                }
-            });
+                    }
+                });
+
         })
 
         page.elements.btnShowDesk.on('click', () => {
@@ -603,7 +627,7 @@
             page.commands.getAllProduct()
         })
 
-        page.elements.tbOrderDetail.on('change', '.productQuantity', function ()  {
+        page.elements.tbCartDetail.on('change', '.productQuantity', function ()  {
 
             const productDetailId = $(this).data('id');
             console.log(productDetailId);
@@ -654,21 +678,34 @@
         })
 
         page.elements.btnCheckOut.on('click', function () {
-            const obj = {
-                deskId: deskId
-            }
-            $.ajax({
-                headers: {
-                    'accept': 'application/json',
-                    'content-type': 'application/json'
-                },
-                type: 'POST',
-                url: 'http://localhost:28002/api/orders',
-                data: JSON.stringify(obj)
+            App.showCheckoutConfirmDialog().then((result) => {
+                if (result.isConfirmed) {
+                    const obj = {
+                        deskId: deskId
+                    }
+                    $.ajax({
+                        headers: {
+                            'accept': 'application/json',
+                            'content-type': 'application/json'
+                        },
+                        type: 'POST',
+                        url: 'http://localhost:28002/api/orders',
+                        data: JSON.stringify(obj)
+                    })
+                        .done((data) => {
+                            const str = page.commands.renderDesk (data)
+                            const currentDesk = $('#desk_' + data.id);
+                            currentDesk.replaceWith(str);
+                            page.elements.tbCartDetail.empty();
+                            $('#total').text(0);
+                            App.showSuccessAlert("Thanh toán thành công!")
+                        })
+                }
             })
-                .done((data) => {
-                    console.log(data)
-                })
+        })
+
+        $('#cusPay').on('input', function () {
+            $('#changeMoney').text(+$('#total').text() - $(this).val())
         })
 
     }
@@ -682,20 +719,10 @@
         })
         page.commands.getAllDesk()
 
-        setInterval(function() {
-            page.commands.updateDeskTimeDetail();
-        }, 60000);
+        // setInterval(function() {
+        //     page.commands.updateDeskTimeDetail();
+        // }, 60000);
 
-    })
-
-    const quantity = $('#quantity');
-    const price = $('#price');
-    const total = $('#total');
-
-    total.val(price.val() * quantity.val());
-
-    quantity.on('change', function () {
-        $('#total').val(quantity.val() * price.val());
     })
 
 </script>

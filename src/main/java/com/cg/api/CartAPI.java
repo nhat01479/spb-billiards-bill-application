@@ -15,6 +15,7 @@ import com.cg.service.productCartDetail.IProductCartDetailService;
 import com.cg.service.user.IUserService;
 import com.cg.ultis.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -70,19 +71,13 @@ public class CartAPI {
 
         return new ResponseEntity<>(cartResDTO, HttpStatus.OK);
     }
-        @GetMapping("/{deskId}")
+    @GetMapping("/{deskId}")
     public ResponseEntity<?> getAllProductCartDetails(@PathVariable ("deskId") String deskIdStr) {
         Long deskId = Long.parseLong(deskIdStr);
         Desk desk = deskService.findById(deskId).get();
 
         if (desk.isStatus()) {
-            Optional<Cart> cartOptional = cartService.findByDesk(desk.getId(), true);
-
-            if (cartOptional.isEmpty()) {
-                return new ResponseEntity<>(null, HttpStatus.OK);
-            }
-
-            Cart cart = cartOptional.get();
+            Cart cart = cartService.findCartByDesk(deskId, true, PageRequest.of(0,1)).get(0);
 
             List<ProductCartDetailResDTO> productCartDetailResDTOS = productCartDetailService.getAllProductCartDetailResDTO(cart);
 
@@ -104,7 +99,7 @@ public class CartAPI {
                 return new ResponseEntity<>(null, HttpStatus.OK);
             }
 
-            Cart cart = cartOptional.get();
+            Cart cart = cartService.findCartByDesk(deskId, true, PageRequest.of(0,1)).get(0);
 
             List<DeskCartDetailResDTO> deskCartDetailResDTOS = deskCartDetailService.getAllDeskCartDetailResDTO(cart);
 
@@ -188,9 +183,7 @@ public class CartAPI {
         Desk desk = deskService.findById(Long.valueOf(deskId)).orElseThrow(() -> {
             throw new DataInputException("Bàn không tồn tại");
         });
-        Cart cart = cartService.findByDesk(desk.getId(), true).orElseThrow(() -> {
-            throw new DataInputException("Cart không tồn tại");
-        });
+        Cart cart = cartService.findCartByDesk(desk.getId(), true, PageRequest.of(0,1)).get(0);
 
         List<DeskCartDetailResDTO> deskCartDetailResDTO = cartService.updateDeskCart(desk);
 

@@ -12,6 +12,7 @@ import com.cg.service.deskOrderDetail.IDeskOrderDetailService;
 import com.cg.service.productCartDetail.IProductCartDetailService;
 import com.cg.service.productOrderDetail.IProductOrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -43,14 +44,15 @@ public class OrderServiceImpl implements IOrderService{
 
     @Override
     public OrderResDTO create(Desk desk) {
-        Cart cart = cartService.findByDesk(desk.getId(), true).orElseThrow(()-> {
-            throw new DataInputException("Cart không tồn tại");
-        });
+        List<Cart> carts = cartService.findCartByDesk(desk.getId(), true, PageRequest.of(0,1));
+        Cart cart = carts.get(0);
+
         Order order = cart.toOrder();
         order.setStatus(true);
         orderRepository.save(order);
         desk.setStatus(false);
         deskRepository.save(desk);
+        cartService.save(cart);
 
         List<ProductOrderDetail> productOrderDetails = new ArrayList<>();
         List<DeskOrderDetail> deskOrderDetails = new ArrayList<>();
@@ -71,6 +73,11 @@ public class OrderServiceImpl implements IOrderService{
         }
 
         return order.toOrderResDTO();
+    }
+
+    @Override
+    public List<OrderResDTO> findAllOrderResDTO() {
+        return orderRepository.findAllOrderResDTO();
     }
 
     @Override

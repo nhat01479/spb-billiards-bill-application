@@ -17,25 +17,6 @@ public class HomeController {
     @Autowired
     private IUserService userService;
 
-    //    @GetMapping
-//    public String showHomePage(){
-//        return "index";
-//    }
-//
-//    @GetMapping("/products")
-//    public String showDashboard() {
-//        return "/product/dashboard";
-//    }
-//
-//
-//    @GetMapping("/login")
-//    public String showLoginPage() {
-//        return "login";
-//    }
-//    @GetMapping("/register")
-//    public String showRegisterPage() {
-//        return "register";
-//    }
 
     @GetMapping("/home")
     public String showHomePage(Model model) {
@@ -44,12 +25,19 @@ public class HomeController {
         model.addAttribute("user", user);
         return "home";
     }
+    @GetMapping("/orders")
+    public String showListOrder(Model model) {
+        String username = appUtils.getPrincipalUsername();
+        User user = userService.getByUsername(username);
+        model.addAttribute("user", user);
+        return "/order/listOrder";
+    }
     @GetMapping("/products")
     public String showListProduct(Model model) {
         String username = appUtils.getPrincipalUsername();
         User user = userService.getByUsername(username);
         model.addAttribute("user", user);
-        return "/product/dashboard";
+        return "/product/listProduct";
     }
     @GetMapping("/desks")
     public String showListDesk(Model model) {

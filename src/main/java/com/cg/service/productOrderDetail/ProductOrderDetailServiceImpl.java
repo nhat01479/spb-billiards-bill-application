@@ -1,6 +1,8 @@
 package com.cg.service.productOrderDetail;
 
+import com.cg.model.Order;
 import com.cg.model.ProductOrderDetail;
+import com.cg.model.dto.order.product.ProductOrderDetailResDTO;
 import com.cg.repository.ProductOrderDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,5 +38,11 @@ public class ProductOrderDetailServiceImpl implements IProductOrderDetailService
     @Override
     public void deleteById(Long id) {
 
+    }
+
+    @Override
+    public List<ProductOrderDetailResDTO> getAllProductOrderDetailDTO(Order order) {
+
+        return productOrderDetailRepository.getAllProductOrderDetailDTO(order);
     }
 }

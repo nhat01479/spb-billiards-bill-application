@@ -14,6 +14,8 @@ import com.cg.service.desk.IDeskService;
 import com.cg.service.deskCartDetail.IDeskCartDetailService;
 import com.cg.service.productCartDetail.IProductCartDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -58,15 +60,20 @@ public class CartServiceIpml implements ICartService{
     }
 
     @Override
+    public List<Cart> findCartByDesk(Long deskId, Boolean boo, Pageable pageable) {
+        return cartRepository.findCartByDesk(deskId, boo, pageable);
+    }
+
+    @Override
     public Cart addToCart(ProductCartDetailReqDTO productCartDetailReqDTO, Product product, Desk desk, User user) {
 
-        Optional<Cart> cartOptional = cartRepository.findByDesk(desk.getId(), true);
+        List<Cart> carts = cartRepository.findCartByDesk(desk.getId(), true, PageRequest.of(0,1));
         Cart cart = new Cart();
 
-        if (cartOptional.isEmpty()) {
+        if (carts.isEmpty()) {
             cart.setUser(user);
             cart.setTotalAmount(BigDecimal.ZERO);
-            cart.setCreatedAt(cartOptional.get().getCreatedAt());
+            cart.setCreatedAt(carts.get(0).getCreatedAt());
             cartRepository.save(cart);
 
             BigDecimal price = product.getPrice();
@@ -89,7 +96,7 @@ public class CartServiceIpml implements ICartService{
 
         }
         else {
-            cart = cartOptional.get();
+            cart = carts.get(0);
             Optional<ProductCartDetail> productCartDetailOptional = productCartDetailRepository.findByCartAndProduct(cart, product);
 
             if (productCartDetailOptional.isEmpty()) {
@@ -183,10 +190,10 @@ public class CartServiceIpml implements ICartService{
     @Override
     public Cart addDeskToCart(DeskCartDetailReqDTO deskCartDetailReqDTO, Desk desk, User user) {
 
-        Optional<Cart> cartOptional = cartRepository.findByDesk(desk.getId(), false);
-        Cart cart = new Cart();
+//        Optional<Cart> cartOptional = cartRepository.findByDesk(desk.getId(), false);
+            Cart cart = new Cart();
 
-        if (cartOptional.isEmpty()) {
+//        if (cartOptional.isEmpty()) {
             cart.setUser(user);
             cart.setTotalAmount(BigDecimal.ZERO);
             desk.setStatus(true);
@@ -196,13 +203,6 @@ public class CartServiceIpml implements ICartService{
             cartRepository.save(cart);
 
             Date starAt = new Date();
-
-            // Lấy số milliseconds giữa hai ngày
-//            long millisecondsBetween = endDate.getTime() - startDate.getTime();
-//
-//            // Chuyển đổi milliseconds thành số phút
-//            long minutes = millisecondsBetween / 60000;
-//            BigDecimal amount = priceTime.multiply(BigDecimal.valueOf(quantity));
 
             DeskCartDetail deskCartDetail = new DeskCartDetail();
             deskCartDetail.setCart(cart);
@@ -215,16 +215,13 @@ public class CartServiceIpml implements ICartService{
             deskCartDetail.setAmount(BigDecimal.ZERO);
             deskCartDetailRepository.save(deskCartDetail);
 
-
-        }
+//        }
         return cart;
     }
 
     public CartResDTO getCart(Desk desk) {
 
-        Cart cart = findByDesk(desk.getId(), true).orElseThrow(()-> {
-            throw  new DataInputException("Cart không tồn tại");
-        });
+        Cart cart = findCartByDesk(desk.getId(), true, PageRequest.of(0,1)).get(0);
 
         List<ProductCartDetail> productCartDetail = productCartDetailService.findAllByCart(cart);
         List<DeskCartDetail> deskCartDetail = deskCartDetailService.findAllByCart(cart);

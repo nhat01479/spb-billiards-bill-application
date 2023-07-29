@@ -1,6 +1,9 @@
 package com.cg.service.deskOrderDetail;
 
 import com.cg.model.DeskOrderDetail;
+import com.cg.model.Order;
+import com.cg.model.dto.cart.desk.DeskCartDetailResDTO;
+import com.cg.model.dto.order.desk.DeskOrderDetailResDTO;
 import com.cg.repository.DeskOrderDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,5 +39,10 @@ public class DeskOrderServiceImpl implements IDeskOrderDetailService{
     @Override
     public void deleteById(Long id) {
 
+    }
+
+    @Override
+    public List<DeskOrderDetailResDTO> getAllDeskOrderDetailDTO(Order order) {
+        return deskOrderDetailRepository.getAllDeskOrderDetailDTO(order);
     }
 }

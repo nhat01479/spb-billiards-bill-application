@@ -25,6 +25,17 @@ class App {
             cancelButtonText: 'Cancel',
         });
     }
+    static showCheckoutConfirmDialog() {
+        return Swal.fire({
+            icon: 'warning',
+            text: 'Xác nhận thanh toán?',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'Trở lại',
+        });
+    }
 
     static showSuccessAlert(t) {
         Swal.fire({

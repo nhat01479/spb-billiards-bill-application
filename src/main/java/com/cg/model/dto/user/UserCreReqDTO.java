@@ -81,7 +81,7 @@ public class UserCreReqDTO implements Validator {
             errors.rejectValue("fullName", "fullName.length", "Tên không được để trống");
         } else {
             if (!fullName.matches("([A-Z]+[a-z]*[ ]?)+$")) {
-                errors.rejectValue("fullName", "fullName.number", "Tên bắt đầu bằng chữ hoa, không được chứa số và ký tự đặc biệt");
+                errors.rejectValue("fullName", "fullName.number", "Tên bắt đầu bằng chữ hoa, không dấu, không được chứa số và ký tự đặc biệt");
             } else {
                 if (fullName.trim().length() < 5 || fullName.trim().length() > 20) {
                     errors.rejectValue("fullName", "fullName.length", "Tên từ 5-20 ký tự");

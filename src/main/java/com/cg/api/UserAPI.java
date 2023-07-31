@@ -56,7 +56,7 @@ public class UserAPI {
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody UserCreReqDTO userCreReqDTO, BindingResult bindingResult) {
-//        new UserCreReqDTO().validate(userCreReqDTO, bindingResult);
+        new UserCreReqDTO().validate(userCreReqDTO, bindingResult);
 
         if (bindingResult.hasFieldErrors()) {
             return appUtils.mapErrorToResponse(bindingResult);
@@ -143,5 +143,12 @@ public class UserAPI {
             data.put("message", "Lỗi xóa user");
             return new ResponseEntity<>(data, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> getAll(@RequestParam ("keySearch") String keySearch) {
+        keySearch = "%" + keySearch + "%";
+        List<UserDTO> userDTOS = userService.findAllByDeletedFalseAndUserNameLikeAndFullNameLike(keySearch,keySearch);
+        return new ResponseEntity<>(userDTOS, HttpStatus.OK);
     }
 }

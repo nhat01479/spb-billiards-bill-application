@@ -11,4 +11,5 @@ import java.util.List;
 public interface IOrderService extends IGeneralService <Order, Long> {
     OrderResDTO create (Desk desk);
     List<OrderResDTO> findAllOrderResDTO();
+    List<OrderResDTO> findAllOrderResDTOByKeySearch(String keySearch);
 }

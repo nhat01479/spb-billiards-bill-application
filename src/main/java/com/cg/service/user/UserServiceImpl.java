@@ -130,4 +130,8 @@ public class UserServiceImpl implements IUserService {
         return userRepository.existsByEmail(email);
     }
 
+    @Override
+    public List<UserDTO> findAllByDeletedFalseAndUserNameLikeAndFullNameLike(String username, String fullName) {
+        return userRepository.findAllByDeletedFalseAndUserNameLikeAndFullNameLike(username,fullName);
+    }
 }

@@ -31,4 +31,14 @@ public interface DeskRepository extends JpaRepository<Desk, Long> {
     )
     List<DeskDTO> findAllDeskDTOS();
     List<DeskDTO> findAllByDeletedFalseAndTypeId(Long typeId);
+
+    @Query("select new com.cg.model.dto.desk.DeskDTO (" +
+            "d.id, " +
+            "d.name, " +
+            "d.priceTime, " +
+            "d.unit, " +
+            "d.type, " +
+            "d.status)" +
+            " from Desk as d where (d.name like %:name%) and d.deleted=false")
+    List<DeskDTO> findAllByDeletedFalseAndNameLike(String name);
 }

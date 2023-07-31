@@ -26,7 +26,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "from Product as p where p.deleted=false")
     List<ProductDTO> findAllProductDTO();
     List<ProductDTO> findAllByDeletedFalse(Sort sort);
-    Page<ProductDTO> findAllByDeletedFalse(Pageable pageable);
     @Query("select new com.cg.model.dto.product.ProductDTO (" +
             "p.id, " +
             "p.title, " +
@@ -35,7 +34,19 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "p.description, " +
             "p.category, " +
             "p.avatar) " +
-            "from Product as p where (p.title like %:title%  or p.description like %:description% ) and p.deleted=false")
+            "from Product as p " +
+            "where (p.title like %:title%  or p.description like %:description% ) and p.deleted=false ")
+    Page<ProductDTO> findAllByDeletedFalse(String title, String description, Pageable pageable);
+    @Query("select new com.cg.model.dto.product.ProductDTO (" +
+            "p.id, " +
+            "p.title, " +
+            "p.price, " +
+            "p.unit, " +
+            "p.description, " +
+            "p.category, " +
+            "p.avatar) " +
+            "from Product as p " +
+            "where (p.title like %:title%  or p.description like %:description% ) and p.deleted=false ")
     List<ProductDTO> findAllByDeletedFalseAndTitleLikeAndDescriptionLike(String title, String description);
     @Query("select new com.cg.model.dto.product.ProductDTO (" +
             "p.id, " +

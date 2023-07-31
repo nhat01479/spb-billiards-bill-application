@@ -5,6 +5,7 @@ import com.cg.exception.DataInputException;
 import com.cg.exception.EmailExistsException;
 import com.cg.model.Category;
 import com.cg.model.Product;
+import com.cg.model.dto.PageableReqDTO;
 import com.cg.model.dto.product.ProductCreReqDTO;
 import com.cg.model.dto.product.ProductDTO;
 import com.cg.model.dto.product.ProductUpReqDTO;
@@ -35,31 +36,15 @@ public class ProductAPI {
     @Autowired
     private AppUtils appUtils;
 
-//    @GetMapping
-//    public ResponseEntity<?> getAll(@RequestParam ("kw") String kw, @RequestParam("page") int page,
-//                                    @RequestParam(value = "limit", defaultValue = "2") int limit,
-//                                    @RequestParam(value = "sort-by", defaultValue = "price") String sortBy,
-//                                    @RequestParam(value = "sort", defaultValue = "asc") String sort
-//                                    ) {
-//
-////        List<ProductDTO> productDTOS = productService.findAllProductDTO();
-////        List<ProductDTO> productDTOS = productService.findAllByDeletedFalse(Sort.by("price").descending());
-//        Pageable sortedBy =
-//                PageRequest.of(page-1, limit, Sort.by("price").descending().and(Sort.by("title").descending()));
-//
-////        Pageable pageable = PageRequest.of(page-1, limit);
-//        Page<ProductDTO> productDTOS = productService.findAllByDeletedFalse(sortedBy);
-//
-//        return new ResponseEntity<>(productDTOS, HttpStatus.OK);
-//    }
-@GetMapping
-public ResponseEntity<?> getAll() {
-    List<ProductDTO> productDTOS = productService.findAllProductDTO();
+    @GetMapping
+    public ResponseEntity<?> getAll() {
+        List<ProductDTO> productDTOS = productService.findAllProductDTO();
 
-    return new ResponseEntity<>(productDTOS, HttpStatus.OK);
-}
+        return new ResponseEntity<>(productDTOS, HttpStatus.OK);
+    }
+
     @GetMapping("/search")
-    public ResponseEntity<?> getAll(@RequestParam ("keySearch") String keySearch) {
+    public ResponseEntity<?> getAll(@RequestParam("keySearch") String keySearch) {
         System.out.println(keySearch);
         keySearch = "%" + keySearch + "%";
 //        List<ProductDTO> productDTOS = productService.findAllProductDTO();
@@ -68,15 +53,17 @@ public ResponseEntity<?> getAll() {
 
         return new ResponseEntity<>(productDTOS, HttpStatus.OK);
     }
+
     @GetMapping("/sorted")
     public ResponseEntity<?> getAllProductSorted(@RequestParam(value = "sort_by", defaultValue = "price") String sortBy,
-                                                 @RequestParam(value = "direction", defaultValue = "asc") String direction ) {
+                                                 @RequestParam(value = "direction", defaultValue = "asc") String direction) {
         Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
         List<ProductDTO> productDTOS = productService.findAllByDeletedFalse(sort);
 
 
         return new ResponseEntity<>(productDTOS, HttpStatus.OK);
     }
+
     @GetMapping("/category/{categoryId}")
     public ResponseEntity<?> getAllProductByCategory(@PathVariable String categoryId) {
 //        List<ProductDTO> productDTOS = productService.findAllProductDTOByCategoryId(Long.valueOf(categoryId));
@@ -84,6 +71,7 @@ public ResponseEntity<?> getAll() {
 
         return new ResponseEntity<>(productDTOS, HttpStatus.OK);
     }
+
     @PostMapping
     public ResponseEntity<?> addNew(@ModelAttribute ProductCreReqDTO productCreReqDTO, BindingResult bindingResult) {
 
@@ -120,12 +108,12 @@ public ResponseEntity<?> getAll() {
 
         new ProductUpReqDTO().validate(productUpReqDTO, bindingResult);
 
-        if (bindingResult.hasFieldErrors()){
+        if (bindingResult.hasFieldErrors()) {
             return appUtils.mapErrorToResponse(bindingResult);
         }
 
         String title = productUpReqDTO.getTitle();
-        if (productService.existsByTitleAndIdNot(title, Long.valueOf(productId))){
+        if (productService.existsByTitleAndIdNot(title, Long.valueOf(productId))) {
             throw new EmailExistsException("Tên sản phẩm đã tồn tại");
         }
 
@@ -153,4 +141,28 @@ public ResponseEntity<?> getAll() {
         return new ResponseEntity<>(product.toProductDTO(), HttpStatus.OK);
 
     }
+    //    @RequestParam ("keySearch") String keySearch, @RequestParam("page") int page,
+//    @RequestParam(value = "limit", defaultValue = "2") int limit,
+//    @RequestParam(value = "sort-by", defaultValue = "price") String sortBy,
+//    @RequestParam(value = "sort", defaultValue = "asc") String sort
+//    @PostMapping("/pageable")
+//    public ResponseEntity<?> getAll(@RequestBody PageableReqDTO pageableReqDTO) {
+//
+//        String keySearch = "%" + pageableReqDTO.getKeySearch() + "%";
+//        Integer page = pageableReqDTO.getPage();
+//        Integer limit = pageableReqDTO.getLimit();
+//        String sortBy = pageableReqDTO.getSortBy();
+//        String dimension = pageableReqDTO.getDimension();
+//        Pageable pageable;
+//        if (dimension.equals("asc")) {
+//            pageable = PageRequest.of(page-1, limit, Sort.by(sortBy).ascending());
+//        } else {
+//            pageable = PageRequest.of(page-1, limit, Sort.by(sortBy).descending());
+//        }
+//
+////        Pageable pageable = PageRequest.of(page-1, limit);
+//        Page<ProductDTO> productDTOS = productService.findAllByDeletedFalse(keySearch, keySearch, pageable);
+//
+//        return new ResponseEntity<>(productDTOS, HttpStatus.OK);
+//    }
 }

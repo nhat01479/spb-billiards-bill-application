@@ -25,6 +25,13 @@ public class HomeController {
         model.addAttribute("user", user);
         return "home";
     }
+    @GetMapping("/dashboard")
+    public String showDashboard(Model model) {
+        String username = appUtils.getPrincipalUsername();
+        User user = userService.getByUsername(username);
+        model.addAttribute("user", user);
+        return "dashboard";
+    }
     @GetMapping("/orders")
     public String showListOrder(Model model) {
         String username = appUtils.getPrincipalUsername();

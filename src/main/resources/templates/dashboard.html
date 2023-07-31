@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/assets/image/billiard.png">
+
+    <title>Admin Dashboard</title>
+    <!--    Ten thu muc/ ten file html :: ten fragment-->
+    <!--    head-css-->
+    <th:block th:replace="layout/head :: head-1"/>
+    <!--    head-css-->
+
+</head>
+<body>
+<!-- Begin page -->
+<div id="wrapper">
+    <!--    header-->
+    <th:block th:replace="layout/header"/>
+    <!--    header-->
+
+    <!--    left-side-->
+    <th:block th:replace="layout/left"/>
+    <!--    left-side-->
+
+
+    <div class="content-page">
+        <div class="content">
+            <!--    page content-->
+            <div class="container-fluid">
+                <!-- start page title -->
+                <h1 class="text-center">Dashboard</h1>
+
+                <!-- end page title -->
+
+                <!--                Start row-->
+                <div class="row" id="page-content">
+
+                    <div class="row">
+                        <div class="col-xl-3 col-sm-6">
+                            <div class="card widget-style-1 bg-pink">
+                                <div class="card-body">
+                                    <div class="my-4 text-white">
+                                        <i class="mdi mdi-comment-multiple"></i>
+                                        <h2 class="my-0 font-weight-bold text-white"><span data-plugin="counterup">${requestScope.orders.size()}</span>
+                                        </h2>
+                                        <div>Orders</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-sm-6">
+                            <div class="card widget-style-1 bg-warning">
+                                <div class="card-body">
+                                    <div class="my-4 text-white">
+                                        <i class="mdi mdi-cart"></i>
+                                        <h2 class="my-0 text-white"><span data-plugin="counterup">${products.size()}</span>
+                                        </h2>
+                                        <div>Products</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-sm-6">
+                            <div class="card widget-style-1 bg-info">
+                                <div class="card-body">
+                                    <div class="my-4 text-white">
+                                        <i class="mdi mdi-cash"></i>
+                                        <h2 class="my-0 text-white"><span data-plugin="counterup">${requestScope.totalIncome}</span><span>$</span>
+                                        </h2>
+                                        <div>Bàn</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-sm-6" id="userDashboard">
+                            <div class="card widget-style-1 bg-success">
+                                <div class="card-body">
+                                    <div class="my-4 text-white">
+                                        <i class="mdi mdi-account-multiple"></i>
+                                        <h2 class="my-0 text-white"><span data-plugin="counterup">${requestScope.users.size()}</span>
+                                        </h2>
+                                        <div>Users</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--                End row-->
+
+                </div>
+
+            </div>
+            <!--    page content-->
+        </div>
+    </div>
+
+    <!--    footer-->
+    <th:block th:replace="layout/footer"/>
+    <!--    footer-->
+
+    <!--    footer-javaScript-->
+    <th:block th:replace="layout/footer-js"/>
+    <!--    footer-javaScript-->
+</div>
+
+
+<script src="/assets/js/jquery-3.6.0.min.js"></script>
+<script src="/assets/sweetalert2/v11.7.12/sweetalert2.all.min.js"></script>
+<script src="/assets/js/jquery.validate.min.js"></script>
+<script src="/assets/js/jquery.number.js"></script>
+<script src="/assets/js/app.js"></script>
+
+<script>
+
+    const pageable = {
+        page: 1,
+        sortBy: "price",
+        sort: "asc",
+        kw: "mi tom",
+        limit: 2
+    }
+
+    // url: /page=pageable.page&
+    const page = {
+        url: {},
+        elements: {},
+        loadData: {},
+        commands: {},
+        dialogs: {
+            elements: {},
+            commands: {}
+        },
+        initializeControlEvent: {}
+    }
+
+    page.initializeControlEvent = () => {
+        $('#userDashboard').on('click', () => {
+            location.href = "/users"
+        })
+    }
+
+    $(() => {
+        page.initializeControlEvent()
+
+    })
+
+</script>
+</body>
+</html>

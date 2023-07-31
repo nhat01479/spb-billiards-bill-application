@@ -1,6 +1,7 @@
 package com.cg.service.productCartDetail;
 
 import com.cg.model.Cart;
+import com.cg.model.Product;
 import com.cg.model.ProductCartDetail;
 import com.cg.model.dto.cart.product.ProductCartDetailResDTO;
 import com.cg.service.IGeneralService;
@@ -14,4 +15,5 @@ public interface IProductCartDetailService extends IGeneralService<ProductCartDe
 
     List<ProductCartDetailResDTO> getAllProductCartDetailResDTO(Cart cart);
     ProductCartDetailResDTO getProductCartDetailItemResDTO(Cart cart, Long productId);
+
 }

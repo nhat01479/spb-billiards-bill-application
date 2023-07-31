@@ -48,7 +48,7 @@
                                     <div class="m-3" style="height: 30px">
                                         <form  method="get">
                                             <div class="container-search d-flex">
-                                                <input type="text" name="keySearch" width="270px">
+                                                <input type="text" id="keySearch" name="keySearch" width="270px">
                                                 <button type="button" class="btn btn-primary ml-(-65px)" id="searchbtn">
                                                     <i class="fas fa-search"></i></button>
                                             </div>
@@ -69,8 +69,9 @@
                                                     <th>Email</th>
                                                     <th>Phone</th>
                                                     <th>Address</th>
-                                                    <th>User Name</th>
-                                                    <th>Password</th>
+                                                    <th>Username</th>
+                                                    <th>Role</th>
+<!--                                                    <th>Password</th>-->
                                                     <th colspan="2">Action</th>
                                                 </tr>
                                                 </thead>
@@ -159,6 +160,7 @@
     page.dialogs.elements.btnUpdate = $('#btnUpdate');
     page.dialogs.elements.errorAreaUpdate = $('#modalUpdate .error-area')
 
+    page.elements.keySearch = $('#keySearch');
 
     page.commands.renderUser = (obj) => {
         return `
@@ -169,7 +171,7 @@
                 <td class="text-center">${obj.phone} </td>
                 <td>${obj.address} </td>
                 <td>${obj.username} </td>
-                <td>${obj.password} </td>
+                <td>${obj.role.code} </td>
                 <td class="text-end">
                     <button  class="btn btn-outline-primary edit" data-id="${obj.id}" >
                             <i class="far fa-edit"></i>
@@ -371,6 +373,28 @@
         })
     }
 
+    page.commands.getAllUserByKeySearch = (keySearch) => {
+        page.elements.tbUser.empty();
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:28002/api/users/search',
+            data: {
+                keySearch: keySearch
+            }
+        })
+            .done((data) => {
+                page.elements.tbUser.empty();
+                data.forEach(item => {
+                    const str = page.commands.renderUser(item);
+                    page.elements.tbUser.prepend(str);
+                });
+            })
+            .fail((error) => {
+                console.log()
+                console.log(error);
+            })
+    }
+
 
     page.initializeControlEvent = () => {
 
@@ -405,6 +429,11 @@
         page.elements.tbUser.on('click', '.delete', function () {
             userId = $(this).data('id');
             page.commands.handleAddEventShowModalDelete(userId);
+        })
+
+        page.elements.keySearch.on('input', function () {
+            const keySearch = $(this).val();
+            page.commands.getAllUserByKeySearch(keySearch);
         })
 
     }

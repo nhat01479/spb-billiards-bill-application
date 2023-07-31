@@ -36,6 +36,14 @@ public class OrderAPI {
 
         return new ResponseEntity<>(orderResDTO, HttpStatus.OK);
     }
+    @GetMapping("/search")
+    public ResponseEntity<?> getAllOrderByKeySearch(@RequestParam("keySearch") String keySearch) {
+        keySearch = "%" + keySearch + "%";
+
+        List<OrderResDTO> orderResDTOS = orderService.findAllOrderResDTOByKeySearch(keySearch);
+
+        return new ResponseEntity<>(orderResDTOS, HttpStatus.OK);
+    }
     @GetMapping("/{orderId}")
     public ResponseEntity<?> getOrderById(@PathVariable ("orderId") String orderIdStr) {
 
@@ -56,7 +64,7 @@ public class OrderAPI {
 
         return new ResponseEntity<>(productOrderDetailResDTOS, HttpStatus.OK);
     }
-    @GetMapping("//get-desk-order-item/{orderId}")
+    @GetMapping("/get-desk-order-item/{orderId}")
     public ResponseEntity<?> getDeskOrderItem(@PathVariable ("orderId") String orderIdStr) {
 
         Order order = orderService.findById(Long.valueOf(orderIdStr)).orElseThrow(() ->

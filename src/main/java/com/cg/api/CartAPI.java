@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -93,11 +94,6 @@ public class CartAPI {
         Desk desk = deskService.findById(deskId).get();
 
         if (desk.isStatus()) {
-            Optional<Cart> cartOptional = cartService.findByDesk(desk.getId(), true);
-
-            if (cartOptional.isEmpty()) {
-                return new ResponseEntity<>(null, HttpStatus.OK);
-            }
 
             Cart cart = cartService.findCartByDesk(deskId, true, PageRequest.of(0,1)).get(0);
 
@@ -109,12 +105,13 @@ public class CartAPI {
     }
 
     @PostMapping("/add-to-cart/{deskId}")
-    public ResponseEntity<?> addToCart(@RequestBody ProductCartDetailReqDTO productCartDetailReqDTO,
-                                       @PathVariable ("deskId") String deskIdStr) {
+    public ResponseEntity<?> addToCart(@PathVariable ("deskId") String deskIdStr,
+                                       @RequestBody ProductCartDetailReqDTO productCartDetailReqDTO) {
 
         String username = appUtils.getPrincipalUsername();
 
         Optional<User> userOptional = userService.findByUsername(username);
+
 
         Long deskId = Long.valueOf(deskIdStr);
         Desk desk = deskService.findById(deskId).orElseThrow(() -> {
@@ -162,11 +159,13 @@ public class CartAPI {
         return new ResponseEntity<>(deskCartDetailResDTOS, HttpStatus.OK);
     }
     @PatchMapping ("/update-product-detail/{productDetailId}")
-    public ResponseEntity<?> updateProductDetail(@RequestBody ProductCartDetailReqDTO productCartDetailReqDTO,
-                                                 @PathVariable ("productDetailId") String productDetailIdStr) {
+    public ResponseEntity<?> updateProductDetail(@PathVariable ("productDetailId") String productDetailIdStr,
+                                                 @RequestBody ProductCartDetailReqDTO productCartDetailReqDTO,
+                                                 BindingResult bindingResult) {
         String username = appUtils.getPrincipalUsername();
 
         Optional<User> userOptional = userService.findByUsername(username);
+
 
         Long productDetailId = Long.valueOf(productDetailIdStr);
         ProductCartDetail productCartDetail = productCartDetailService.findById(productDetailId).orElseThrow(() -> {
@@ -183,11 +182,20 @@ public class CartAPI {
         Desk desk = deskService.findById(Long.valueOf(deskId)).orElseThrow(() -> {
             throw new DataInputException("Bàn không tồn tại");
         });
-        Cart cart = cartService.findCartByDesk(desk.getId(), true, PageRequest.of(0,1)).get(0);
 
         List<DeskCartDetailResDTO> deskCartDetailResDTO = cartService.updateDeskCart(desk);
 
         return new ResponseEntity<>(deskCartDetailResDTO.get(0), HttpStatus.OK);
+    }
+    @DeleteMapping("/cart-product-detail/{productDetailId}")
+    public ResponseEntity<?> deleteProductDetail (@PathVariable String productDetailId) {
+        ProductCartDetail productCartDetail = productCartDetailService.findById(Long.valueOf(productDetailId)).orElseThrow(() ->
+                new DataInputException("Mã sản phẩm không tồn tại"));
+
+        productCartDetailService.delete(productCartDetail);
+
+
+        return new ResponseEntity<>(productCartDetail, HttpStatus.OK);
     }
 
 }

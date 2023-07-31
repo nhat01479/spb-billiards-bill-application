@@ -45,11 +45,14 @@
                                         </button>
                                     </div>
                                     <div class="m-3" style="height: 30px">
-                                        <form  method="get" id="formSearch">
+                                        <form method="get" id="formSearch">
                                             <div class="container-search d-flex">
-                                                <div class="d-flex " style="border: 1px solid lightgrey; border-radius: 5px">
-                                                    <input type="text" id="keySearch" name="keySearch" style="border: none" width="300px" class="form-control">
-                                                    <button type="button" class="btn btn-outline-success" style="border: none" id="searchbtn">
+                                                <div class="d-flex "
+                                                     style="border: 1px solid lightgrey; border-radius: 5px">
+                                                    <input type="search" id="keySearch" name="keySearch"
+                                                           style="border: none" width="300px" class="form-control">
+                                                    <button type="button" class="btn btn-outline-success"
+                                                            style="border: none" id="searchbtn">
                                                         <i class="fas fa-search"></i></button>
                                                 </div>
                                             </div>
@@ -65,43 +68,31 @@
 
                                                 <thead>
                                                 <tr role="row">
-                                                    <th>ID</th>
-                                                    <th>Hình ảnh</th>
-                                                    <th>Tên sản phẩm</th>
-                                                    <th >Giá <i id="sortByPrice" class="fas fa-sort asc"></i></th>
-                                                    <th>Mô tả</th>
-                                                    <th>Danh mục</th>
-                                                    <th style="width: 80px;">Action</th>
+                                                    <th style="width: 50px">ID</th>
+                                                    <th class="col-2">Hình ảnh</th>
+                                                    <th class="col-2">Tên sản phẩm</th>
+                                                    <th class="col-1">Giá <i id="sortByPrice"
+                                                                             class="fas fa-sort asc"></i></th>
+                                                    <th class="col-3">Mô tả</th>
+                                                    <th class="col-1">Danh mục</th>
+                                                    <th class="col-1" style="width: 80px;">Action</th>
                                                 </tr>
                                                 </thead>
 
                                                 <tbody>
 
 
-
                                                 </tbody>
                                             </table>
-                                            <div>
-                                                <ul class="pagination">
-                                                    <li class="page-item">
-                                                        <a class="page-link" id="prevBtn">Previous</a>
-                                                    </li>
-                                                    <li class="page-item"><a class="page-link" href="#">Page</a></li>
-
-                                                    <!--                            <li class="page-item active"><a class="page-link" href="#">Page</a></li> -->
-
-                                                    <li class="page-item"><a class="page-link" >Page</a></li>
-                                                    <li class="page-item">
-                                                        <a class="page-link" id="nextBtn">Next</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
 
 
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row " id="pageable">
+
                         </div>
                     </div>
                 </div>
@@ -125,7 +116,6 @@
 <th:block th:replace="product/modalUpdateProduct"/>
 
 
-
 <script src="/assets/js/jquery-3.6.0.min.js"></script>
 <script src="/assets/sweetalert2/v11.7.12/sweetalert2.all.min.js"></script>
 <script src="/assets/js/jquery.validate.min.js"></script>
@@ -133,28 +123,8 @@
 <script src="/assets/js/app.js"></script>
 <script>
 
-    const pageable = {
-        page: 1,
-        sortBy: "price",
-        sort: "asc",
-        kw: "mi tom",
-        limit: 2
-    }
-
-    // url: /page=pageable.page&
-    const page = {
-        url: {},
-        elements: {},
-        loadData: {},
-        commands: {},
-        dialogs: {
-            elements: {},
-            commands: {}
-        },
-        initializeControlEvent: {}
-    }
 </script>
-<script src="/assets/js/nhat.js"></script>
+<script src="/assets/js/product.js"></script>
 <script src="/assets/js/product-validation.js"></script>
 </body>
 </html>

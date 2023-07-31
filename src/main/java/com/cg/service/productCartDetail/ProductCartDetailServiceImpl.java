@@ -49,11 +49,13 @@ public class ProductCartDetailServiceImpl implements IProductCartDetailService {
 
     @Override
     public void delete(ProductCartDetail productCartDetail) {
-
+        productCartDetailRepository.delete(productCartDetail);
     }
 
     @Override
     public void deleteById(Long id) {
 
     }
+
+
 }

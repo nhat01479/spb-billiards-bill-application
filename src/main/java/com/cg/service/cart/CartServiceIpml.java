@@ -251,9 +251,11 @@ public class CartServiceIpml implements ICartService{
         return cart.toCartResDTO();
     }
     public List<DeskCartDetailResDTO> updateDeskCart(Desk desk) {
-        Cart cart = findByDesk(desk.getId(), true).orElseThrow(()-> {
-            throw  new DataInputException("Cart không tồn tại");
-        });
+//        Cart cart = findByDesk(desk.getId(), true).orElseThrow(()-> {
+//            throw  new DataInputException("Cart không tồn tại");
+//        });
+        Cart cart = findCartByDesk(desk.getId(), true, PageRequest.of(0,1)).get(0);
+
         List<DeskCartDetail> deskCartDetails = deskCartDetailService.findAllByCart(cart);
         for (DeskCartDetail item: deskCartDetails) {
             Date endAt = new Date();

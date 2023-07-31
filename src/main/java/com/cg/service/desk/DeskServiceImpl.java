@@ -100,4 +100,8 @@ public class DeskServiceImpl implements IDeskService {
 
         return deskUpResDTO;
     }
+    @Override
+    public List<DeskDTO> findAllByDeletedFalseAndNameLike(String name){
+        return deskRepository.findAllByDeletedFalseAndNameLike(name);
+    }
 }

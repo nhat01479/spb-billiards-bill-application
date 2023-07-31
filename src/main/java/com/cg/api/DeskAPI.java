@@ -144,4 +144,11 @@ public class DeskAPI {
         }
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<?> getAll(@RequestParam ("keySearch") String keySearch) {
+        keySearch = "%" + keySearch + "%";
+        List<DeskDTO> deskDTOS = deskService.findAllByDeletedFalseAndNameLike(keySearch);
+        return new ResponseEntity<>(deskDTOS, HttpStatus.OK);
+    }
+
 }

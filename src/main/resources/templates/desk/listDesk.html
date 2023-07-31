@@ -46,7 +46,7 @@
                                     <div class="m-3" style="height: 30px">
                                         <form  method="get">
                                             <div class="container-search mt-1 d-flex">
-                                                <input type="text" name="keySearch" width="270px">
+                                                <input type="text" id="keySearch" name="keySearch" width="270px">
                                                 <button type="button" class="btn btn-primary ml-(-65px)" id="searchbtn">
                                                     <i class="fas fa-search"></i></button>
                                             </div>
@@ -149,13 +149,14 @@
     page.dialogs.elements.btnUpdate = $('#btnUpdate');
     page.dialogs.elements.errorAreaUpdate = $('#modalUpdate .error-area')
 
+    page.elements.keySearch = $('#keySearch');
 
     page.commands.renderDesk = (obj) => {
         return `
             <tr id="tr_${obj.id}">
                 <td class="text-center">${obj.id} </td>
                 <td>${obj.name} </td>
-                <td class="text-center">${obj.priceTime} </td>
+                <td class="text-center">${formatCurrency(obj.priceTime)} </td>
                 <td class="text-center">${obj.type.code} </td>
                 <td class="text-end">
                     <button  class="btn btn-outline-primary btn-sm edit" data-id="${obj.id}" >
@@ -377,6 +378,28 @@
         })
     }
 
+    page.commands.getAllDeskByKeySearch = (keySearch) => {
+        page.elements.tbDesk.empty();
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:28002/api/desks/search',
+            data: {
+                keySearch: keySearch
+            }
+        })
+            .done((data) => {
+                page.elements.tbDesk.empty();
+                data.forEach(item => {
+                    const str = page.commands.renderDesk(item);
+                    page.elements.tbDesk.prepend(str);
+                });
+            })
+            .fail((error) => {
+                console.log()
+                console.log(error);
+            })
+    }
+
 
     page.initializeControlEvent = () => {
 
@@ -411,6 +434,11 @@
         page.elements.tbDesk.on('click', '.delete', function () {
             deskId = $(this).data('id');
             page.commands.handleAddEventShowModalDelete(deskId);
+        })
+
+        page.elements.keySearch.on('input', function () {
+            const keySearch = $(this).val();
+            page.commands.getAllDeskByKeySearch(keySearch);
         })
 
     }

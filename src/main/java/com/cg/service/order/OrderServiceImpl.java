@@ -81,6 +81,11 @@ public class OrderServiceImpl implements IOrderService{
     }
 
     @Override
+    public List<OrderResDTO> findAllOrderResDTOByKeySearch(String keySearch) {
+        return orderRepository.findAllOrderResDTOByKeySearch(keySearch);
+    }
+
+    @Override
     public Optional<Order> findById(Long id) {
         return orderRepository.findById(id);
     }

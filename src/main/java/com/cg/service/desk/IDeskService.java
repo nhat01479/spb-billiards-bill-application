@@ -22,7 +22,6 @@ public interface IDeskService extends IGeneralService<Desk, Long> {
 
     DeskUpResDTO update(Desk desk, DeskUpReqDTO deskUpReqDTO);
 
-
-
+    List<DeskDTO> findAllByDeletedFalseAndNameLike(String name);
 
 }

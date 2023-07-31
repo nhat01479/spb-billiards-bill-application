@@ -31,8 +31,8 @@
                         <input class="form-control" placeholder="Tìm kiếm sản phẩm" id="searchbox" autocomplete="off">
                     </div>
                     <div class="btn btn-outline-light col-3" style="margin-left: 5px">
-                        <img src="/assets/image/billiard_tb.png" alt="" style="width: 25%; aspect-ratio: 3/2; object-fit: contain;">
-                        <span id="tbName">Tên bànnnnnn</span>
+<!--                        <img src="/assets/image/billiard_tb.png" alt="" style="width: 25%; aspect-ratio: 3/2; object-fit: contain;">-->
+                        <span style="margin-left: 10px !important;">Tên bàn: <span id="tbName"></span></span>
                     </div>
                 </div>
                 <div class="d-flex col-lg-6 justify-content-end">
@@ -198,6 +198,7 @@
     page.elements.searchBox = $('#searchbox');
     page.elements.searchResults = $('#searchResults');
 
+
     page.commands.renderFilter = (item) => {
         return `<div class="col-3" style="padding: 2px;">
                     <button id="btnShow${item.name}" class="btn btn-primary  w-100">${item.name}</button>
@@ -206,15 +207,18 @@
 
     page.commands.renderProduct = (product) => {
         const avatar = product.avatar;
-        return `<div data-id="${product.id}" class="col-3 product" class="btnAddToCart">
-                    <div style="position: relative;">
-                        <img src="${avatar.fileUrl}"
+        const fileName = avatar.fileName;
+        const fileFolder = avatar.fileFolder;
+        const  imgUrl = App.API_CLOUD_IMAGE + '/' + App.BASE_SCALE_IMAGE_HOME + '/' + fileFolder + '/' + fileName;
 
-                             style="width: 100%;">
+        return `<div data-id="${product.id}" class="col-3 d-block product" class="btnAddToCart">
+                    <div style="position: relative; height: 132px">
+                        <img src="${imgUrl}"
+                             >
                         <span style="position: absolute; bottom: 0; left: 0;"
                               class="btn btn-primary btn-sm ">${product.price}</span>
                     </div>
-                    <p class="text-center">${product.title}</p>
+                    <p class="text-center mb-0" >${product.title}</p>
                 </div>`;
     }
     page.commands.renderDesk = (desk) => {
@@ -285,13 +289,13 @@
                             </td>
                             <td>${productDetail.unit}</td>
                             <td>
-                                <input class="form-control" name="price" value="${productDetail.price}" readonly>
+                                <input class="form-control text-end" name="price" value="${formatCurrency(productDetail.price)}" readonly>
                             </td>
                             <td>
-                                <input class="form-control productQuantity" name="amount" value="${productDetail.amount}" id="amount_${productDetail.id}" data-id="${productDetail.id}" readonly>
+                                <input class="form-control text-end productQuantity" name="amount" value="${formatCurrency(productDetail.amount)}" id="amount_${productDetail.id}" data-id="${productDetail.id}" readonly>
                             </td>
                             <td>
-                                <button class="btn btn-danger">
+                                <button class="btn btn-danger deleteProduct" data-id="${productDetail.id}">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </td>
@@ -302,24 +306,24 @@
 
         const dateObj = new Date (data.startAt);
         const startAt = dateObj.toLocaleTimeString();
-        const endAt = new Date (data.endAt).toLocaleTimeString();
-        const minutes = parseInt((new Date (data.endAt).getTime() - new Date (data.startAt).getTime())/ (1000 * 60));
+        const endAt = new Date();
 
+        const minutes = parseInt((endAt.getTime() - new Date (data.startAt).getTime())/ (1000 * 60));
         let str = `
                 <tr class="text-center" id="trd_${data.id}">
                     <td class="text-start">${data.id}</td>
                     <td class="text-start">${desk.name} - ${startAt} </td>
                     <td>
                         <div class="a" style="display: flex;">
-                            <input class="form-control" type="number" value="${minutes}" min="1"  name="timeQuantity">
+                            <input class="form-control" type="number" value="${minutes}"  name="timeQuantity" readonly>
                         </div>
                     </td>
                     <td>Phút</td>
                     <td>
-                        <input class="form-control" name="timePrice" value="${desk.priceTime}" readOnly>
+                        <input class="form-control text-end" name="timePrice" value="${formatCurrency(desk.priceTime)}" readOnly>
                     </td>
                     <td>
-                        <input class="form-control" value="${data.amount}" name="timeTotalAmout" readOnly>
+                        <input class="form-control text-end" value="${formatCurrency(data.amount)}" name="timeTotalAmout" readOnly>
                     </td>
                     <td>
                         <button class="btn btn-danger">
@@ -548,7 +552,7 @@
             url: 'http://localhost:28002/api/carts/get-cart-by-desk/' + deskId,
         })
             .done((data) => {
-                $('#total').text(data.totalAmount)
+                $('#total').text(formatCurrency(data.totalAmount))
             })
 
     }
@@ -630,9 +634,7 @@
         page.elements.tbCartDetail.on('change', '.productQuantity', function ()  {
 
             const productDetailId = $(this).data('id');
-            console.log(productDetailId);
             const quantity = $(this).val();
-            console.log(quantity)
             const obj = {
                 quantity: quantity,
             }
@@ -705,7 +707,32 @@
         })
 
         $('#cusPay').on('input', function () {
-            $('#changeMoney').text(+$('#total').text() - $(this).val())
+            const changeMoney = +$('#total').text() - $(this).val();
+            $('#changeMoney').text(formatCurrency(changeMoney))
+        })
+
+        page.elements.tbCartDetail.on('click', '.deleteProduct', function () {
+            const productDetailId = $(this).data('id');
+            App.showDeleteConfirmDialog().then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        headers: {
+                            'accept': 'application/json',
+                            'content-type': 'application/json',
+                        },
+                        type: 'DELETE',
+                        url: 'http://localhost:28002/api/carts/cart-product-detail/' + productDetailId,
+                    })
+                        .done((data) => {
+                            $('#tr_' + productDetailId).remove();
+                            App.showSuccessAlert('Xoá thành công');
+                        })
+                        .fail((jqXHR) => {
+                            console.log(jqXHR)
+                        })
+                }
+            })
+
         })
 
     }
@@ -719,9 +746,9 @@
         })
         page.commands.getAllDesk()
 
-        // setInterval(function() {
-        //     page.commands.updateDeskTimeDetail();
-        // }, 60000);
+        setInterval(function() {
+            page.commands.updateDeskTimeDetail();
+        }, 60000);
 
     })
 

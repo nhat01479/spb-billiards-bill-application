@@ -76,8 +76,8 @@ public class ProductServiceImpl implements IProductService {
 
     }
 
-    public Page<ProductDTO> findAllByDeletedFalse(Pageable pageable) {
-        return productRepository.findAllByDeletedFalse(pageable);
+    public Page<ProductDTO> findAllByDeletedFalse(String title, String description, Pageable pageable) {
+        return productRepository.findAllByDeletedFalse(title, description, pageable);
     }
     @Override
     public List<ProductDTO> findAllProductDTOByCategoryId(Long categoryId) {

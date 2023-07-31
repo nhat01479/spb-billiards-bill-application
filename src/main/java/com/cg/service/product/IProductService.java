@@ -15,7 +15,7 @@ import java.util.List;
 public interface IProductService extends IGeneralService<Product, Long> {
     List<ProductDTO> findAllProductDTO();
     List<ProductDTO> findAllByDeletedFalse(Sort sort);
-    Page<ProductDTO> findAllByDeletedFalse(Pageable pageable);
+    Page<ProductDTO> findAllByDeletedFalse(String title, String description, Pageable pageable);
     List<ProductDTO> findAllProductDTOByCategoryId(Long categoryId);
     List<ProductDTO> findAllByDeletedFalseAndTitleLikeAndDescriptionLike(String title, String description);
 

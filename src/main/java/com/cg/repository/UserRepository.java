@@ -43,4 +43,16 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "where us.deleted=false "
     )
     List<UserDTO> findAllUserDTOS();
+
+    @Query("select new com.cg.model.dto.user.UserDTO (" +
+            "u.id, " +
+            "u.username, " +
+            "u.password, " +
+            "u.fullName, " +
+            "u.email, " +
+            "u.phone," +
+            "u.address," +
+            "u.role)" +
+            " from User as u where (u.username like %:username% or u.fullName like %:fullName%) and u.deleted=false")
+    List<UserDTO> findAllByDeletedFalseAndUserNameLikeAndFullNameLike(String username, String fullName);
 }

@@ -138,6 +138,7 @@
     page.elements.tbOrder = $('#tbOrder');
     page.dialogs.elements.modalShowOrderDetail = $('#modalShowOrderDetail');
     page.dialogs.elements.tbOrderDetail = $('#tbOrderDetail');
+    page.elements.keySearch = $('#keySearch');
 
     page.commands.renderDeskOrderDetail = (data) => {
         const desk = data.desk;
@@ -158,10 +159,10 @@
                     </td>
                     <td>Phút</td>
                     <td>
-                        <input class="form-control text-end" name="timePrice" value="${desk.priceTime}" readOnly>
+                        <input class="form-control text-end" name="timePrice" value="${formatCurrency(desk.priceTime)}" readOnly>
                     </td>
                     <td>
-                        <input class="form-control text-end" value="${data.amount}" name="timeTotalAmout" readOnly>
+                        <input class="form-control text-end" value="${formatCurrency(data.amount)}" name="timeTotalAmout" readOnly>
                     </td>
                 </tr>`
 
@@ -180,10 +181,10 @@
                             </td>
                             <td>${productDetail.unit}</td>
                             <td>
-                                <input class="form-control text-end" name="price" value="${productDetail.price}" readonly>
+                                <input class="form-control text-end" name="price" value="${formatCurrency(productDetail.price)}" readonly>
                             </td>
                             <td>
-                                <input class="form-control text-end" name="amount" value="${productDetail.amount}" id="amount_${productDetail.id}" data-id="${productDetail.id}" readonly>
+                                <input class="form-control text-end" name="amount" value="${formatCurrency(productDetail.amount)}" id="amount_${productDetail.id}" data-id="${productDetail.id}" readonly>
                             </td>
                         </tr>`;
     }
@@ -192,7 +193,7 @@
               <td class="text-center">${obj.id}</td>
               <td class="ps-5">${obj.user.fullName}</td>
               <td class="ps-5">${obj.desk.name}</td>
-              <td class="text-end pr-lg-5">${obj.totalAmount}</td>
+              <td class="text-end pr-lg-5">${formatCurrency(obj.totalAmount)}</td>
               <td class="text-center">${obj.createdAt}</td>
               <td style="width: 100px;" class="text-center">
                 <button class="btn btn-outline-warning showOrderDetail" data-id="${obj.id}">
@@ -246,16 +247,43 @@
                 })
             })
         })
+        $('#orderDetail').text("Mã số hoá đơn: " + orderId);
         page.dialogs.elements.modalShowOrderDetail.modal('show');
 
     }
+    page.commands.getAllOrderByKeySearch = (keySearch) => {
+        console.log(keySearch)
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:28002/api/orders/search',
+            data: {
+                keySearch: keySearch
+            }
+        })
+            .done((data) => {
+                page.elements.tbOrder.empty();
+                data.forEach(item => {
 
+                    const str = page.commands.renderOrder(item);
+                    page.elements.tbOrder.prepend(str);
+                });
+            })
+            .fail((error) => {
+                console.log()
+                console.log(error);
+            })
+    }
 
     page.initializeControlEvent = () => {
         page.elements.tbOrder.on('click', '.showOrderDetail', function () {
             const orderId = $(this).data('id');
             stt = 1;
             page.commands.handleShowOrderDetail(orderId);
+        })
+        page.elements.keySearch.on('input', function () {
+            const keySearch = $(this).val();
+            page.commands.getAllOrderByKeySearch(keySearch);
+
         })
     }
 

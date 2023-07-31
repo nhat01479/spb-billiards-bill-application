@@ -30,4 +30,7 @@ public interface IUserService extends IGeneralService<User, Long>, UserDetailsSe
     List<User> findAllByDeletedIs(Boolean boo);
 
     Boolean existsByEmail(String email);
+
+    List<UserDTO> findAllByDeletedFalseAndUserNameLikeAndFullNameLike(String username, String fullName);
+
 }

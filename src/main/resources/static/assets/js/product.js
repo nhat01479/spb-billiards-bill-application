@@ -296,7 +296,7 @@ page.dialogs.commands.updateProduct = () => {
             console.log(jqXHR);
         })
 }
-page.commands.handleDeleteCustomer = (productId) => {
+page.commands.handleDeleteProduct = (productId) => {
     App.showDeleteConfirmDialog().then((result) => {
         if (result.isConfirmed) {
             $.ajax({
@@ -323,6 +323,14 @@ page.commands.handleDeleteCustomer = (productId) => {
         }
     })
 }
+page.dialogs.commands.closeModal = (formElem, errorArea) => {
+    formElem[0].reset();
+    page.dialogs.elements.imagePreview.attr("src", "/assets/image/upload.jpg");
+    // page.dialogs.elements.imagePreviewUp.attr("src", "/assets/image/upload.jpg");
+    formElem.validate().resetForm();
+    formElem.find("input.error").removeClass("error");
+    errorArea.empty().removeClass("show").addClass("hide");
+}
 
 page.initializeControlEvent = () => {
     page.elements.btnShowCreateModal.on('click', function () {
@@ -331,14 +339,19 @@ page.initializeControlEvent = () => {
     })
     page.elements.tbProduct.on('click', '.delete', function () {
         productId =  $(this).data('id');
-        page.commands.handleDeleteCustomer(productId);
+        page.commands.handleDeleteProduct(productId);
     })
     page.elements.tbProduct.on('click', '.edit', function () {
         productId =  $(this).data('id');
         page.commands.handleShowModalUpdateProduct(productId);
 
     })
-
+    page.dialogs.elements.modalCreateProduct.on("hidden.bs.modal", function () {
+        page.dialogs.commands.closeModal(page.dialogs.elements.formCreate, page.dialogs.elements.errorAreaCreateProduct);
+    })
+    page.dialogs.elements.modalUpdateProduct.on("hidden.bs.modal", function () {
+        page.dialogs.commands.closeModal(page.dialogs.elements.formUpdate, page.dialogs.elements.errorAreaUpdate);
+    })
 
 
     page.dialogs.elements.btnCreateProduct.on('click', () => {

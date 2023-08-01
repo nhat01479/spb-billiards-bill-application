@@ -12,14 +12,14 @@ body{
     text-align: center;
     font-family: sans-serif;
     justify-content: center;
-    background: url(https://images.pexels.com/photos/1169754/pexels-photo-1169754.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2);
+    background: url(https://antimatter.vn/wp-content/uploads/2022/06/hinh-anh-bida.jpg);
     background-size: cover;
     background-position: center;
 }
 .container{
     position: relative;
     width: 400px;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.8);
     padding: 60px 40px;
 }
 header{

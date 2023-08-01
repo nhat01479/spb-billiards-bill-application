@@ -58,7 +58,7 @@
                     <table class="table table-bordered" >
                         <thead>
                         <tr>
-                            <th class="col-1">#</th>
+<!--                            <th class="col-1">#</th>-->
                             <th class="col-4">Tên SP</th>
                             <th class="col-1" style="width: 120px;">SL</th>
                             <th class="col-1" style="width: 120px;">ĐVT</th>
@@ -102,20 +102,20 @@
                                 <div class="col-6 text-end"><input class="form-control text-end" id="cusPay"></div>
                             </div>
                             <div class="row" style="padding: 5px;">
-                                <div class="col-6">Tiền thừa</div>
+                                <div class="col-6">Tiền thừa/ Tiền nợ</div>
                                 <div class="col-6 text-end" id="changeMoney">0</div>
                             </div>
                         </div>
                     </div>
                     <div class="row" style="padding-left: 10px; padding-right: 10px;">
                         <div class="col-3" style="padding: 0px 1px;">
-                            <button class="btn btn-primary w-100" style="min-height: 80px;">Tách bàn</button>
+                            <button class="btn btn-secondary w-100" style="min-height: 80px;">Tách bàn</button>
                         </div>
                         <div class="col-3" style="padding: 0px 1px;">
-                            <button class="btn btn-primary w-100" style="min-height: 80px;">Chuyển bàn</button>
+                            <button class="btn btn-secondary w-100" style="min-height: 80px;">Chuyển bàn</button>
                         </div>
                         <div class="col-3" style="padding: 0px 1px;">
-                            <button class="btn btn-primary  w-100" style="min-height: 80px;">Gộp bàn</button>
+                            <button class="btn btn-secondary  w-100" style="min-height: 80px;">Gộp bàn</button>
                         </div>
 
                         <div class="col-3" style="padding: 0px 1px; ">
@@ -280,7 +280,7 @@
         const product = productDetail.product;
         return `
         <tr class="text-center" id="tr_${productDetail.id}">
-                            <td class="text-start">${productDetail.id}</td>
+<!--                            <td class="text-start">${productDetail.id}</td>-->
                             <td class="text-start">${product.title}</td>
                             <td>
                                 <div class="a" style="display: flex;">
@@ -311,7 +311,7 @@
         const minutes = parseInt((endAt.getTime() - new Date (data.startAt).getTime())/ (1000 * 60));
         let str = `
                 <tr class="text-center" id="trd_${data.id}">
-                    <td class="text-start">${data.id}</td>
+<!--                    <td class="text-start">${data.id}</td>-->
                     <td class="text-start">${desk.name} - ${startAt} </td>
                     <td>
                         <div class="a" style="display: flex;">
@@ -707,8 +707,11 @@
         })
 
         $('#cusPay').on('input', function () {
-            const changeMoney = +$('#total').text() - $(this).val();
-            $('#changeMoney').text(formatCurrency(changeMoney))
+
+            const grandTotal = $('#total').text().replace(/\D/g, '');
+            console.log(grandTotal)
+            const changeMoney = $(this).val() - grandTotal;
+            $('#changeMoney').text(formatCurrency(changeMoney));
         })
 
         page.elements.tbCartDetail.on('click', '.deleteProduct', function () {

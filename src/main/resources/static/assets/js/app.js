@@ -67,6 +67,13 @@ class App {
  function formatCurrency(number){
     return number.toLocaleString('vi-VN', {style : 'currency', currency : 'VND'});
 }
+function convertCurrencyToNumber(currencyString) {
+    const numericString = currencyString.replace(/,/g, '');
+
+    const numberValue = parseFloat(numericString);
+
+    return numberValue;
+}
 
 class Product {
     constructor() {

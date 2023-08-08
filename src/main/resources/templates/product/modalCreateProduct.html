@@ -36,16 +36,11 @@
                             </div>
                             <div class="row mb-3 col-lg-6 container">
                                 <section >
-                                        <div class="mt-lg-5 mb-3" >
-                                            <img src="/assets/image/upload.jpg" id="image-preview" style="height: 100%; width: 100%; object-fit: cover;">
-                                        </div>
-<!--                                        <div>-->
-<!--                                            <button class="btn btn-primary btn-block" type="button" id="upload-area">-->
-<!--                                                Click to upload!-->
-<!--                                            </button>-->
-<!--                                        </div>-->
-
-                                    <input type="file" id="productImage" accept="image/*" class="form-control"  />
+                                    <div class="mt-lg-5 mb-3" >
+                                        <img src="/assets/image/upload.jpg" id="image-preview" style="height: 100%; width: 100%; object-fit: cover;">
+                                    </div>
+                                    <button type="button" id="btnChooseImg" class="btn btn-primary btn-block">Chọn ảnh để upload</button>
+                                    <input type="file" id="productImage" name="productImage" accept="image/*" class="form-control" hidden />
                                 </section>
                             </div>
                         </div>
@@ -53,7 +48,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-outline-primary" id="btnCreateProduct">
+                    <button type="button" class="btn btn-primary" id="btnCreateProduct">
                         <i class="fas fa-plus"></i>
                         Create
                     </button>

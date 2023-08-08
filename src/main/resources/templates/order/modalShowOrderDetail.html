@@ -1,0 +1,39 @@
+<th:block th:fragment="modalShowOrderDetail">
+    <div class="modal fade" id="modalShowOrderDetail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="orderDetail"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="error-area hide"></div>
+                    <form method="post" id="frmShowOrderDetail">
+                        <table class="table table-bordered" >
+                            <thead>
+                            <tr class="text-center">
+                                <th class="col-1">#</th>
+                                <th class="col-4">Tên SP</th>
+                                <th class="col-1" style="width: 120px;">Số Lượng</th>
+                                <th class="col-1" style="width: 120px;">ĐVT</th>
+                                <th class="col-2">Đơn giá (VNĐ/h)</th>
+                                <th class="col-2">Thành tiền</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tbOrderDetail">
+
+
+
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>

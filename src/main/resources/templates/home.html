@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/assets/image/billiard.png">
+
+    <title>Document</title>
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"-->
+<!--          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"-->
+<!--            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"-->
+<!--            crossorigin="anonymous"></script>-->
+    <link rel="stylesheet" href="/assets/bootstrap/v5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/fontawesome/v5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/assets/sweetalert2/v11.7.12/sweetalert2.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <script src="/assets/bootstrap/v5.3.0/js/bootstrap.bundle.min.js"></script>
+
+</head>
+<a href="">
+
+</a>
+<body>
+<div class="header">
+    <nav class="navbar navbar-light" style="background-color: #0072BC;">
+        <div class="container-fluid">
+            <div class="row w-100 m-0">
+                <div class="d-flex  col-lg-6 ">
+                    <div class="col-6" style="position: relative">
+                        <input class="form-control" placeholder="Tìm kiếm sản phẩm" id="searchbox" autocomplete="off">
+                    </div>
+                    <div class="btn btn-outline-light col-3" style="margin-left: 5px">
+<!--                        <img src="/assets/image/billiard_tb.png" alt="" style="width: 25%; aspect-ratio: 3/2; object-fit: contain;">-->
+                        <span style="margin-left: 10px !important;">Tên bàn: <span id="tbName"></span></span>
+                    </div>
+                </div>
+                <div class="d-flex col-lg-6 justify-content-end">
+                    <a href="/products" class="btn btn-outline-light" style="margin-right: 5px">
+                        <i class="fas fa-user"></i>
+                        <span th:text="${user.fullName} + ' - ' + ${user.getRole().getCode()}"></span>
+                    </a>
+                    <a href="/logout" class="btn btn-outline-light">
+                        <i class="fas fa-arrow-alt-circle-right"></i>
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+</div>
+<div class="content" style="padding-top: 10px;background-color: #ddd;">
+    <div class="container-fluid">
+        <div class="row" style=" background-color: #FFF;">
+            <div class="col-lg-7" style="padding: 0px;">
+                <div class="" style="height:calc(100vh - 296px); overflow: auto; padding: 10px;">
+                    <table class="table table-bordered" >
+                        <thead>
+                        <tr>
+<!--                            <th class="col-1">#</th>-->
+                            <th class="col-4">Tên SP</th>
+                            <th class="col-1" style="width: 120px;">SL</th>
+                            <th class="col-1" style="width: 120px;">ĐVT</th>
+                            <th class="col-2">Đơn giá (VNĐ)</th>
+                            <th class="col-2">Thành tiền</th>
+                            <th class="col-1">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbCartDetail">
+                            <div id="tbTime">
+
+                            </div>
+                            <div id="tbProduct">
+
+                            </div>
+
+
+                        </tbody>
+                    </table>
+                </div>
+                <div style="position: relative;  background-color: #ddd;">
+                    <div class="row" style="padding: 10px; padding-left: 0px; padding-right: 0px;">
+                        <div class="col-sm-6 ">
+
+                        </div>
+                        <div class="col-sm-6 ">
+                            <div class="row" style="padding: 5px;">
+                                <div class="col-6" >Tổng thành tiền</div>
+                                <div class="col-6 text-end" id="total">0</div>
+                            </div>
+<!--                            <div class="row" style="padding: 5px;">-->
+<!--                                <div class="col-6 ">Chiết khấu</div>-->
+<!--                                <div class="col-6 text-end"><input class="form-control"></div>-->
+<!--                            </div>-->
+<!--                            <div class="row" style="padding: 5px;">-->
+<!--                                <div class="col-6 ">Tổng cộng</div>-->
+<!--                                <div class="col-6 text-end">20,0000</div>-->
+<!--                            </div>-->
+                            <div class="row" style="padding: 5px;">
+                                <div class="col-6 ">Khách đưa</div>
+                                <div class="col-6 text-end"><input class="form-control text-end" id="cusPay"></div>
+                            </div>
+                            <div class="row" style="padding: 5px;">
+                                <div class="col-6">Tiền thừa/ Tiền nợ</div>
+                                <div class="col-6 text-end" id="changeMoney">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-left: 10px; padding-right: 10px;">
+                        <div class="col-3" style="padding: 0px 1px;">
+                            <button class="btn btn-secondary w-100" style="min-height: 80px;">Tách bàn</button>
+                        </div>
+                        <div class="col-3" style="padding: 0px 1px;">
+                            <button class="btn btn-secondary w-100" style="min-height: 80px;">Chuyển bàn</button>
+                        </div>
+                        <div class="col-3" style="padding: 0px 1px;">
+                            <button class="btn btn-secondary  w-100" style="min-height: 80px;">Gộp bàn</button>
+                        </div>
+
+                        <div class="col-3" style="padding: 0px 1px; ">
+                            <button class="btn w-100" id="btnCheckOut"
+                                    style="min-height: 80px;background-color: #DD191D; color: white">Thanh toán
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-5" style="background-color: #ddd;">
+                <div class="col-12" style="padding-left: 5px;padding-right: 5px;">
+                    <div class="row">
+                        <div class="col-6" style="padding: 2px;">
+                            <button id="btnShowDesk" class="btn w-100"
+                                    style="min-height: 50px;background-color: #607D8B; color: white">Bàn
+                            </button>
+                        </div>
+                        <div class="col-6" style="padding: 2px;">
+                            <button id="btnShowProduct" class="btn   w-100"
+                                    style="min-height: 50px;background-color: #607D8B; color: white">Thực đơn
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12" style="padding-right: 5px; padding-left: 5px; padding-top: 5px; max-height:91px; ">
+                    <div class="row" id="filterField">
+                        <!--                        <div class="col-3" style="padding: 2px;">-->
+                        <!--                            <button id="btnShowAll" class="btn btn-primary  w-100">Tất cả</button>-->
+                        <!--                        </div>-->
+
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="row" id="row-content">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="/assets/js/jquery-3.6.0.min.js"></script>
+<script src="/assets/sweetalert2/v11.7.12/sweetalert2.all.min.js"></script>
+<script src="/assets/js/jquery.validate.min.js"></script>
+<script src="/assets/js/jquery.number.js"></script>
+<script src="/assets/js/app.js"></script>
+
+<script>
+
+    const page = {
+        url: {},
+        elements: {},
+        loadData: {},
+        commands: {},
+        dialogs: {
+            elements: {},
+            commands: {}
+        },
+        initializeControlEvent: {}
+    }
+    let deskId = 0;
+    page.elements.rowContent = $('#row-content');
+    page.elements.btnShowDesk = $('#btnShowDesk');
+    page.elements.btnShowProduct = $('#btnShowProduct');
+    page.elements.filterField = $('#filterField');
+
+    page.elements.tbCartDetail = $('#tbCartDetail');
+    page.elements.tbTime = $('#tbTime');
+    page.elements.tbProduct= $('#tbProduct');
+
+    page.elements.btnAddToCart = $('.btnAddToCart');
+    page.elements.btnCheckOut = $('#btnCheckOut');
+    page.elements.searchBox = $('#searchbox');
+    page.elements.searchResults = $('#searchResults');
+
+
+    page.commands.renderFilter = (item) => {
+        return `<div class="col-3" style="padding: 2px;">
+                    <button id="btnShow${item.name}" class="btn btn-primary  w-100">${item.name}</button>
+                </div>`;
+    }
+
+    page.commands.renderProduct = (product) => {
+        const avatar = product.avatar;
+        const fileName = avatar.fileName;
+        const fileFolder = avatar.fileFolder;
+        const  imgUrl = App.API_CLOUD_IMAGE + '/' + App.BASE_SCALE_IMAGE_HOME + '/' + fileFolder + '/' + fileName;
+
+        return `<div data-id="${product.id}" class="col-3 d-block product" class="btnAddToCart">
+                    <div style="position: relative; height: 132px">
+                        <img src="${imgUrl}"
+                             >
+                        <span style="position: absolute; bottom: 0; left: 0;"
+                              class="btn btn-primary btn-sm ">${product.price}</span>
+                    </div>
+                    <p class="text-center mb-0" >${product.title}</p>
+                </div>`;
+    }
+    page.commands.renderDesk = (desk) => {
+        let tbColor = (desk.status === false ? '#0B87C9' : '#DD191D');
+        return `<div id="desk_${desk.id}" data-id="${desk.id}" class="col-2 desk" style="padding: 7px; position: relative;" >
+                    <span style="position: absolute; top: 0; left: 0; font-size: 10px; background-color: springgreen"
+                                                  class="btn btn-sm ">${desk.type.code}</span>
+                    <button class="btn   w-100" style="min-height: 80px; color: white; background-color: ${tbColor};">
+                    ${desk.name}
+                    </button>
+                    <span style="position: absolute; bottom: 0; left: 0; font-size: 12px"
+                              class="btn btn-warning btn-sm ">${desk.priceTime}/h</span>
+                </div>`;
+    }
+    page.commands.renderFilterProduct = (typeOrCategory) => {
+        // ${(typeOrCategory.code === 'FOOD' ? 'Đồ ăn' : 'Thức uống')}
+        return `<div class="col-3" style="padding: 2px;">
+                    <button id="show_${typeOrCategory.name}" data-id="${typeOrCategory.id}"
+                            class="btn btn-primary w-100 filterProduct">
+                        ${typeOrCategory.code}
+                    </button>
+                </div>`
+    }
+    page.commands.renderFilterDesk = (typeOrCategory) => {
+        return `<div class="col-3" style="padding: 2px;">
+                    <button id="show_${typeOrCategory.name}" data-id="${typeOrCategory.id}"
+                            class="btn btn-primary w-100 filterDesk">
+                        ${typeOrCategory.code}
+                    </button>
+                </div>`
+    }
+
+    page.commands.getAllCategoryBtn = (data) => {
+        page.elements.filterField.empty();
+        page.elements.filterField.append(
+            `<div class="col-3" style="padding: 2px;">
+                    <button id="showAllProduct" class="btn btn-primary w-100">Tất cả</button>
+                </div>`
+        )
+        $.each((data), (index, item) => {
+            const str = page.commands.renderFilterProduct(item);
+            page.elements.filterField.append(str);
+        })
+    }
+    page.commands.getAllTypeBtn = (data) => {
+        page.elements.filterField.empty();
+        page.elements.filterField.append(
+            `<div class="col-3" style="padding: 2px;">
+                    <button id="showAllDesk" class="btn btn-primary w-100">Tất cả</button>
+                </div>`
+        )
+        $.each((data), (index, item) => {
+            const str = page.commands.renderFilterDesk(item);
+            page.elements.filterField.append(str);
+        })
+    }
+
+    page.commands.renderProductDetail = (productDetail) => {
+        const product = productDetail.product;
+        return `
+        <tr class="text-center" id="tr_${productDetail.id}">
+<!--                            <td class="text-start">${productDetail.id}</td>-->
+                            <td class="text-start">${product.title}</td>
+                            <td>
+                                <div class="a" style="display: flex;">
+                                    <input class="form-sm-control text-sm-center productQuantity" type="number" value="${productDetail.quantity}" min="1" max="100" name="quantity" data-id="${productDetail.id}" >
+                                </div>
+                            </td>
+                            <td>${productDetail.unit}</td>
+                            <td>
+                                <input class="form-control text-end" name="price" value="${formatCurrency(productDetail.price)}" readonly>
+                            </td>
+                            <td>
+                                <input class="form-control text-end productQuantity" name="amount" value="${formatCurrency(productDetail.amount)}" id="amount_${productDetail.id}" data-id="${productDetail.id}" readonly>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger deleteProduct" data-id="${productDetail.id}">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>`;
+    }
+    page.commands.renderDeskDetail = (data) => {
+        const desk = data.desk;
+
+        const dateObj = new Date (data.startAt);git
+        const startAt = dateObj.toLocaleTimeString();
+        const endAt = new Date();
+
+        const minutes = parseInt((endAt.getTime() - new Date (data.startAt).getTime())/ (1000 * 60));
+        let str = `
+                <tr class="text-center" id="trd_${data.id}">
+<!--                    <td class="text-start">${data.id}</td>-->
+                    <td class="text-start">${desk.name} - ${startAt} </td>
+                    <td>
+                        <div class="a" style="display: flex;">
+                            <input class="form-control" type="number" value="${minutes}"  name="timeQuantity" readonly>
+                        </div>
+                    </td>
+                    <td>Phút</td>
+                    <td>
+                        <input class="form-control text-end" name="timePrice" value="${formatCurrency(desk.priceTime)}" readOnly>
+                    </td>
+                    <td>
+                        <input class="form-control text-end" value="${formatCurrency(data.amount)}" name="timeTotalAmout" readOnly>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>`
+
+        return str;
+    }
+    page.commands.getAllCategory = () => {
+        return $.ajax({
+            type: 'GET',
+            url: "http://localhost:28002/api/products/get-all-category",
+        })
+    }
+    page.commands.getAllType = () => {
+        return $.ajax({
+            type: 'GET',
+            url: 'http://localhost:28002/api/types'
+        })
+    }
+
+    page.commands.getAllProduct = () => {
+        page.elements.rowContent.empty();
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:28002/api/products'
+        })
+            .done((data) => {
+                data.forEach(item => {
+
+                    const str = page.commands.renderProduct(item);
+                    page.elements.rowContent.append(str);
+                });
+            })
+            .fail((error) => {
+                console.log(error);
+            })
+    }
+    page.commands.getProductByCategory = (categoryId) => {
+        page.elements.rowContent.empty();
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:28002/api/products/category/' + categoryId
+        })
+            .done((data) => {
+                page.elements.rowContent.empty();
+                data.forEach(item => {
+                    const str = page.commands.renderProduct(item);
+                    page.elements.rowContent.append(str);
+                });
+            })
+            .fail((error) => {
+                console.log(error);
+            })
+    }
+    page.commands.getProductById = (id) => {
+        return $.ajax({
+            type: 'GET',
+            url: 'http://localhost:28002/api/products/' + id,
+        })
+    }
+    page.commands.getDeskByType = (typeId) => {
+        page.elements.rowContent.empty();
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:28002/api/desks/types/' + typeId
+        })
+            .done((data) => {
+                page.elements.rowContent.empty();
+                data.forEach(item => {
+                    const str = page.commands.renderDesk(item);
+                    page.elements.rowContent.append(str);
+                });
+            })
+            .fail((error) => {
+                console.log(error);
+            })
+    }
+    page.commands.getAllDesk = () => {
+        page.elements.rowContent.empty();
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:28002/api/desks'
+        })
+            .done((data) => {
+                data.forEach(item => {
+
+                    const str = page.commands.renderDesk(item);
+                    page.elements.rowContent.append(str);
+                });
+            })
+            .fail((error) => {
+                console.log(error);
+            })
+    }
+    page.commands.getDeskById = (deskId) => {
+     return $.ajax({
+                type: 'GET',
+                url: 'http://localhost:28002/api/desks/' + deskId
+            })
+    }
+    page.commands.addDeskToCart = (deskId) => {
+        const obj = {
+            deskId: deskId,
+        }
+        $.ajax({
+            headers: {
+                'accept': 'application/json',
+                'content-type': 'application/json'
+            },
+            type: 'POST',
+            url: 'http://localhost:28002/api/carts/add-desk-to-cart',
+            data: JSON.stringify(obj)
+        })
+            .done((data) => {
+                page.elements.tbCartDetail.empty()
+                $.each((data), (index, item) => {
+                    const str = page.commands.renderDeskDetail(item)
+                    page.elements.tbCartDetail.append(str)
+
+                    page.commands.getDeskById(deskId).then((data) => {
+                        const desk = data;
+                        const deskStr = page.commands.renderDesk (desk)
+                        const currentDesk = $('#desk_' + desk.id);
+                        currentDesk.replaceWith(deskStr);
+                    })
+
+
+
+                })
+            })
+            .fail((error)=> {
+                console.log(error)
+            })
+    }
+    page.commands.showDeskTimeDetail = (deskId) => {
+        console.log("showDeskTimeDetail", 'http://localhost:28002/api/carts/get-desk-cart-details/' + deskId)
+        return $.ajax({
+            headers: {
+                'accept': 'application/json',
+                'content-type': 'application/json'
+            },
+            type: 'GET',
+            url: 'http://localhost:28002/api/carts/get-desk-cart-details/' + deskId,
+        }).fail(function(data){
+            console.log(data)
+        })
+
+    }
+    page.commands.addProductToCart = (productId) => {
+        const obj = {
+            productId: productId,
+        }
+
+     return    $.ajax({
+            headers: {
+                'accept': 'application/json',
+                'content-type': 'application/json'
+            },
+            type: 'POST',
+            url: 'http://localhost:28002/api/carts/add-to-cart/' + deskId,
+            data: JSON.stringify(obj)
+        })
+            .done((data) => {
+                // page.elements.tbCartDetail.empty()
+                const currentRow = $('#tr_' + data.id);
+                const str = page.commands.renderProductDetail(data)
+
+                if (currentRow.get(0)) {
+                    currentRow.replaceWith(str);
+                } else {
+                    page.elements.tbCartDetail.append(str)
+                }
+            })
+            .fail((error)=> {
+                console.log(error)
+            })
+    }
+    page.commands.showAllProductDetail = (deskId) => {
+        return $.ajax({
+            headers: {
+                'accept': 'application/json',
+                'content-type': 'application/json'
+            },
+            type: 'GET',
+            url: 'http://localhost:28002/api/carts/' + deskId,
+        })
+            .done((data) => {
+                data.forEach((item) => {
+                    const str = page.commands.renderProductDetail(item)
+                    page.elements.tbCartDetail.append(str)
+                })
+            })
+
+    }
+    page.commands.updateDeskTimeDetail = () => {
+
+        console.log("CALL", 'http://localhost:28002/api/carts/update-desk-time-detail/' + deskId)
+        $.ajax({
+            headers: {
+                'accept': 'application/json',
+                'content-type': 'application/json',
+            },
+            type: 'GET',
+            url: 'http://localhost:28002/api/carts/update-desk-time-detail/' + deskId,
+        })
+            .done((data) => {
+                console.log(data)
+                const currentRow = $('#trd_' + data.id);
+                const str = page.commands.renderDeskDetail(data)
+
+                currentRow.replaceWith(str);
+                page.commands.updateCheckout();
+            })
+    }
+    page.commands.updateCheckout = () => {
+
+            $.ajax({
+            headers: {
+                'accept': 'application/json',
+                'content-type': 'application/json'
+            },
+            type: 'GET',
+            url: 'http://localhost:28002/api/carts/get-cart-by-desk/' + deskId,
+        })
+            .done((data) => {
+                $('#total').text(formatCurrency(data.totalAmount))
+            })
+
+    }
+
+
+    /*********************************************************************************/
+
+    page.initializeControlEvent = () => {
+        page.elements.filterField.on('click', '.filterProduct', function () {
+            const id = $(this).data('id');
+            page.commands.getProductByCategory(id);
+        })
+        page.elements.filterField.on('click', '.filterDesk', function () {
+            const id = $(this).data('id');
+            page.commands.getDeskByType(id);
+        })
+        page.elements.filterField.on('click', '#showAllProduct', function () {
+            const id = $(this).data('id');
+            page.commands.getAllProduct();
+        })
+        page.elements.filterField.on('click', '#showAllDesk', function () {
+            const id = $(this).data('id');
+            page.commands.getAllDesk();
+        })
+        page.elements.rowContent.on('click', '.product', function () {
+
+            const productId = +$(this).data('id');
+
+            page.commands.addProductToCart(productId).then(() => {
+               page.commands.updateCheckout();
+            })
+
+        })
+        page.elements.rowContent.on('click', '.desk', function () {
+            deskId = $(this).data('id');
+                page.commands.getDeskById(deskId).then((data) => {
+                    const desk = data;
+                    $('#tbName').text(desk.name)
+                    if (desk.status === false) {
+                        const cf = confirm("Sử dụng bàn này?");
+                        if (cf) {
+                            page.commands.addDeskToCart(deskId)
+                        } else {
+                            return
+                        }
+                    } else {
+                        page.commands.showDeskTimeDetail(deskId).then((data) => {
+                            const deskTimeDetail = data;
+                            console.log("deskTimeDetail", deskTimeDetail)
+                            page.elements.tbCartDetail.empty()
+                            $.each((data), (index, item) => {
+                                const str = page.commands.renderDeskDetail(item)
+                                page.elements.tbCartDetail.append(str)
+                                page.commands.showAllProductDetail(deskId);
+                                page.commands.updateDeskTimeDetail();
+                                page.commands.updateCheckout();
+                            })
+                        });
+
+                    }
+                });
+
+        })
+
+        page.elements.btnShowDesk.on('click', () => {
+            page.commands.getAllType().then((data) => {
+                page.commands.getAllTypeBtn(data)
+            })
+            page.commands.getAllDesk()
+        })
+
+        page.elements.btnShowProduct.on('click', () => {
+            page.commands.getAllCategory().then((data) => {
+                page.commands.getAllCategoryBtn(data)
+            })
+            page.commands.getAllProduct()
+        })
+
+        page.elements.tbCartDetail.on('change', '.productQuantity', function ()  {
+
+            const productDetailId = $(this).data('id');
+            const quantity = $(this).val();
+            const obj = {
+                quantity: quantity,
+            }
+            $.ajax({
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/json',
+                },
+                type: 'PATCH',
+                url: 'http://localhost:28002/api/carts/update-product-detail/' + productDetailId,
+                data: JSON.stringify(obj)
+            })
+                .done((data) => {
+                    const currentRow = $('#tr_' + productDetailId);
+                    const str = page.commands.renderProductDetail(data);
+                    currentRow.replaceWith(str);
+                    page.commands.updateCheckout();
+                })
+        })
+
+        page.elements.searchBox.on('input', function ()  {
+            const keySearch = $(this).val();
+            console.log(keySearch)
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:28002/api/products/search',
+                data: {
+                    keySearch: keySearch
+                }
+            })
+                .done((data) => {
+                    if (data !== null) {
+                        page.elements.rowContent.empty();
+                        data.forEach((item) => {
+                            const product = item;
+                            const str = page.commands.renderProduct(item);
+                            page.elements.rowContent.append(str);
+                        })
+                    } else {
+                        page.elements.searchResults.empty();
+                    }
+                })
+        })
+
+        page.elements.btnCheckOut.on('click', function () {
+            App.showCheckoutConfirmDialog().then((result) => {
+                if (result.isConfirmed) {
+                    const obj = {
+                        deskId: deskId
+                    }
+                    $.ajax({
+                        headers: {
+                            'accept': 'application/json',
+                            'content-type': 'application/json'
+                        },
+                        type: 'POST',
+                        url: 'http://localhost:28002/api/orders',
+                        data: JSON.stringify(obj)
+                    })
+                        .done((data) => {
+                            const str = page.commands.renderDesk (data)
+                            const currentDesk = $('#desk_' + data.id);
+                            currentDesk.replaceWith(str);
+                            page.elements.tbCartDetail.empty();
+                            $('#total').text(0);
+                            App.showSuccessAlert("Thanh toán thành công!")
+                        })
+                }
+            })
+        })
+
+        $('#cusPay').on('input', function () {
+
+            const grandTotal = $('#total').text().replace(/\D/g, '');
+            console.log(grandTotal)
+            const changeMoney = $(this).val() - grandTotal;
+            $('#changeMoney').text(formatCurrency(changeMoney));
+        })
+
+        page.elements.tbCartDetail.on('click', '.deleteProduct', function () {
+            const productDetailId = $(this).data('id');
+            App.showDeleteConfirmDialog().then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        headers: {
+                            'accept': 'application/json',
+                            'content-type': 'application/json',
+                        },
+                        type: 'DELETE',
+                        url: 'http://localhost:28002/api/carts/cart-product-detail/' + productDetailId,
+                    })
+                        .done((data) => {
+                            $('#tr_' + productDetailId).remove();
+                            App.showSuccessAlert('Xoá thành công');
+                        })
+                        .fail((jqXHR) => {
+                            console.log(jqXHR)
+                        })
+                }
+            })
+
+        })
+
+    }
+
+    $(() => {
+
+        page.initializeControlEvent()
+
+        page.commands.getAllType().then((data) => {
+            page.commands.getAllTypeBtn(data)
+        })
+        page.commands.getAllDesk()
+
+        setInterval(function() {
+            page.commands.updateDeskTimeDetail();
+        }, 60000);
+
+    })
+
+</script>
+</body>
+</html>

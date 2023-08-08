@@ -10,7 +10,7 @@ public interface IDeskService extends IGeneralService<Desk, Long> {
     public void softDelete(Desk desk);
 
     List<Desk> findAllByDeletedIs(Boolean boo);
-
+    List<DeskDTO> findAllByDeletedFalseAndTypeId(Long typeId);
 
     Boolean existsByName(String name);
 
@@ -20,9 +20,8 @@ public interface IDeskService extends IGeneralService<Desk, Long> {
 
     Boolean existsByNameAndIdNot(String name, Long id);
 
-    DeskUpResDTO update(long deskId, DeskUpReqDTO deskUpReqDTO);
+    DeskUpResDTO update(Desk desk, DeskUpReqDTO deskUpReqDTO);
 
-
-
+    List<DeskDTO> findAllByDeletedFalseAndNameLike(String name);
 
 }

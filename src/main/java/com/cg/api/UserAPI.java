@@ -134,7 +134,7 @@ public class UserAPI {
             User user = userOptional.get();
             user.setDeleted(true);
             userService.save(user);
-            List<User> users = userService.findAllByDeletedIs(false);
+            List<User> users = userService.findAllByDeletedIs(Boolean.FALSE);
 
             return new ResponseEntity<>(users, HttpStatus.OK);
         } catch (Exception e) {
@@ -143,5 +143,12 @@ public class UserAPI {
             data.put("message", "Lỗi xóa user");
             return new ResponseEntity<>(data, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> getAll(@RequestParam ("keySearch") String keySearch) {
+        keySearch = "%" + keySearch + "%";
+        List<UserDTO> userDTOS = userService.findAllByDeletedFalseAndUserNameLikeAndFullNameLike(keySearch,keySearch);
+        return new ResponseEntity<>(userDTOS, HttpStatus.OK);
     }
 }

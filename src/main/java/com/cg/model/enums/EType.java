@@ -1,8 +1,8 @@
 package com.cg.model.enums;
 
 public enum EType {
-    CAROM("CAROM TABLE"),
-    POOL("POOL TABLE");
+    CAROM("CAROM"),
+    POOL("POOL");
 
     private final String value;
 

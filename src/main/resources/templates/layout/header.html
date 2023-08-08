@@ -7,7 +7,7 @@
             <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect" data-toggle="dropdown" href="#"
                role="button" aria-haspopup="false" aria-expanded="false">
                 <img src="/assets/dashboard/images/users/vuong_so_nhien.jpg" alt="user-image" class="rounded-circle">
-                <span class="pro-user-name ml-1"> Username</span>
+                <span class="pro-user-name ml-1" th:text="${user.fullName}"> </span>
             </a>
             <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
 
@@ -36,7 +36,7 @@
 
     <!-- LOGO -->
     <div class="logo-box">
-        <a href="/" class="logo text-center logo-dark">
+        <a href="/home" class="logo text-center logo-dark">
                         <span class="logo-lg">
                             <img src="/assets/dashboard/images/logo-dark.png" alt="" height="18">
                             <!-- <span class="logo-lg-text-dark">Velonic</span> -->
@@ -47,7 +47,7 @@
                         </span>
         </a>
 
-        <a href="/" class="logo text-center logo-light">
+        <a href="/home" class="logo text-center logo-light">
                         <span class="logo-lg">
                             <img src="/assets/dashboard/images/logo-light.png" alt="" height="18">
                             <!-- <span class="logo-lg-text-dark">Velonic</span> -->

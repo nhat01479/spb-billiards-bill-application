@@ -19,15 +19,18 @@ public class DeskDTO {
     private long id;
     private String name;
     private BigDecimal priceTime;
+    private String unit = "Giờ";
     private Type type;
     private boolean status;
 
-    public DeskDTO(long id, String name, BigDecimal priceTime, Type type, boolean status) {
+    public DeskDTO(long id, String name, BigDecimal priceTime, String unit, Type type, boolean status) {
         this.id = id;
         this.name = name;
         this.priceTime = priceTime;
+        this.unit = unit;
         this.type = type;
         this.status = status;
     }
+
 
 }

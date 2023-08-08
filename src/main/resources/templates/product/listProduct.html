@@ -2,7 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Customer Management</title>
+    <link rel="icon" type="image/x-icon" href="/assets/image/billiard.png">
+
+    <title>Admin Dashboard</title>
     <!--    Ten thu muc/ ten file html :: ten fragment-->
     <!--    head-css-->
     <th:block th:replace="layout/head :: head-1"/>
@@ -27,25 +29,32 @@
             <div class="container-fluid">
                 <!-- start page title -->
                 <h1 class="text-center">List Product</h1>
+
                 <!-- end page title -->
 
                 <!--                Start row-->
-                <div class="row">
+                <div class="row" id="page-content">
+
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body table-responsive">
                                 <div class="d-flex justify-content-between align-self-center">
                                     <div>
-                                        <button class="btn btn-primary m-3" id="btnShowCreateModal">
+                                        <button class="btn btn-outline-primary m-3" id="btnShowCreateModal">
                                             <i class="fas fa-plus"></i> New Product
                                         </button>
                                     </div>
                                     <div class="m-3" style="height: 30px">
-                                        <form  method="get">
-                                            <div class="container-search mt-1 d-flex">
-                                                <input type="text" name="keySearch" width="270px">
-                                                <button type="button" class="btn btn-primary ml-(-65px)" id="searchbtn">
-                                                    <i class="fas fa-search"></i></button>
+                                        <form method="get" id="formSearch">
+                                            <div class="container-search d-flex">
+                                                <div class="d-flex "
+                                                     style="border: 1px solid lightgrey; border-radius: 5px">
+                                                    <input type="search" id="keySearch" name="keySearch"
+                                                           style="border: none" width="300px" class="form-control">
+                                                    <button type="button" class="btn btn-outline-success"
+                                                            style="border: none" id="searchbtn">
+                                                        <i class="fas fa-search"></i></button>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
@@ -59,26 +68,31 @@
 
                                                 <thead>
                                                 <tr role="row">
-                                                    <th>ID</th>
-                                                    <th>Hình ảnh</th>
-                                                    <th>Tên sản phẩm</th>
-                                                    <th>Giá</th>
-                                                    <th>Mô tả</th>
-                                                    <th>Danh mục</th>
-                                                    <th style="width: 80px;">Action</th>
+                                                    <th style="width: 50px">ID</th>
+                                                    <th class="col-2">Hình ảnh</th>
+                                                    <th class="col-2">Tên sản phẩm</th>
+                                                    <th class="col-1">Giá <i id="sortByPrice"
+                                                                             class="fas fa-sort asc"></i></th>
+                                                    <th class="col-3">Mô tả</th>
+                                                    <th class="col-1">Danh mục</th>
+                                                    <th class="col-1" style="width: 80px;">Action</th>
                                                 </tr>
                                                 </thead>
 
                                                 <tbody>
 
 
-
                                                 </tbody>
                                             </table>
+
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row " id="pageable">
+
                         </div>
                     </div>
                 </div>
@@ -98,9 +112,8 @@
     <!--    footer-javaScript-->
 </div>
 
-<th:block th:replace="admin/product/modalCreateProduct"/>
-<th:block th:replace="admin/product/modalUpdateProduct"/>
-
+<th:block th:replace="product/modalCreateProduct"/>
+<th:block th:replace="product/modalUpdateProduct"/>
 
 
 <script src="/assets/js/jquery-3.6.0.min.js"></script>
@@ -109,19 +122,9 @@
 <script src="/assets/js/jquery.number.js"></script>
 <script src="/assets/js/app.js"></script>
 <script>
-    const page = {
-        url: {},
-        elements: {},
-        loadData: {},
-        commands: {},
-        dialogs: {
-            elements: {},
-            commands: {}
-        },
-        initializeControlEvent: {}
-    }
-</script>
-<script src="/assets/js/nhat.js"></script>
 
+</script>
+<script src="/assets/js/product.js"></script>
+<script src="/assets/js/product-validation.js"></script>
 </body>
 </html>

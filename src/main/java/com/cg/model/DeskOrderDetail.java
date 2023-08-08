@@ -15,9 +15,9 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "time_order_detail")
+@Table(name = "desk_order_detail")
 @Accessors(chain = true)
-public class TimeOrderDetail extends BaseEntity {
+public class DeskOrderDetail extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,9 +35,11 @@ public class TimeOrderDetail extends BaseEntity {
 
     @Column(name = "end_at", updatable = false)
     private Date endAt;
+    private String unit;
+
 
     @Column(precision = 10, scale = 0, nullable = false)
-    private BigDecimal price;
+    private BigDecimal priceTime;
 
     @Column(nullable = false)
     private BigDecimal amount;

@@ -62,13 +62,17 @@ public class DeskServiceImpl implements IDeskService {
         return deskRepository.findAllDeskDTOS();
     }
 
+    @Override
+    public List<DeskDTO> findAllByDeletedFalseAndTypeId(Long typeId) {
+        return deskRepository.findAllByDeletedFalseAndTypeId(typeId);
+    }
 
     public List<Desk> findAllByDeletedIs(Boolean boo) {
         return deskRepository.findAllByDeletedIs(boo);
     }
     @Override
     public DeskCreResDTO create(DeskCreReqDTO deskCreReqDTO) {
-        long typeId = deskCreReqDTO.getTypeId();
+        Long typeId = (Long) deskCreReqDTO.getTypeId();
         Optional<Type> type = typeService.findById(typeId);
         Desk desk = deskCreReqDTO.toDesk(type.get());
         desk.setStatus(false);
@@ -84,8 +88,7 @@ public class DeskServiceImpl implements IDeskService {
     }
 
     @Override
-    public DeskUpResDTO update(long deskId, DeskUpReqDTO deskUpReqDTO) {
-        Desk desk = deskUpReqDTO.toDesk(deskId,typeService.findById(deskUpReqDTO.getTypeId()).get());
+    public DeskUpResDTO update(Desk desk, DeskUpReqDTO deskUpReqDTO) {
 
         desk.setName(deskUpReqDTO.getName());
         desk.setPriceTime(BigDecimal.valueOf(Long.parseLong(deskUpReqDTO.getPriceTime())));
@@ -96,5 +99,9 @@ public class DeskServiceImpl implements IDeskService {
         DeskUpResDTO deskUpResDTO = desk.todeskUpResDTO();
 
         return deskUpResDTO;
+    }
+    @Override
+    public List<DeskDTO> findAllByDeletedFalseAndNameLike(String name){
+        return deskRepository.findAllByDeletedFalseAndNameLike(name);
     }
 }

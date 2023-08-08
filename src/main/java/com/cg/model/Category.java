@@ -28,8 +28,8 @@ public class Category {
     @Column(length = 20)
     private ECategory name;
 
-    @OneToMany(targetEntity = Product.class, fetch = FetchType.EAGER)
-    private List<Product> products;
+//    @OneToMany(targetEntity = Product.class, fetch = FetchType.EAGER)
+//    private List<Product> products;
     public CategoryDTO toCategoryDTO() {
         return new CategoryDTO()
                 .setId(id)

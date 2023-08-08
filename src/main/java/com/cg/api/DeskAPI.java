@@ -37,6 +37,13 @@ public class DeskAPI {
 
         return new ResponseEntity<>(deskDTOS, HttpStatus.OK);
     }
+    @GetMapping("/types/{typeId}")
+    public ResponseEntity<?> getAllDesksByTypeId(@PathVariable String typeId) {
+
+        List<DeskDTO> deskDTOS = deskService.findAllByDeletedFalseAndTypeId(Long.valueOf(typeId));
+
+        return new ResponseEntity<>(deskDTOS, HttpStatus.OK);
+    }
 
     @GetMapping("/{deskId}")
     public ResponseEntity<?> getById(@PathVariable Long deskId) {
@@ -105,8 +112,9 @@ public class DeskAPI {
             data.put("message", "Tên bàn đã tồn tại");
             return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
         }
+        Desk desk = deskOptional.get();
 
-        DeskUpResDTO deskUpResDTO = deskService.update(deskId, deskUpReqDTO);
+        DeskUpResDTO deskUpResDTO = deskService.update(desk, deskUpReqDTO);
 
         return new ResponseEntity<>(deskUpResDTO, HttpStatus.OK);
     }
@@ -125,7 +133,7 @@ public class DeskAPI {
             Desk desk = deskOptional.get();
             desk.setDeleted(true);
             deskService.save(desk);
-            List<Desk> desks = deskService.findAllByDeletedIs(false);
+            List<Desk> desks = deskService.findAllByDeletedIs(Boolean.valueOf(false));
 
             return new ResponseEntity<>(desks, HttpStatus.OK);
         } catch (Exception e) {
@@ -134,6 +142,13 @@ public class DeskAPI {
             data.put("message", "Lỗi xóa bàn");
             return new ResponseEntity<>(data, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> getAll(@RequestParam ("keySearch") String keySearch) {
+        keySearch = "%" + keySearch + "%";
+        List<DeskDTO> deskDTOS = deskService.findAllByDeletedFalseAndNameLike(keySearch);
+        return new ResponseEntity<>(deskDTOS, HttpStatus.OK);
     }
 
 }

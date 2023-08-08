@@ -62,10 +62,14 @@ public class UserServiceImpl implements IUserService {
     public User getByUsername(String username) {
         return userRepository.getByUsername(username);
     }
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
 
     @Override
     public UserCreResDTO create(UserCreReqDTO userCreReqDTO) {
-        Optional<Role> role = roleService.findById(2L);
+        Optional<Role> role = roleService.findById(Long.valueOf(2L));
         User user = userCreReqDTO.toUser(role.get());
         user.setRole(role.get());
         user.setId(null);
@@ -88,7 +92,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public UserUpResDTO update(long userId, UserUpReqDTO userUpReqDTO) {
-        User user = userUpReqDTO.toUser(userId, roleService.findById(2L).get());
+        User user = userUpReqDTO.toUser(userId, roleService.findById(Long.valueOf(2L)).get());
 
         user.setUsername(userUpReqDTO.getUsername());
         user.setPassword(userUpReqDTO.getPassword());
@@ -126,4 +130,8 @@ public class UserServiceImpl implements IUserService {
         return userRepository.existsByEmail(email);
     }
 
+    @Override
+    public List<UserDTO> findAllByDeletedFalseAndUserNameLikeAndFullNameLike(String username, String fullName) {
+        return userRepository.findAllByDeletedFalseAndUserNameLikeAndFullNameLike(username,fullName);
+    }
 }

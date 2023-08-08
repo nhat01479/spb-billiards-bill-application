@@ -21,6 +21,7 @@ public class DeskCreReqDTO implements Validator {
     private long id;
     private String name;
     private String priceTime;
+    private String unit = "Giờ";
     private long typeId;
     private boolean status;
 
@@ -30,6 +31,7 @@ public class DeskCreReqDTO implements Validator {
                 .setId(null)
                 .setName(name)
                 .setPriceTime(BigDecimal.valueOf(Long.parseLong(priceTime)))
+                .setUnit(unit)
                 .setType(type)
                 .setStatus(status);
     }

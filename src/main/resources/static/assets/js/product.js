@@ -256,7 +256,7 @@ page.dialogs.commands.updateProduct = () => {
     const categoryId = page.dialogs.elements.productCategoryUp.val();
     const description = page.dialogs.elements.productDescriptionUp.val();
     const avatar = page.dialogs.elements.productImageUp[0].files[0];
-
+    console.log(avatar === undefined);
 
     const formData = new FormData();
     formData.append("title", title);
@@ -264,7 +264,9 @@ page.dialogs.commands.updateProduct = () => {
     formData.append("unit", unit);
     formData.append("categoryId", categoryId);
     formData.append("description", description);
-    formData.append("avatar", avatar);
+    if (avatar !== undefined) {
+        formData.append("avatar", avatar);
+    }
     $.ajax({
         type: "PATCH",
         url: "http://localhost:28002/api/products/" + productId,

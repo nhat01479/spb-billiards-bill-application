@@ -27,6 +27,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
+@CrossOrigin(origins = "http://localhost:3000")
+
 public class ProductAPI {
 
     @Autowired
@@ -36,12 +38,12 @@ public class ProductAPI {
     @Autowired
     private AppUtils appUtils;
 
-    @GetMapping
-    public ResponseEntity<?> getAll() {
-        List<ProductDTO> productDTOS = productService.findAllProductDTO();
-
-        return new ResponseEntity<>(productDTOS, HttpStatus.OK);
-    }
+//    @GetMapping
+//    public ResponseEntity<?> getAll() {
+//        List<ProductDTO> productDTOS = productService.findAllProductDTO();
+//
+//        return new ResponseEntity<>(productDTOS, HttpStatus.OK);
+//    }
 
     @GetMapping("/search")
     public ResponseEntity<?> getAll(@RequestParam("keySearch") String keySearch) {
@@ -141,28 +143,32 @@ public class ProductAPI {
         return new ResponseEntity<>(product.toProductDTO(), HttpStatus.OK);
 
     }
-    //    @RequestParam ("keySearch") String keySearch, @RequestParam("page") int page,
-//    @RequestParam(value = "limit", defaultValue = "2") int limit,
-//    @RequestParam(value = "sort-by", defaultValue = "price") String sortBy,
-//    @RequestParam(value = "sort", defaultValue = "asc") String sort
+    @GetMapping()
+    public ResponseEntity<?> getAll(@RequestParam("keySearch") String keySearch, @RequestParam("page") int page,
+                                    @RequestParam(value = "limit", defaultValue = "2") int limit,
+                                    @RequestParam(value = "sort-by", defaultValue = "id") String sortBy,
+                                    @RequestParam(value = "dimension", defaultValue = "asc") String dimension) {
+
 //    @PostMapping("/pageable")
 //    public ResponseEntity<?> getAll(@RequestBody PageableReqDTO pageableReqDTO) {
-//
-//        String keySearch = "%" + pageableReqDTO.getKeySearch() + "%";
+
+        keySearch = "%" + keySearch + "%";
 //        Integer page = pageableReqDTO.getPage();
 //        Integer limit = pageableReqDTO.getLimit();
 //        String sortBy = pageableReqDTO.getSortBy();
 //        String dimension = pageableReqDTO.getDimension();
-//        Pageable pageable;
-//        if (dimension.equals("asc")) {
-//            pageable = PageRequest.of(page-1, limit, Sort.by(sortBy).ascending());
-//        } else {
-//            pageable = PageRequest.of(page-1, limit, Sort.by(sortBy).descending());
-//        }
-//
-////        Pageable pageable = PageRequest.of(page-1, limit);
-//        Page<ProductDTO> productDTOS = productService.findAllByDeletedFalse(keySearch, keySearch, pageable);
-//
-//        return new ResponseEntity<>(productDTOS, HttpStatus.OK);
-//    }
+        Pageable pageable;
+        if (dimension.equals("asc")) {
+            pageable = PageRequest.of(page - 1, limit, Sort.by(sortBy).ascending());
+//            pageable = PageRequest.of(page - 1, limit, Sort.by(sortBy).ascending().and(Sort.by("name")));
+
+        } else {
+            pageable = PageRequest.of(page - 1, limit, Sort.by(sortBy).descending());
+        }
+
+//        Pageable pageable = PageRequest.of(page-1, limit);
+        Page<ProductDTO> productDTOS = productService.findAllByDeletedFalse(keySearch, keySearch, pageable);
+
+        return new ResponseEntity<>(productDTOS, HttpStatus.OK);
+    }
 }

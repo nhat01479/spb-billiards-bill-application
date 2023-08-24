@@ -10,6 +10,7 @@ import com.cg.model.dto.product.ProductUpReqDTO;
 import com.cg.repository.ProductAvatarRepository;
 import com.cg.repository.ProductRepository;
 import com.cg.service.category.ICategoryService;
+import com.cg.service.productAvatar.IProductAvatarService;
 import com.cg.service.upload.IUploadService;
 
 import com.cg.ultis.AppUtils;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -38,6 +40,8 @@ public class ProductServiceImpl implements IProductService {
 
     @Autowired
     private ProductAvatarRepository productAvatarRepository;
+    @Autowired
+    private IProductAvatarService productAvatarService;
 
     @Autowired
     private IUploadService uploadService;
@@ -128,10 +132,21 @@ public class ProductServiceImpl implements IProductService {
         String titleChar = appUtils.replaceNonEnglishChar(title);
         String slug = appUtils.removeNonAlphanumeric(titleChar);
 
+        MultipartFile ava =  productUpReqDTO.getAvatar();
         ProductAvatar productAvatar = new ProductAvatar();
-        productAvatarRepository.save(productAvatar);
 
-        uploadAndSaveProductImage(productUpReqDTO, productAvatar);
+        if (ava == null) {
+            System.out.println(productAvatar);
+            productAvatar = productAvatarService.findById(product.getAvatar().getId()).orElseThrow(()->{
+                throw new DataInputException("KKKKKKKKKK");
+            });
+
+        } else {
+            productAvatarRepository.save(productAvatar);
+
+            uploadAndSaveProductImage(productUpReqDTO, productAvatar);
+        }
+
 
         Product productUpdate = productUpReqDTO.toProduct(product, slug, category, productAvatar);
         productRepository.save(productUpdate);

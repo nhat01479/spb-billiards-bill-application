@@ -24,7 +24,7 @@ public class ProductAvatarServiceImpl implements IProductAvatarService {
 
     @Override
     public Optional<ProductAvatar> findById(String id) {
-        return Optional.empty();
+        return productAvatarRepository.findById(id);
     }
 
     @Override

@@ -53,7 +53,7 @@ public class ProductUpReqDTO implements Validator{
         String title = productUpReqDTO.getTitle();
         String priceStr = productUpReqDTO.getPrice();
         String unit = productUpReqDTO.getUnit();
-        boolean isExistsAvatar = productUpReqDTO.getAvatar().isEmpty();
+//        boolean isExistsAvatar = productUpReqDTO.getAvatar().isEmpty();
 
         if (title == null || title.trim().length() == 0) {
             errors.rejectValue("title", "title.null", "Tên sản phẩm không được để trống");

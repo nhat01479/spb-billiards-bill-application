@@ -43,6 +43,8 @@ public class User extends BaseEntity {
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
 
+    private boolean isEnabled;
+
     @Override
     public String toString() {
         return "User{" +
@@ -85,6 +87,7 @@ public class User extends BaseEntity {
                 .setEmail(email)
                 .setPhone(phone)
                 .setAddress(address)
+                .setRole(role)
                 ;
     }
 
@@ -97,6 +100,7 @@ public class User extends BaseEntity {
                 .setEmail(email)
                 .setPhone(phone)
                 .setAddress(address)
+                .setRole(role)
                 ;
     }
 

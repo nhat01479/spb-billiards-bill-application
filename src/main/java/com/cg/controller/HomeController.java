@@ -68,6 +68,11 @@ public class HomeController {
     public String showRegisterPage() {
         return "register";
     }
+    @GetMapping("/confirm-account")
+    public String showConfirmPage() {
+        return "confirmPage";
+    }
+
 
 }
 

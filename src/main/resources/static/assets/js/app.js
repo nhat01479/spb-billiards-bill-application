@@ -47,7 +47,7 @@ class App {
             icon: 'success',
             title: t,
             showConfirmButton: true,
-            // timer: 1500
+            timer: 1500
         })
 
     }

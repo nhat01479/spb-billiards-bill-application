@@ -62,10 +62,10 @@ public class UserServiceImpl implements IUserService {
     public User getByUsername(String username) {
         return userRepository.getByUsername(username);
     }
+    
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
-
 
     @Override
     public UserCreResDTO create(UserCreReqDTO userCreReqDTO) {
@@ -83,7 +83,6 @@ public class UserServiceImpl implements IUserService {
     public Boolean existsByUsernameAndIdNot(String username, Long id) {
         return userRepository.existsByUsernameAndIdNot(username, id);
     }
-
 
     @Override
     public Boolean existsByEmailAndIdNot(String email, Long id) {

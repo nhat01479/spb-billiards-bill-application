@@ -111,7 +111,7 @@ page.commands.getAllProduct = () => {
         url: 'http://localhost:28002/api/products'
     })
         .done((data) => {
-            data.forEach(item => {
+            data.content.forEach(item => {
 
                 const str = page.commands.renderProduct(item);
                 page.elements.tbProduct.prepend(str);

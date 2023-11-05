@@ -109,13 +109,13 @@
                     </div>
                     <div class="row" style="padding-left: 10px; padding-right: 10px;">
                         <div class="col-3" style="padding: 0px 1px;">
-                            <button class="btn btn-secondary w-100" style="min-height: 80px;">Tách bàn</button>
+                            <button class="btn btn-secondary w-100" style="min-height: 80px;">Tách bàn (Coming soon)</button>
                         </div>
                         <div class="col-3" style="padding: 0px 1px;">
-                            <button class="btn btn-secondary w-100" style="min-height: 80px;">Chuyển bàn</button>
+                            <button class="btn btn-secondary w-100" style="min-height: 80px;">Chuyển bàn (Coming soon)</button>
                         </div>
                         <div class="col-3" style="padding: 0px 1px;">
-                            <button class="btn btn-secondary  w-100" style="min-height: 80px;">Gộp bàn</button>
+                            <button class="btn btn-secondary  w-100" style="min-height: 80px;">Gộp bàn (Coming soon)</button>
                         </div>
 
                         <div class="col-3" style="padding: 0px 1px; ">
@@ -354,7 +354,7 @@
             url: 'http://localhost:28002/api/products'
         })
             .done((data) => {
-                data.forEach(item => {
+                data.content.forEach(item => {
 
                     const str = page.commands.renderProduct(item);
                     page.elements.rowContent.append(str);

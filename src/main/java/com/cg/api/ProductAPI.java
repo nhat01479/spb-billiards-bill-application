@@ -144,8 +144,8 @@ public class ProductAPI {
 
     }
     @GetMapping()
-    public ResponseEntity<?> getAll(@RequestParam("keySearch") String keySearch, @RequestParam("page") int page,
-                                    @RequestParam(value = "limit", defaultValue = "2") int limit,
+    public ResponseEntity<?> getAll(@RequestParam(value = "keySearch", defaultValue = "") String keySearch, @RequestParam(value = "page", defaultValue = "1") int page,
+                                    @RequestParam(value = "limit", defaultValue = "100") int limit,
                                     @RequestParam(value = "sort-by", defaultValue = "id") String sortBy,
                                     @RequestParam(value = "dimension", defaultValue = "asc") String dimension) {
 

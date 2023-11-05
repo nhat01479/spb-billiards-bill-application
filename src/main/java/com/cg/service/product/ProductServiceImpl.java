@@ -138,7 +138,7 @@ public class ProductServiceImpl implements IProductService {
         if (ava == null) {
             System.out.println(productAvatar);
             productAvatar = productAvatarService.findById(product.getAvatar().getId()).orElseThrow(()->{
-                throw new DataInputException("KKKKKKKKKK");
+                throw new DataInputException("Không tìm thấy ảnh sản phẩm");
             });
 
         } else {

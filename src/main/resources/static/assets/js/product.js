@@ -126,7 +126,7 @@ page.commands.getAllProductByKeySearch = (keySearch) => {
     page.elements.tbProduct.empty();
     $.ajax({
             type: 'GET',
-        url: 'http://localhost:28002/api/products/search',
+        url: 'http://localhost:28002/api/products',
         data: {
             keySearch: keySearch
         }
@@ -134,7 +134,7 @@ page.commands.getAllProductByKeySearch = (keySearch) => {
 
         .done((data) => {
             page.elements.tbProduct.empty();
-            data.forEach(item => {
+            data.content.forEach(item => {
 
                 const str = page.commands.renderProduct(item);
                 page.elements.tbProduct.prepend(str);
@@ -392,9 +392,18 @@ page.initializeControlEvent = () => {
     })
 
     page.elements.keySearch.on('input', function () {
-        const keySearch = $(this).val();
         // $('#formSearch').trigger("submit");
-        page.commands.getAllProductByKeySearch(keySearch);
+        clearTimeout(page.searchTimeout);
+
+        page.searchTimeout = setTimeout(function () {
+            // const keySearch = $(this).val();
+            const keySearch = page.elements.keySearch.val();
+            page.commands.getAllProductByKeySearch(keySearch);
+        }, 500);
+
+
+
+
 
     })
 

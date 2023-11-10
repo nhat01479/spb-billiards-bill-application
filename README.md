@@ -35,7 +35,7 @@
 
 ## I. Trang chủ: [Cinestar - Client Page](https://cinestar.onedev.top/)
 
-### 1.Cho phép khách hàng xem tin tức, lịch chiếu phim và đặt vé xem phim.
+### 1. Cho phép khách hàng xem tin tức, lịch chiếu phim và đặt vé xem phim.
 
 ### 2. Quy trình mua vé xem phim online:
 
@@ -84,8 +84,9 @@
     + email: thunganhue@gmail.com
     + password: 12345678
 
+## IV. Trang Swagger: [Cinestar - Cashier Page](https://cinestar.onedev.top/swagger-ui/)
 
-
+- Cho phép test API
 
 
 
